@@ -1,0 +1,37 @@
+{
+    "name": "balanzo",
+    "version": "0.0.1",
+    "description": "A React Progressive Web App for tracking income and spending.",
+    "main": "index.js",
+    "scripts": {
+        "start": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rolandcsosz/balanzo.git"
+    },
+    "keywords": [
+        "finance",
+        "income",
+        "spending",
+        "tracker",
+        "PWA",
+        "React"
+    ],
+    "author": "Roland Csősz",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rolandcsosz/balanzo/issues"
+    },
+    "homepage": "https://github.com/rolandcsosz/balanzo#readme",
+    "dependencies": {
+        "preact": "^10.24.3"
+    },
+    "devDependencies": {
+        "@preact/preset-vite": "^2.9.1",
+        "typescript": "^5.6.3",
+        "vite": "^5.4.10"
+    }
+}
