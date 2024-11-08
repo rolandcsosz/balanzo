@@ -1,0 +1,44 @@
+.mobile-nav {
+    background: #F1F1F1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.bloc-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bloc-icon img {
+    width: 30px;
+}
+
+.bloc-text {
+    display: none;
+}
+
+@media screen and (min-width: 800px) {
+    .mobile-nav {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding-top: 10px;
+    }
+
+    .bloc-text {
+        display: flex;
+        padding-left: 10px;
+    }
+}
