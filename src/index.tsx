@@ -1,9 +1,16 @@
 import { render } from 'preact';
+import { useState } from 'preact/hooks';
+import { Menu } from './menu';
+import { Content } from './content';
+
+import './index.scss';
 
 export function App() {
+    let [menu, setMenu] = useState("Home");
     return (
-        <div>
-            <h1>Hello, World!</h1>
+        <div class="app-container">
+            <Menu />
+            {menu === "Home" ? <Content /> : null}
         </div>
     );
 }
