@@ -2,17 +2,26 @@ import { render } from 'preact';
 import { useState } from 'preact/hooks';
 import { Menu } from './menu';
 import { Content } from './content';
+import Login from './pages/login';
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/useAuth';
 
 import './index.scss';
 
-export function App() {
-    let [menu, setMenu] = useState("Home");
+function App() {
+    const { authState, login, logout } = useAuth();
+    const [menu, setMenu] = useState("Home");
+
     return (
         <div class="app-container">
-            <Menu />
-            {menu === "Home" ? <Content /> : null}
+            {authState.isAuthenticated ? <Menu /> : <Login />}
         </div>
     );
 }
 
-render(<App />, document.getElementById('app'));
+render(
+    <AuthProvider>
+        <App />
+    </AuthProvider>,
+    document.getElementById('app')
+);

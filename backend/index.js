@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const ExpenseType = require('./model/expense_type');
 const MainCategory = require('./model/main_category');
 const Subcategory = require('./model/subcategory');
@@ -16,6 +17,7 @@ const repository = {
     user: User
 };
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
