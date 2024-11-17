@@ -5,6 +5,7 @@ db.createCollection("expense_types");
 db.createCollection("main_categories");
 db.createCollection("subcategories");
 db.createCollection("transactions");
+db.createCollection("users");
 
 const expenseTypes = [
     { _id: ObjectId(), name: "Fixed" },
@@ -98,3 +99,13 @@ const transactions = [
 ];
 
 db.transactions.insertMany(transactions);
+
+const users = [
+    {
+        _id: ObjectId(),
+        email: "test@test.com",
+        password: "1234"
+    },
+];
+
+db.users.insertMany(users);

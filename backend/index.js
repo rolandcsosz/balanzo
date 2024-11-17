@@ -4,6 +4,7 @@ const ExpenseType = require('./model/expense_type');
 const MainCategory = require('./model/main_category');
 const Subcategory = require('./model/subcategory');
 const Transaction = require('./model/transactions');
+const User = require('./model/user');
 require('dotenv').config();
 
 const app = express();
@@ -11,7 +12,8 @@ const repository = {
     expenseType: ExpenseType,
     mainCategory: MainCategory,
     subcategory: Subcategory,
-    transaction: Transaction
+    transaction: Transaction,
+    user: User
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
