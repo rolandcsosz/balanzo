@@ -1,10 +1,10 @@
-import './login.scss';
+import './Login.scss';
 import InputField from '../components/InputField';
 import { useState } from 'preact/hooks';
 import { useAuth } from '../context/useAuth';
 import { useApiClient } from '../utils/apiClient';
 
-const Login = () => {
+export function Login() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let { fetchWithAuth } = useApiClient();
@@ -50,5 +50,3 @@ const Login = () => {
         </section>
     </main>);
 };
-
-export default Login;

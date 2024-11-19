@@ -1,0 +1,18 @@
+.sidebar {
+  display: flex;
+  padding-right: 20px;
+  flex-direction: column;
+  color: #000;
+  text-align: center;
+  letter-spacing: 0.2px;
+  width: 182px;
+  font: 600 13px Inter, sans-serif;
+}
+
+.navigation-items {
+  flex-grow: 1;
+}
+
+.last-item {
+  margin-top: auto;
+}

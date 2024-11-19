@@ -1,12 +1,10 @@
+import './index.scss';
 import { render } from 'preact';
 import { useState } from 'preact/hooks';
-import { Menu } from './menu';
-import { Content } from './content';
-import Login from './pages/login';
+import { Menu } from './pages/Menu';
+import { Login } from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/useAuth';
-
-import './index.scss';
 
 function App() {
     const { authState, login, logout } = useAuth();
