@@ -1,6 +1,6 @@
 import './SidebarButton.scss'
 import { ComponentType } from 'preact';
-import { useDevice } from '../context/DeviceContext';
+import { useDevice } from '../hooks/useDevice';
 
 interface SidebarButtonProps {
     Icon: ComponentType<{ isActive: boolean, isFilled: boolean }>;

@@ -1,5 +1,3 @@
-// src/context/AuthContext.ts
-
 import { createContext } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 

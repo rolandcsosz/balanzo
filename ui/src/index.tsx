@@ -4,7 +4,7 @@ import { useState } from 'preact/hooks';
 import { Menu } from './pages/Menu';
 import { Login } from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './context/useAuth';
+import { useAuth } from './hooks/useAuth';
 import { DeviceProvider } from './context/DeviceContext';
 
 function App() {

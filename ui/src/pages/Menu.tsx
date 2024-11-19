@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import { Sidebar } from '../components/Sidebar';
 import { Navbar } from '../components/Navbar';
 import largeAddUrl from '../assets/add-large.svg';
-import { useDevice } from '../context/DeviceContext';
+import { useDevice } from '../hooks/useDevice';
 
 export function Menu(){
   const [menu, setMenu] = useState("Home");

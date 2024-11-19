@@ -6,7 +6,7 @@ import { TransactionsIcon } from './icons/TransactionsIcon';
 import { CategoriesIcon } from './icons/CategoriesIcon';
 import { TemplatesIcon } from './icons/TemplatesIcon';
 import { LogoutIcon } from './icons/LogoutIcon';
-import { useAuth } from '../context/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 const initialNavigationItems = [
     { icon: HomeIcon, label: 'Home', isActive: false },

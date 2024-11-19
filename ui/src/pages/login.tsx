@@ -1,7 +1,7 @@
 import './Login.scss';
 import InputField from '../components/InputField';
 import { useState } from 'preact/hooks';
-import { useAuth } from '../context/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { useApiClient } from '../utils/apiClient';
 
 export function Login() {
