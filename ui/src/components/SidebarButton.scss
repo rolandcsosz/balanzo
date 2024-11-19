@@ -1,5 +1,15 @@
 
-.nav-button {
+.nav-button.mobile {
+  border: none;
+  background: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+
+.nav-button.desktop{
   border: none;
   background: none;
   border-radius: 8px;
@@ -17,15 +27,9 @@
   margin-top: 0;
 }
 
-.active {
+.nav-button.active {
   background-color: rgba(55, 114, 255, 0.1);
   color: #3772ff;
-}
-
-.nav-icon {
-  aspect-ratio: 1;
-  object-fit: contain;
-  width: 30px;
 }
 
 .nav-label {

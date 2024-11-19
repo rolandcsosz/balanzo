@@ -45,6 +45,7 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
                         Icon={item.icon}
                         label={item.label}
                         isActive={item.isActive}
+                        isFilled={item.isActive}
                         onClick={() => {
                             setMenu(item.label);
                         }}

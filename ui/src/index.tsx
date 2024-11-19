@@ -5,6 +5,7 @@ import { Menu } from './pages/Menu';
 import { Login } from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/useAuth';
+import { DeviceProvider } from './context/DeviceContext';
 
 function App() {
     const { authState, login, logout } = useAuth();
@@ -19,7 +20,9 @@ function App() {
 
 render(
     <AuthProvider>
-        <App />
+        <DeviceProvider>
+            <App />
+        </DeviceProvider>
     </AuthProvider>,
     document.getElementById('app')
 );
