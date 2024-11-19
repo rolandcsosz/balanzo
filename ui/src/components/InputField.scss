@@ -1,0 +1,22 @@
+.input {
+    align-self: stretch;
+    width: 100%;
+    gap: 10px;
+    overflow: hidden;
+    max-width: 100%;
+    padding: 0 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-top: 20px;
+    min-height: 45px;
+    align-items: center;
+    font-family: Roboto Mono, sans-serif;
+    color: #292929;
+    border: 1px solid #b1b1bb;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: initial;
+}
