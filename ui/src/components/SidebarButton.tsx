@@ -1,9 +1,10 @@
 import './SidebarButton.scss'
 import { ComponentType } from 'preact';
 import { useDevice } from '../hooks/useDevice';
+import { IconProps } from './icons/IconProps';
 
 interface SidebarButtonProps {
-    Icon: ComponentType<{ isActive: boolean, isFilled: boolean }>;
+    Icon: ComponentType<IconProps>;
     label: string;
     isActive?: boolean;
     isFilled?: boolean;
