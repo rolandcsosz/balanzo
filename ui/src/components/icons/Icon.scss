@@ -1,8 +1,20 @@
-
 svg .inactive {
     fill: #000000;
 }
 
 svg .active {
     fill: #3772ff;
+}
+
+
+.add-button {
+    height: 40px;
+    width: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
 }
