@@ -35,8 +35,8 @@ export function Navbar({ menu, setMenu }: CategoriesIconProps) {
     }, [menu]);
 
     return (
-        <nav className="sidebar mobile">
-            <div className="navigation-items mobile">
+        <nav class="navbar">
+            <div class="navigation-items">
                 {navigationItems.map((item) => (
                     <SidebarButton Icon={item.icon} isFilled={item.isActive} label={item.label} isLabelVisible={false} isButtonBackgroundVisible={false}
                         onClick={() => {

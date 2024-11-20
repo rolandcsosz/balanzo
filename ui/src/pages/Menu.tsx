@@ -13,9 +13,9 @@ export function Menu(){
   return (
     <main class={`layout ${isMobile ? 'mobile' : 'desktop'}`}>
       <SidebarComponent menu={menu} setMenu={setMenu}/>
-      <section class={`content ${isMobile ? 'mobile' : 'desktop'}`}>
-        <button class={`action-button ${isMobile ? 'mobile' : 'desktop'}`} aria-label="Add new item">
-          <img src={largeAddUrl} alt="" class="action-icon" />
+      <section class="content">
+        <button class="action-button" aria-label="Add new item">
+          <img src={largeAddUrl} alt=""/>
         </button>
       </section>
     </main>

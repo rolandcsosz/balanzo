@@ -10,9 +10,21 @@
     overflow: hidden;
     background-color: #a4e7ff;
     opacity: 0.8;
-    background-image: linear-gradient(30deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff), linear-gradient(150deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff), linear-gradient(30deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff), linear-gradient(150deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff), linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77), linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77);
+    background-image:
+        linear-gradient(30deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff),
+        linear-gradient(150deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff),
+        linear-gradient(30deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff),
+        linear-gradient(150deg, #037dff 12%, transparent 12.5%, transparent 87%, #037dff 87.5%, #037dff),
+        linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77),
+        linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77);
     background-size: 58px 102px;
     background-position: 0 0, 0 0, 29px 51px, 29px 51px, 0 0, 29px 51px;
+
+    @media (max-width: 600px) {
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .panel {
@@ -25,66 +37,51 @@
     justify-content: start;
     padding: 40px;
     box-sizing: border-box;
-}
 
-.title {
-    color: #292929;
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 0 10px 0;
-}
+    .title {
+        color: #292929;
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+    }
 
-.subtitle {
-    color: #545454;
-}
+    .subtitle {
+        color: #545454;
+    }
 
-.button {
-    align-self: stretch;
-    width: 100%;
-    border-radius: 8px;
-    background: #3772ff;
-    margin-top: 20px;
-    min-height: 50px;
-    font-size: 20px;
-    color: #ffffff;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-}
-
-.spacer {
-    display: flex;
-    min-height: 0px;
-    margin-top: 20px;
-    width: 76px;
-}
-
-@media (max-width: 600px) {
-    .panel {
-        width: 100vh;
-        padding-top: 200px;
-        padding-left: 40px;
-        padding-right: 40px;
-        height: 100vh;
+    .button {
+        align-self: stretch;
         width: 100%;
-        border-radius: 0;
+        border-radius: 8px;
+        background: #3772ff;
+        margin-top: 20px;
+        min-height: 50px;
+        font-size: 20px;
+        color: #ffffff;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+    }
+
+    .spacer {
         display: flex;
+        min-height: 0px;
+        margin-top: 20px;
+        width: 76px;
+    }
+
+    @media (max-width: 600px) {
+        width: 100%;
+        padding: 200px 40px 0 40px;
+        height: 100vh;
+        border-radius: 0;
         flex-direction: column;
         overflow: hidden;
-        justify-content: start;
         overflow-y: auto;
+        justify-content: start;
     }
 
-    .container {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-@media (max-height: 600px) {
-    .panel {
+    @media (max-height: 600px) {
         padding-top: 100px;
     }
 }

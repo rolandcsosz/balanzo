@@ -1,11 +1,12 @@
-svg .inactive {
-    fill: #000000;
-}
+svg {
+    .inactive {
+        fill: #000000;
+    }
 
-svg .active {
-    fill: #3772ff;
+    .active {
+        fill: #3772ff;
+    }
 }
-
 
 .add-button {
     height: 40px;

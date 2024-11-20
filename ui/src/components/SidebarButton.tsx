@@ -1,6 +1,5 @@
 import './SidebarButton.scss'
 import { ComponentType } from 'preact';
-import { useDevice } from '../hooks/useDevice';
 import { IconProps } from './icons/IconProps';
 
 interface SidebarButtonProps {
@@ -14,10 +13,9 @@ interface SidebarButtonProps {
 }
 
 export function SidebarButton({ Icon, label, isActive = false, isFilled = false, isLabelVisible = true, isButtonBackgroundVisible = true, onClick }: SidebarButtonProps) {
-    const isMobile = useDevice();
     return (
         <button
-            class={`nav-button ${isMobile ? "mobile" : "desktop"}` + (isActive && isButtonBackgroundVisible ? " active" : "")}
+            class={`nav-button ${isActive && isButtonBackgroundVisible ? " active" : ""}`}
             onClick={onClick}
         >
             <Icon isActive={isActive} isFilled={isFilled} />
