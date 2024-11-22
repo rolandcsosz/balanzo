@@ -79,6 +79,7 @@ const transactions = [
         item: "Bread",
         amount: 590,
         date: new Date(),
+        type: "expense",
         subcategory: subcategories.find(item => item.name === "LIDL")._id,
     },
     {
@@ -86,6 +87,7 @@ const transactions = [
         item: "Rent",
         amount: 100000,
         date: new Date(),
+        type: "expense",
         subcategory: subcategories.find(item => item.name === "Rent")._id,
     },
     {
@@ -93,6 +95,7 @@ const transactions = [
         item: "Electricity",
         amount: 5680,
         date: new Date(),
+        type: "expense",
         subcategory: subcategories.find(item => item.name === "Utilities")._id,
     },
     

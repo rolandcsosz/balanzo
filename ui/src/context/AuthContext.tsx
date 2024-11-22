@@ -1,10 +1,6 @@
 import { createContext } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
-
-interface User {
-    email: string;
-    token: string;
-}
+import { User } from '../types';
 
 interface AuthState {
     user: User | null;
