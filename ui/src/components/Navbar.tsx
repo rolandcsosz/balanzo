@@ -6,6 +6,7 @@ import { CategoriesIcon } from './icons/CategoriesIcon';
 import { TemplatesIcon } from './icons/TemplatesIcon';
 import { SidebarButton } from './SidebarButton';
 import { AddIcon } from './icons/AddIcon';
+import { useBottomSheet } from '../hooks/useBottomSheet';
 
 const initialNavigationItems = [
     { icon: HomeIcon, label: 'Home', isActive: false },
@@ -18,10 +19,12 @@ const initialNavigationItems = [
 interface CategoriesIconProps {
     menu: string;
     setMenu: (menu: string) => void;
+    setBottomSheetVisibility?: (isOpen: boolean) => void;
 }
 
-export function Navbar({ menu, setMenu }: CategoriesIconProps) {
+export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIconProps) {
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
+    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
     const handleButtonClick = (newState) => {
         setNavigationItems(navigationItems.map((item) => ({
@@ -41,6 +44,9 @@ export function Navbar({ menu, setMenu }: CategoriesIconProps) {
                     <SidebarButton Icon={item.icon} isFilled={item.isActive} label={item.label} isLabelVisible={false} isButtonBackgroundVisible={false}
                         onClick={() => {
                             if (item.label === 'Add') {
+                                openSheet(
+                                    <div>Hello from nav</div>
+                                );
                                 return;
                             }
                             setMenu(item.label);

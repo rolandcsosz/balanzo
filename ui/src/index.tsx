@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import { DeviceProvider } from './context/DeviceContext';
+import { BottomSheetProvider } from "./context/BottomSheetContext";
 
 function App() {
     const { authState, login, logout } = useAuth();
@@ -21,7 +22,9 @@ function App() {
 render(
     <AuthProvider>
         <DeviceProvider>
-            <App />
+            <BottomSheetProvider>
+                <App />
+            </BottomSheetProvider>
         </DeviceProvider>
     </AuthProvider>,
     document.getElementById('app')

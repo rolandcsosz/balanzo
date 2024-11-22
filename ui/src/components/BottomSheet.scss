@@ -1,0 +1,49 @@
+.bottom-sheet {
+    position: fixed; // No quotes around 'fixed'
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white; // No quotes around 'white'
+    border-top-left-radius: 20px; // Corrected comma to semicolon
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); // No quotes
+
+    .handle-area {
+        height: 20px; // No quotes around '20px'
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+    }
+
+    .handle-bar {
+        width: 40px;
+        height: 6px;
+        background-color: gray;
+        border-radius: 3px;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        border: none;
+        padding: 0;
+        background: none;
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .close-button img {
+        display: block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .content {
+        padding: 16px;
+    }
+}
