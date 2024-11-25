@@ -56,8 +56,10 @@ let subcategories = [
     { _id: ObjectId(), name: "Wolt", mainCategory: "Services", expenseType: "Fixed" },
     { _id: ObjectId(), name: "Pho", mainCategory: "Restaurants", expenseType: "Discretionary" },
     { _id: ObjectId(), name: "Clothes", mainCategory: "Spending money", expenseType: "Discretionary" },
-
+    { _id: ObjectId(), name: "Gift", mainCategory: "Gift", expenseType: "Intermittent" },
 ];
+
+const subcategoriesNames = subcategories.map(item => item.name);
 
 for (let subcategory of subcategories) {
     const expenseType = expenseTypes.find(item => item.name === subcategory.expenseType);
@@ -73,33 +75,25 @@ for (let subcategory of subcategories) {
 
 db.subcategories.insertMany(subcategories);
 
-const transactions = [
-    {
+const generateRandomDate = () => {
+    const start = new Date(2021, 0, 1);
+    const end = new Date();
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+let transactions = [];
+
+for (let i = 0; i < 200; i++) {
+    let categoryName = subcategoriesNames[Math.floor(Math.random() * mainCategories.length)];
+    transactions.push({
         _id: ObjectId(),
-        item: "Bread",
-        amount: 590,
-        date: new Date(),
+        item: categoryName,
+        amount: Math.floor(Math.random() * 1000),
+        date: generateRandomDate(),
         type: "expense",
-        subcategory: subcategories.find(item => item.name === "LIDL")._id,
-    },
-    {
-        _id: ObjectId(),
-        item: "Rent",
-        amount: 100000,
-        date: new Date(),
-        type: "expense",
-        subcategory: subcategories.find(item => item.name === "Rent")._id,
-    },
-    {
-        _id: ObjectId(),
-        item: "Electricity",
-        amount: 5680,
-        date: new Date(),
-        type: "expense",
-        subcategory: subcategories.find(item => item.name === "Utilities")._id,
-    },
-    
-];
+        subcategory: subcategories.find(item => item.name === categoryName)._id
+    });
+}
 
 db.transactions.insertMany(transactions);
 
