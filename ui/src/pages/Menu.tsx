@@ -7,6 +7,7 @@ import { useDevice } from '../hooks/useDevice';
 import { BottomSheet } from '../components/BottomSheet';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { Home } from './Home';
+import { Transactions } from './Transactions';
 
 export function Menu() {
     const [menu, setMenu] = useState("Home");
@@ -20,6 +21,7 @@ export function Menu() {
             <section class="content">
                 <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1>
                 {menu === "Home" && <Home />}
+                {menu === "Transactions" && <Transactions />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
                         <div>Hello</div>

@@ -1,0 +1,120 @@
+.table {
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: start;
+    margin: 20px;
+}
+
+.header {
+    background: rgba(55, 114, 255, 0.1);
+    display: flex;
+    height: 46px;
+    width: 100%;
+    align-items: center;
+    color: var(--highlight, #3772ff);
+    justify-content: start;
+    flex-wrap: wrap;
+    font: 700 16px Inter, sans-serif;
+}
+
+.headerCell {
+    flex: 1;
+    /* Use flex to distribute space equally */
+    padding: 16px 20px;
+    white-space: nowrap;
+}
+
+.row {
+    display: flex;
+    min-height: 57px;
+    width: 100%;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+.row:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.row:nth-child(odd) {
+    background: #ededed;
+}
+
+.cell {
+    flex: 1;
+    /* Use flex to distribute space equally */
+    padding: 16px 20px;
+    white-space: nowrap;
+}
+
+.itemCell {
+    color: #323232;
+    font: 700 16px Inter, sans-serif;
+}
+
+.amountCell {
+    color: #5c5c5c;
+    font: 700 16px 'Roboto Mono', monospace;
+}
+
+.categoryPill {
+    border-radius: 4px;
+    background: #ccefff;
+    padding: 4px 8px;
+    color: #046;
+    font: 400 14px/1.2 'Azeret Mono', monospace;
+}
+
+.subcategoryPill {
+    border-radius: 4px;
+    background: #fffc;
+    padding: 4px 8px;
+    color: #660;
+    font: 400 14px/1.2 'Azeret Mono', monospace;
+}
+
+.dateCell {
+    color: #000;
+    font: 400 16px Inter, sans-serif;
+}
+
+.actionCell {
+    display: flex;
+    color: #000;
+    font: 400 16px Inter, sans-serif;
+    justify-content: end;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    border: none;
+    background-color: transparent;
+}
+
+.actionIcon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+@media (max-width: 991px) {
+
+    .header,
+    .row {
+        max-width: 100%;
+    }
+
+    .headerCell,
+    .cell {
+        white-space: initial;
+    }
+}
