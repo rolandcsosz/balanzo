@@ -2,12 +2,10 @@ import './Login.scss';
 import InputField from '../components/InputField';
 import { useState } from 'preact/hooks';
 import { useAuth } from '../hooks/useAuth';
-import { useApiClient } from '../utils/apiClient';
 
 export function Login() {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
-    let { fetchWithAuth } = useApiClient();
 
     let { login } = useAuth();
 
@@ -15,7 +13,13 @@ export function Login() {
         e.preventDefault();
 
         try {
-            const response = await fetchWithAuth('http://localhost:3000/login', 'POST', JSON.stringify({ email, password }));
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
 
             if (response.ok) {
                 const result = await response.json();
