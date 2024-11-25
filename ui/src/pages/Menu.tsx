@@ -6,6 +6,7 @@ import largeAddUrl from '../assets/add-large.svg';
 import { useDevice } from '../hooks/useDevice';
 import { BottomSheet } from '../components/BottomSheet';
 import { useBottomSheet } from '../hooks/useBottomSheet';
+import { Home } from './Home';
 
 export function Menu() {
     const [menu, setMenu] = useState("Home");
@@ -14,9 +15,11 @@ export function Menu() {
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
     return (
-        <main class={`layout ${isMobile ? 'mobile' : 'desktop'}`}>
+        <main class="layout">
             <SidebarComponent menu={menu} setMenu={setMenu} />
             <section class="content">
+                <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1>
+                {menu === "Home" && <Home />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
                         <div>Hello</div>
@@ -29,5 +32,3 @@ export function Menu() {
         </main>
     );
 };
-
-//export default Menu;

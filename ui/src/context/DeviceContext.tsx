@@ -8,10 +8,10 @@ type DeviceContextValue = boolean;
 export const DeviceContext = createContext<DeviceContextValue>(false);
 
 export function DeviceProvider({ children }: { children: ComponentChildren }) {
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 600);
+  const [isMobile, setIsMobile] = useState<boolean>(window.outerWidth <= 600);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 600);
+    const handleResize = () => setIsMobile(window.outerWidth <= 600);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
