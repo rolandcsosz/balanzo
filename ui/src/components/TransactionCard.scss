@@ -1,0 +1,73 @@
+.transaction-card {
+    display: inline-flex;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+    justify-content: start;
+    padding: 0px 10px 20px 20px;
+    border: 1px solid rgba(239, 240, 246, 1);
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 10px;
+
+    border-radius: 11px;
+    background: #fff;
+    border: 1px solid #eff0f6;
+}
+
+.transaction-card-header {
+    display: flex;
+    min-height: 35px;
+    align-items: center;
+    gap: 12px;
+    justify-content: start;
+}
+
+.transaction-card-item-name {
+    color: #2a2a33;
+    font: 700 18px Inter, sans-serif;
+}
+
+.transaction-card-amount {
+    color: #2a2a33;
+    font: 700 16px "Roboto Mono", monospace;
+}
+
+.transaction-card-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    padding: 3px 0;
+    margin-left: auto;
+    border: none;
+    background-color: transparent;
+}
+
+.transaction-card-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.transaction-card-tags {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 0;
+    font: 400 14px/1.2 "Azeret Mono", monospace;
+}
+
+.transaction-card-category-tag {
+    border-radius: 4px;
+    background: #ccefff;
+    color: #046;
+    padding: 4px 8px;
+}
+
+.transaction-card-store-tag {
+    border-radius: 4px;
+    background: #ffffcc;
+    color: #666600;
+    padding: 4px 8px;
+}
