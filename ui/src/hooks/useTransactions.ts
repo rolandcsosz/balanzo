@@ -44,6 +44,10 @@ export const useTransactions = (): Transaction[] => {
                     return transaction;
                 });
 
+                transactions.sort((a, b) => {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                });
+
                 setTransactions(transactions);
             } catch (error) {
                 setTransactions([]);

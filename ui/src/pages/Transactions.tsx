@@ -1,12 +1,10 @@
-
-import { MetricCard } from '../components/MetricCard';
-import { Chart, ChartSize } from '../components/Chart';
 import { useTransactions } from '../hooks/useTransactions';
-import { Transaction } from '../types';
 import { useDevice } from '../hooks/useDevice';
 import { TransactionRow } from '../components/TransactionTableRow';
 import { TransactionCard } from '../components/TransactionCard';
 import './Transactions.scss';
+import { formatDate } from '../utils/utlis';
+import { DateDivider } from '../components/DateDivider';
 
 export function Transactions() {
     const transactions = useTransactions();
@@ -15,9 +13,18 @@ export function Transactions() {
     return (
         isMobile ? (
             <div class="transaction-cards">
-                {transactions.map(transaction => (
-                    <TransactionCard key={transaction._id} transaction={transaction} />
-                ))}
+                {transactions.map((transaction, index) => {
+                    const currentDate = formatDate(transaction.date);
+                    const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null;
+                    return (
+                        <>
+                            <TransactionCard key={transaction._id} transaction={transaction} />
+                            {currentDate !== nextDate && (
+                                <DateDivider date={nextDate} />
+                            )}
+                        </>
+                    );
+                })}
             </div>
         ) : (
 
