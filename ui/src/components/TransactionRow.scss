@@ -1,0 +1,92 @@
+.transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    min-height: 57px;
+    width: 100%;
+
+    &:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    &:nth-child(odd) {
+        background: #ededed;
+    }
+}
+
+.transaction-cell {
+    flex: 1;
+    padding: 16px 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; // Ensure truncated text is indicated with ellipsis
+}
+
+.transaction-item-cell,
+.transaction-amount-cell,
+.transaction-category-pill,
+.transaction-subcategory-pill,
+.transaction-date-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; // Shared styles for truncation
+}
+
+.transaction-item-cell {
+    color: #323232;
+    font: 700 16px 'Inter', sans-serif;
+}
+
+.transaction-amount-cell {
+    color: #5c5c5c;
+    font: 700 16px 'Roboto Mono', monospace;
+}
+
+.transaction-category-pill,
+.transaction-subcategory-pill {
+    border-radius: 4px;
+    padding: 4px 8px;
+    font: 400 14px/1.2 'Azeret Mono', monospace;
+}
+
+.transaction-category-pill {
+    background: #ccefff;
+    color: #004466;
+}
+
+.transaction-subcategory-pill {
+    background: #ffffcc;
+    color: #666600;
+}
+
+.transaction-date-cell,
+.transaction-action-cell {
+    color: #000;
+    font: 400 16px 'Inter', sans-serif;
+}
+
+.transaction-action-cell {
+    width: 50px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: start;
+}
+
+.transaction-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    border: none;
+    background-color: transparent;
+}
+
+.transaction-action-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}

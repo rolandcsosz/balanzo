@@ -1,0 +1,28 @@
+.transaction-table {
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: start;
+    margin: 20px;
+
+    .transaction-header {
+        background: rgba(55, 114, 255, 0.1);
+        display: flex;
+        height: 46px;
+        width: 100%;
+        align-items: center;
+        color: var(--highlight, #3772ff);
+        justify-content: start;
+        flex-wrap: wrap;
+        font: 700 16px Inter, sans-serif;
+    }
+
+    .transaction-header-cell {
+        flex: 1;
+        padding: 16px 20px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
