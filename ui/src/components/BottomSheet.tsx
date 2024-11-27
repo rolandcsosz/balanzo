@@ -6,13 +6,13 @@ import { useBottomSheetContext } from '../context/BottomSheetContext';
 enum SheetSize {
     FULL = 0,
     HALF = window.innerHeight * 0.5,
-    EMPTY = window.innerHeight,
+    CLOSED = window.innerHeight,
 }
 
 export function BottomSheet() {
     const { isOpen, content, closeSheet } = useBottomSheetContext();
     const sheetRef = useRef(null);
-    const [sheetHeight, setSheetHeight] = useState(SheetSize.EMPTY);
+    const [sheetHeight, setSheetHeight] = useState(SheetSize.CLOSED);
     const [isDragging, setIsDragging] = useState(false);
     const snapThreshold = SheetSize.HALF;
     const animatonStep = 100;
@@ -96,7 +96,8 @@ export function BottomSheet() {
             <div class="bottom-sheet"
                 ref={sheetRef}
                 style={{
-                    height: `calc(100vh - ${sheetHeight}px)`,
+                    transform: `translateY(${sheetHeight}px)`,
+                    height: `100vh`,
                     transition: isDragging ? "none" : "height 0.2s",
                 }}
             >
@@ -115,7 +116,7 @@ export function BottomSheet() {
                     <img src={sheetCloseButtonUrl} alt="Close" />
                 </button>
 
-                <div class="content">{content}</div>
+                <div class="bottom-sheet-content">{content}</div>
             </div>
         )
     );

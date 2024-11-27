@@ -35,7 +35,7 @@ export function Transactions() {
                     <div class="transaction-header-cell">Main category</div>
                     <div class="transaction-header-cell">Subcategory</div>
                     <div class="transaction-header-cell">Date</div>
-                    <div class="transaction-action-cell"></div>
+                    <div class="transaction-row-action-cell"></div>
                 </header>
                 {transactions.map(transaction => (
                     <TransactionRow key={transaction._id} transaction={transaction} />

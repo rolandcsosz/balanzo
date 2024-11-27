@@ -10,7 +10,7 @@ interface InputFieldProps {
 const InputField = ({ type, placeholder, value, onChange }: InputFieldProps) => {
     return (
         <input
-            class="input"
+            class="input-field"
             type={type}
             placeholder={placeholder}
             value={value}

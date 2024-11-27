@@ -49,6 +49,12 @@
         color: #545454;
     }
 
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
     .button {
         align-self: stretch;
         width: 100%;

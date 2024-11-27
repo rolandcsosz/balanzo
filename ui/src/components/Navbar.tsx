@@ -7,6 +7,7 @@ import { TemplatesIcon } from './icons/TemplatesIcon';
 import { SidebarButton } from './SidebarButton';
 import { AddIcon } from './icons/AddIcon';
 import { useBottomSheet } from '../hooks/useBottomSheet';
+import { NewItem } from '../pages/NewItem';
 
 const initialNavigationItems = [
     { icon: HomeIcon, label: 'Home', isActive: false },
@@ -45,7 +46,7 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
                         onClick={() => {
                             if (item.label === 'Add') {
                                 openSheet(
-                                    <div>Hello from nav</div>
+                                    <NewItem transaction={null} onFinished={closeSheet} />
                                 );
                                 return;
                             }

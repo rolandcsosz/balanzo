@@ -1,5 +1,5 @@
 import './Menu.scss';
-import { useReducer, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import { Sidebar } from '../components/Sidebar';
 import { Navbar } from '../components/Navbar';
 import largeAddUrl from '../assets/add-large.svg';
@@ -8,6 +8,7 @@ import { BottomSheet } from '../components/BottomSheet';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { Home } from './Home';
 import { Transactions } from './Transactions';
+import { NewItem } from './NewItem';
 
 export function Menu() {
     const [menu, setMenu] = useState("Home");
@@ -24,7 +25,7 @@ export function Menu() {
                 {menu === "Transactions" && <Transactions />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
-                        <div>Hello</div>
+                        <NewItem transaction={null} onFinished={closeSheet} />
                     );
                 }}>
                     <img src={largeAddUrl} alt="" />

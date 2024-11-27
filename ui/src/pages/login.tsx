@@ -35,7 +35,7 @@ export function Login() {
         <section class="panel">
             <h1 class="title">Welcome back :)</h1>
             <p class="subtitle">Type in your email and password</p>
-            <form onSubmit={handleSubmit}>
+            <form class="login-form" onSubmit={handleSubmit}>
                 <InputField
                     type="email"
                     placeholder="Email"

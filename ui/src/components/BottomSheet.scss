@@ -1,15 +1,15 @@
 .bottom-sheet {
-    position: fixed; // No quotes around 'fixed'
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: white; // No quotes around 'white'
-    border-top-left-radius: 20px; // Corrected comma to semicolon
+    background-color: white;
+    border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1); // No quotes
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 
     .handle-area {
-        height: 20px; // No quotes around '20px'
+        height: 20px;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -43,7 +43,7 @@
         border-radius: 50%;
     }
 
-    .content {
-        padding: 16px;
+    .bottom-sheet-content {
+        height: calc(100% - 20px);
     }
 }
