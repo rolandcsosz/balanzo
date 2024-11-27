@@ -2,11 +2,13 @@ import { useState, useEffect } from 'preact/hooks';
 import { useApiClient } from '../hooks/useApiClient';
 import { useExpenseTypes } from './useExpenseTypes';
 import { MainCategory } from '../types';
+import { useTransactionTypes } from './useTransactionTypes';
 
 export const useMainCategories = (): MainCategory[] => {
     const { fetchWithAuth } = useApiClient();
     const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
     const expenseTypes = useExpenseTypes();
+    const transactionTypes = useTransactionTypes();
 
     useEffect(() => {
         if (!expenseTypes.length) {
@@ -28,6 +30,13 @@ export const useMainCategories = (): MainCategory[] => {
                         mainCategory.expenseType = matchedExpenseType;
                     } else {
                         console.warn(`No matching expense type found for main category: ${mainCategory._id}`);
+                    }
+
+                    const matchedTransactionType = transactionTypes.filter((transactionType) => transactionType._id === mainCategory.transactionType)[0];
+                    if (matchedTransactionType) {
+                        mainCategory.transactionType = matchedTransactionType;
+                    } else {
+                        console.warn(`No matching transaction type found for main category: ${mainCategory._id}`);
                     }
                 });
 

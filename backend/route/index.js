@@ -13,6 +13,7 @@ const getTransactionsMw = require('../middleware/transaction/getTransactionsMw')
 const saveTransactionMw = require('../middleware/transaction/saveTransactionMw');
 const deleteTransactionMw = require('../middleware/transaction/deleteTransactionMw');
 const getTransactionMw = require('../middleware/transaction/getTransactionMw');
+const getTransactionTypesMw = require('../middleware/transaction_type/getTransactionTypesMw');
 const getUserMw = require('../middleware/user/getUserMw');
 
 module.exports = function (app, repository) {
@@ -85,6 +86,11 @@ module.exports = function (app, repository) {
     app.delete('/transactions/:id',
         authMw(),
         deleteTransactionMw(repository),
+    );
+
+    app.get('/transaction_types',
+        authMw(),
+        getTransactionTypesMw(repository),
     );
 
     app.get('*',

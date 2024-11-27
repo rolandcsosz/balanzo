@@ -9,6 +9,10 @@ export function Home() {
     const transactions = useTransactions();
     const isMobile = useDevice();
 
+    const filterExpenseTransactions = (data: Transaction[]) => {
+        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense");
+    }
+
     const createDataForSunburst = (data: Transaction[]) => {
         let labels = [];
         let parents = [];
@@ -87,11 +91,11 @@ export function Home() {
     }
 
     const getIncome = (data: Transaction[]) => {
-        return data.filter((item) => item.type === "income").reduce((sum, item) => sum + item.amount, 0);
+        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Income").reduce((sum, item) => sum + item.amount, 0);
     }
 
     const getSpending = (data: Transaction[]) => {
-        return data.filter((item) => item.type === "expense").reduce((sum, item) => sum + item.amount, 0) * -1;
+        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense").reduce((sum, item) => sum + item.amount, 0) * -1;
     }
 
     const getBalance = (data: Transaction[]) => {
@@ -161,13 +165,13 @@ export function Home() {
                 <MetricCard title="Balance" value={getBalance(transactions)} />
             </div>
             <div class="card-list">
-                <Chart data={createDataForExpenseTypePieChart(transactions)} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Budget Allocation' showLegend={true} />
-                <Chart data={createDataForStackedBarChart(transactions)} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.MEDIUM} title='Grouped Categories' />
+                <Chart data={createDataForExpenseTypePieChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Budget Allocation' showLegend={true} />
+                <Chart data={createDataForStackedBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.MEDIUM} title='Grouped Categories' />
             </div>
             <div class="card-list">
-                <Chart data={createDataForMainBarChart(transactions)} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title="Main Categories" />
-                <Chart data={createDataForSubBarChart(transactions)} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Subcategories' />
-                <Chart data={createDataForSunburst(transactions)} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Spending Breakdown' />
+                <Chart data={createDataForMainBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title="Main Categories" />
+                <Chart data={createDataForSubBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Subcategories' />
+                <Chart data={createDataForSunburst(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Spending Breakdown' />
             </div>
         </div>
     );

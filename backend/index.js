@@ -5,6 +5,7 @@ const ExpenseType = require('./model/expense_type');
 const MainCategory = require('./model/main_category');
 const Subcategory = require('./model/subcategory');
 const Transaction = require('./model/transactions');
+const TransactionType = require('./model/transaction_type');
 const User = require('./model/user');
 require('dotenv').config();
 
@@ -14,6 +15,7 @@ const repository = {
     mainCategory: MainCategory,
     subcategory: Subcategory,
     transaction: Transaction,
+    transactionType: TransactionType,
     user: User
 };
 

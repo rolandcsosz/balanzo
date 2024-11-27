@@ -3,6 +3,11 @@ export type User = {
     token: string;
 }
 
+export type TransactionType = {
+    _id: string;
+    name: string;
+}
+
 export type ExpenseType = {
     _id: string;
     name: string;
@@ -12,6 +17,7 @@ export type MainCategory = {
     _id: string;
     name: string;
     expenseType: ExpenseType;
+    transactionType: TransactionType;
 };
 
 export type Transaction = {
@@ -20,7 +26,6 @@ export type Transaction = {
     amount: number;
     date: string;
     subcategory: Subcategory;
-    type: string;
 };
 
 export type Subcategory = {

@@ -2,6 +2,7 @@ conn = new Mongo();
 db = conn.getDB("data");
 
 db.createCollection("expense_types");
+db.createCollection("transaction_types");
 db.createCollection("main_categories");
 db.createCollection("subcategories");
 db.createCollection("transactions");
@@ -16,24 +17,37 @@ const expenseTypes = [
 
 db.expense_types.insertMany(expenseTypes);
 
+const transactionTypes = [
+    { _id: ObjectId(), name: "Expense" },
+    { _id: ObjectId(), name: "Income" },
+];
+
+db.transaction_types.insertMany(transactionTypes);
+
 let mainCategories = [
-    { _id: ObjectId(), name: "Housing", expenseType: "Fixed" },
-    { _id: ObjectId(), name: "Household", expenseType: "Variable" },
-    { _id: ObjectId(), name: "Gift", expenseType: "Intermittent" },
-    { _id: ObjectId(), name: "Free time", expenseType: "Discretionary" },
-    { _id: ObjectId(), name: "Hobbies", expenseType: "Discretionary" },
-    { _id: ObjectId(), name: "Services", expenseType: "Fixed" },
-    { _id: ObjectId(), name: "Health", expenseType: "Intermittent" },
-    { _id: ObjectId(), name: "Groceries", expenseType: "Variable" },
-    { _id: ObjectId(), name: "Restaurants", expenseType: "Discretionary" },
-    { _id: ObjectId(), name: "Transportation", expenseType: "Fixed" },
-    { _id: ObjectId(), name: "Spending money", expenseType: "Discretionary" },
+    { _id: ObjectId(), name: "Housing", expenseType: "Fixed", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Household", expenseType: "Variable", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Gift", expenseType: "Intermittent", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Free time", expenseType: "Discretionary", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Hobbies", expenseType: "Discretionary", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Services", expenseType: "Fixed", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Health", expenseType: "Intermittent", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Groceries", expenseType: "Variable", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Restaurants", expenseType: "Discretionary", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Transportation", expenseType: "Fixed", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Spending money", expenseType: "Discretionary", transactionType: "Expense" },
+    { _id: ObjectId(), name: "Salary", expenseType: "Fixed", transactionType: "Income" },
 ];
 
 for (let mainCategory of mainCategories) {
     const expenseType = expenseTypes.find(item => item.name === mainCategory.expenseType);
     if (expenseType) {
         mainCategory.expenseType = expenseType._id;
+    }
+
+    const transactionType = transactionTypes.find(item => item.name === mainCategory.transactionType);
+    if (transactionType) {
+        mainCategory.transactionType = transactionType._id;
     }
 }
 
@@ -57,6 +71,7 @@ let subcategories = [
     { _id: ObjectId(), name: "Pho", mainCategory: "Restaurants", expenseType: "Discretionary" },
     { _id: ObjectId(), name: "Clothes", mainCategory: "Spending money", expenseType: "Discretionary" },
     { _id: ObjectId(), name: "Gift", mainCategory: "Gift", expenseType: "Intermittent" },
+    { _id: ObjectId(), name: "Salary", mainCategory: "Salary", expenseType: "Fixed" },
 ];
 
 const subcategoriesNames = subcategories.map(item => item.name);
@@ -90,10 +105,17 @@ for (let i = 0; i < 200; i++) {
         item: categoryName,
         amount: Math.floor(Math.random() * 1000),
         date: generateRandomDate(),
-        type: "expense",
         subcategory: subcategories.find(item => item.name === categoryName)._id
     });
 }
+
+transactions.push({
+    _id: ObjectId(),
+    item: "Salary",
+    amount: 200000,
+    date: new Date(),
+    subcategory: subcategories.find(item => item.name === "Salary")._id
+});
 
 db.transactions.insertMany(transactions);
 

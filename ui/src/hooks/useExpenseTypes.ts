@@ -19,7 +19,7 @@ export const useExpenseTypes = (): ExpenseType[] => {
                 setExpenseTypes(await expenseTypesResponse.json());
             } catch (error) {
                 setExpenseTypes([]);
-                console.error(`Error fetching expenseTypes and subcategories: ${error}`);
+                console.error(`Error fetching expense types: ${error}`);
             }
         };
 
