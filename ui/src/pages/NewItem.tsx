@@ -9,7 +9,7 @@ import categoryUrl from '../assets/category.svg';
 import subcategoryUrl from '../assets/subcategory.svg';
 import dateUrl from '../assets/date.svg';
 import { formatDate } from '../utils/utlis';
-import { useData } from '../hooks/useData';
+import { useModel } from '../hooks/useModel';
 import { useApiClient } from '../hooks/useApiClient';
 import { Transaction } from '../types';
 
@@ -19,7 +19,7 @@ interface NewItemProps {
 }
 
 export function NewItem({ transaction, onFinished }: NewItemProps) {
-    const { mainCategories, subcategories, transactionTypes } = useData();
+    const { mainCategories, subcategories, transactionTypes } = useModel();
     const [itemName, setItemName] = useState(transaction?.item || '');
     const [itemAmount, setItemAmount] = useState(transaction?.amount || '');
     const [itemTransactionType, setItemTransactionType] = useState(

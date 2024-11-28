@@ -1,12 +1,12 @@
 import './Home.scss';
 import { MetricCard } from '../components/MetricCard';
 import { Chart, ChartSize } from '../components/Chart';
-import { useTransactions } from '../hooks/useTransactions';
 import { Transaction } from '../types';
 import { useDevice } from '../hooks/useDevice';
+import { useModel } from '../hooks/useModel';
 
 export function Home() {
-    const transactions = useTransactions();
+    const { transactions } = useModel();
     const isMobile = useDevice();
 
     const filterExpenseTransactions = (data: Transaction[]) => {

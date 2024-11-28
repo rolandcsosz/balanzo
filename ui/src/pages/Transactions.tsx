@@ -1,14 +1,19 @@
-import { useTransactions } from '../hooks/useTransactions';
 import { useDevice } from '../hooks/useDevice';
 import { TransactionRow } from '../components/TransactionTableRow';
 import { TransactionCard } from '../components/TransactionCard';
 import './Transactions.scss';
 import { formatDate } from '../utils/utlis';
 import { DateDivider } from '../components/DateDivider';
+import { useModel } from '../hooks/useModel';
+import { useEffect } from 'preact/hooks';
 
 export function Transactions() {
-    const transactions = useTransactions();
+    const { transactions } = useModel();
     const isMobile = useDevice();
+
+    useEffect(() => {
+        console.log(transactions.length);
+    }, [transactions]);
 
     return (
         isMobile ? (
