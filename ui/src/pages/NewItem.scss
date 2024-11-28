@@ -61,6 +61,30 @@
     }
 }
 
+.new-item-button-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 70px;
+    gap: 30px;
+}
+
+.new-item-delete-button {
+    align-self: stretch;
+    width: 100%;
+    border-radius: 8px;
+    background: #FF5A5A;
+    margin-bottom: 0px;
+    min-height: 50px;
+    font-size: 20px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .new-item-submit-button {
     align-self: stretch;
     width: 100%;
@@ -72,5 +96,4 @@
     color: #fff;
     border: none;
     cursor: pointer;
-    margin-bottom: 70px;
 }

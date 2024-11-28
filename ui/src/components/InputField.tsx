@@ -3,7 +3,7 @@ import './InputField.scss';
 interface InputFieldProps {
     type: string;
     placeholder: string;
-    value: string;
+    value: number | string;
     onChange: (value: string) => void;
 }
 

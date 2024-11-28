@@ -13,7 +13,6 @@ import { useData } from '../hooks/useData';
 import { useApiClient } from '../hooks/useApiClient';
 import { Transaction } from '../types';
 
-
 interface NewItemProps {
     transaction: Transaction | null;
     onFinished: () => void;
@@ -21,17 +20,25 @@ interface NewItemProps {
 
 export function NewItem({ transaction, onFinished }: NewItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useData();
-    const [itemName, setItemName] = useState("");
-    const [itemAmount, setItemAmount] = useState("");
-    const [itemTransactionType, setItemTransactionType] = useState("");
-    const [itemCategory, setItemCategory] = useState("");
-    const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
-    const [itemSubcategory, setItemSubcategory] = useState("");
-    const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
-    const [itemDate, setItemDate] = useState("");
+    const [itemName, setItemName] = useState(transaction?.item || '');
+    const [itemAmount, setItemAmount] = useState(transaction?.amount || '');
+    const [itemTransactionType, setItemTransactionType] = useState(
+        transaction?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || ''
+    );
+    const [itemCategory, setItemCategory] = useState(
+        transaction?.subcategory?.mainCategory?.name || ''
+    );
+    const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
+    const [itemSubcategory, setItemSubcategory] = useState(transaction?.subcategory?.name || '');
+    const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
+    const [itemDate, setItemDate] = useState(() => {
+        const date = transaction?.date ? formatDate(transaction.date) : formatDate(new Date().toDateString());
+        return date;
+    });
+
     const { fetchWithAuth } = useApiClient();
 
-    const setCategoryOptions = (transactionType) => {
+    const setCategoryOptions = (transactionType: string) => {
         const filteredCategories = mainCategories
             .filter((category) => category.transactionType.name === transactionType)
             .map((category) => category.name);
@@ -40,20 +47,21 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
         if (filteredCategories.length > 0) {
             setItemCategory(filteredCategories[0]);
         } else {
-            setItemCategory("");
+            setItemCategory('');
         }
     };
 
-    const setSubcategoryOptions = (category) => {
+    const setSubcategoryOptions = (category: string) => {
         const filteredSubcategories = subcategories
             .filter((subcategory) => subcategory.mainCategory.name === category)
             .map((subcategory) => subcategory.name);
+
         setItemSubcategoryOptions(filteredSubcategories);
 
         if (filteredSubcategories.length > 0) {
             setItemSubcategory(filteredSubcategories[0]);
         } else {
-            setItemSubcategory("");
+            setItemSubcategory('');
         }
     };
 
@@ -66,71 +74,113 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
     }, [itemCategory, subcategories]);
 
     useEffect(() => {
-        setItemDate(formatDate(new Date().toDateString()));
-        if (transactionTypes.length > 0) {
-            const defaultTransactionType = transactionTypes[0].name;
+        if (!transaction && transactionTypes.length > 0) {
+            const defaultTransactionType = transactionTypes[0]?.name || '';
             setItemTransactionType(defaultTransactionType);
+            setCategoryOptions(defaultTransactionType);
         }
-    }, [transactionTypes, mainCategories, subcategories]);
+    }, [transaction, transactionTypes]);
 
     const handleNewItem = async () => {
-
-        const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)._id;
+        const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
         if (!transactionType) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
             return;
         }
 
-        const subcategory = subcategories.find((subcategory) => subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory)._id;
+        const subcategory = subcategories.find(
+            (subcategory) =>
+                subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory
+        )?._id;
         if (!subcategory) {
             console.error(`No subcategory found for: ${itemSubcategory}`);
             return;
         }
 
-        const body = {
+        const body: any = {
             item: itemName,
             amount: itemAmount,
             transactionType: transactionType,
             subcategory: subcategory,
-            date: itemDate
+            date: itemDate,
         };
 
-        const expenseTypesResponse = await fetchWithAuth('http://localhost:3000/transactions', 'POST', JSON.stringify(body));
+        if (transaction) {
+            body.id = transaction._id;
+        }
+
+        await fetchWithAuth('http://localhost:3000/transactions', 'POST', JSON.stringify(body));
+        onFinished();
+    };
+
+    const handleDelete = async () => {
+        if (!transaction) {
+            console.error('No transaction found to delete');
+            return;
+        }
+
+        await fetchWithAuth(`http://localhost:3000/transactions/${transaction._id}`, 'DELETE', '');
         onFinished();
     };
 
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{transaction === null ? "New item" : "Edit item"}</h1>
-                <form onSubmit={() => { }} class="new-item-form">
+                <h1 class="new-item-title">{transaction === null ? 'New item' : 'Edit item'}</h1>
+                <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={itemUrl} alt="" />
-                        <InputField type="text" placeholder="" value={itemName} onChange={setItemName} />
+                        <InputField type="text" placeholder="Item" value={itemName} onChange={setItemName} />
                     </div>
                     <div class="new-item-form-row">
                         <img src={amountUrl} alt="" />
-                        <InputField type="number" placeholder="" value={itemAmount} onChange={setItemAmount} />
+                        <InputField
+                            type="number"
+                            placeholder="Amount"
+                            value={itemAmount}
+                            onChange={setItemAmount}
+                        />
                     </div>
                     <div class="new-item-form-row">
                         <img src={expenseTypeUrl} alt="" />
-                        <Dropdown options={transactionTypes.map((type) => type.name)} onSelectedChange={setItemTransactionType} />
+                        <Dropdown
+                            options={transactionTypes.map((type) => type.name)}
+                            selected={itemTransactionType}
+                            onSelectedChange={setItemTransactionType}
+                        />
                     </div>
                     <div class="new-item-form-row">
                         <img src={categoryUrl} alt="" />
-                        <Dropdown options={itemCategoryOptions} onSelectedChange={setItemCategory} />
+                        <Dropdown
+                            options={itemCategoryOptions}
+                            selected={itemCategory}
+                            onSelectedChange={setItemCategory}
+                        />
                     </div>
                     <div class="new-item-form-row">
                         <img src={subcategoryUrl} alt="" />
-                        <Dropdown options={itemSubcategoryOptions} onSelectedChange={setItemSubcategory} />
+                        <Dropdown
+                            options={itemSubcategoryOptions}
+                            selected={itemSubcategory}
+                            onSelectedChange={setItemSubcategory}
+                        />
                     </div>
                     <div class="new-item-form-row">
                         <img src={dateUrl} alt="" />
                         <InputField type="date" placeholder="" value={itemDate} onChange={setItemDate} />
                     </div>
                 </form>
-                <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>Add</button>
+                <div class="new-item-button-row">
+                    {transaction !== null && (
+                        <button class="new-item-delete-button" onClick={handleDelete}>
+                            Delete
+                        </button>
+                    )}
+                    <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>
+                        {transaction === null ? 'Add' : 'Save'}
+                    </button>
+                </div>
             </div>
         </div>
     );
-};
+}
