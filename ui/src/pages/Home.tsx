@@ -135,14 +135,14 @@ export function Home() {
     };
 
     const createDataForExpenseTypePieChart = (data: Transaction[]) => {
-        const expenseTypes = [...new Set(data.map((item) => item.subcategory.expenseType.name))].sort();
+        const expenseTypes = [...new Set(data.map((item) => item.subcategory.mainCategory.expenseType.name))].sort();
         let labels = [];
         let values = [];
         let colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF"];
 
         expenseTypes.forEach((type, index) => {
             labels.push(type);
-            values.push(data.filter((item) => item.subcategory.expenseType.name === type).reduce((sum, item) => sum + item.amount, 0));
+            values.push(data.filter((item) => item.subcategory.mainCategory.expenseType.name === type).reduce((sum, item) => sum + item.amount, 0));
         });
 
         return {
