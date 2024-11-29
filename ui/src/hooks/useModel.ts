@@ -98,6 +98,13 @@ export const useModel = () => {
 
             let subcategories = await subcategoriesResponse.json();
             subcategories = subcategories.map((subcategory) => {
+                const matchedExpenseType = expenseTypes.find((expenseType) => expenseType._id === subcategory.expenseType);
+                if (matchedExpenseType) {
+                    subcategory.expenseType = matchedExpenseType;
+                } else {
+                    console.warn(`No matching expense type found for subcategory: ${subcategory._id}`);
+                }
+
                 const matchedMainCategory = mainCategories.find((mainCategory) => mainCategory._id === subcategory.mainCategory);
                 if (matchedMainCategory) {
                     subcategory.mainCategory = matchedMainCategory;

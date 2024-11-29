@@ -68,7 +68,7 @@
 }
 
 .category-row-type-cell.input-field {
-        height: 35px;
+    height: 35px;
 }
 
 .category-row-action-cell {
@@ -77,6 +77,8 @@
     align-items: center;
     justify-content: center;
     padding: 14px 20px 14px 7px;
+    border: none;
+    background-color: transparent;
 }
 
 .category-row-action-con {
