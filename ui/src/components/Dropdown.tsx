@@ -1,7 +1,7 @@
 import { useEffect } from "preact/hooks";
 import "./InputField.scss";
 
-export function Dropdown({ options, selected, onSelectedChange }) {
+export function Dropdown({ options, selected, onSelectedChange, mini }) {
   useEffect(() => {
     if (options.length > 0 && !selected) {
       onSelectedChange(options[0]);
@@ -14,7 +14,7 @@ export function Dropdown({ options, selected, onSelectedChange }) {
 
   return (
     <select
-      class="input-field"
+      className={`input-field ${mini ? "mini" : ""}`}
       value={selected}
       onChange={handleChange}
     >

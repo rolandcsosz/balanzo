@@ -6,16 +6,33 @@
     padding: 0 10px;
     gap: 10px;
     overflow: hidden;
-    border: 1px solid #b1b1bb;
+    border: 1px solid transparent;
     border-radius: 8px;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: transparent;
     color: #292929;
     font-family: 'Roboto Mono', sans-serif;
     align-items: center;
+    border-color: #b1b1bb;
+    background-color: #fff;
+    outline: none;
+}
+
+.input-field.large-text {
+    font: 700 18px Inter, sans-serif;
+}
+
+.input-field.mini {
+    min-height: 35px;
+}
+
+.input-field.label-like {
+    border-color: transparent;
+    background-color: transparent;
 
     &:focus {
         outline: none;
-        border-color: initial;
+        border-color: #b1b1bb;
+        background-color: #fff;
     }
 }

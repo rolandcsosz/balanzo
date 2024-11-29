@@ -147,6 +147,7 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
                             options={transactionTypes.map((type) => type.name)}
                             selected={itemTransactionType}
                             onSelectedChange={setItemTransactionType}
+                            mini={false}
                         />
                     </div>
                     <div class="new-item-form-row">
@@ -155,6 +156,7 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
                             options={itemCategoryOptions}
                             selected={itemCategory}
                             onSelectedChange={setItemCategory}
+                            mini={false}
                         />
                     </div>
                     <div class="new-item-form-row">
@@ -163,6 +165,7 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
                             options={itemSubcategoryOptions}
                             selected={itemSubcategory}
                             onSelectedChange={setItemSubcategory}
+                            mini={false}
                         />
                     </div>
                     <div class="new-item-form-row">
