@@ -13,6 +13,10 @@ const getTransactionsMw = require('../middleware/transaction/getTransactionsMw')
 const saveTransactionMw = require('../middleware/transaction/saveTransactionMw');
 const deleteTransactionMw = require('../middleware/transaction/deleteTransactionMw');
 const getTransactionMw = require('../middleware/transaction/getTransactionMw');
+const getTemplatesMw = require('../middleware/template/getTemplatesMw');
+const saveTemplateMw = require('../middleware/template/saveTemplateMw');
+const deleteTemplateMw = require('../middleware/template/deleteTemplateMw');
+const getTemplateMw = require('../middleware/template/getTemplateMw');
 const getTransactionTypesMw = require('../middleware/transaction_type/getTransactionTypesMw');
 const getUserMw = require('../middleware/user/getUserMw');
 
@@ -86,6 +90,26 @@ module.exports = function (app, repository) {
     app.delete('/transactions/:id',
         authMw(),
         deleteTransactionMw(repository),
+    );
+
+    app.get('/templates',
+        authMw(),
+        getTemplatesMw(repository),
+    );
+
+    app.get('/templates/:id',
+        authMw(),
+        getTemplateMw(repository),
+    );
+
+    app.post('/templates',
+        authMw(),
+        saveTemplateMw(repository),
+    );
+
+    app.delete('/templates/:id',
+        authMw(),
+        deleteTemplateMw(repository),
     );
 
     app.get('/transaction_types',
