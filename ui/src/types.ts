@@ -28,6 +28,14 @@ export type Transaction = {
     subcategory: Subcategory;
 };
 
+export type Template = {
+    _id: string;
+    name: string;
+    itemname: string | null;
+    amount: number | null;
+    subcategory: Subcategory;
+}
+
 export type Subcategory = {
     _id: string;
     name: string;

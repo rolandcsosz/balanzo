@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
-import { ExpenseType, MainCategory, Subcategory, Transaction } from '../types';
+import { ExpenseType, MainCategory, Subcategory, Transaction, Template } from '../types';
 import { useApiClient } from '../hooks/useApiClient';
 
 export const useModel = () => {
@@ -9,6 +9,7 @@ export const useModel = () => {
     const [mainCategories, setMainCategories] = useState<MainCategory[]>([]);
     const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [templates, setTemplates] = useState<Template[]>([]);
     const [mainCategoryCounts, setMainCategoryCounts] = useState<{ [key: string]: number }>({});
     const [subcategoriesCounts, setSubcategoriesCounts] = useState<{ [key: string]: number }>({});
 
@@ -154,6 +155,37 @@ export const useModel = () => {
         }
     };
 
+    const fetchTemplates = async () => {
+        if (!subcategories.length) {
+            return;
+        }
+
+        try {
+            const templatesResponse = await fetchWithAuth('http://localhost:3000/templates', 'GET', '');
+            if (!templatesResponse.ok) {
+                console.error(`Error fetching templates: ${templatesResponse.statusText}`);
+                setTemplates([]);
+                return;
+            }
+
+            let templates = await templatesResponse.json();
+            templates = templates.map((template) => {
+                const matchedSubcategory = subcategories.find((subcategory) => subcategory._id === template.subcategory);
+                if (matchedSubcategory) {
+                    template.subcategory = matchedSubcategory;
+                } else {
+                    console.warn(`No matching subcategory found for template: ${template._id}`);
+                }
+                return template;
+            });
+
+            setTemplates(templates);
+        } catch (error) {
+            setTemplates([]);
+            console.error(`Error fetching templates: ${error}`);
+        }
+    }
+
     const updateCounts = () => {
         if (!transactions.length || !mainCategories.length || !subcategories.length) {
             return;
@@ -211,6 +243,7 @@ export const useModel = () => {
     useEffect(() => {
         if (subcategories.length) {
             fetchTransactions();
+            fetchTemplates();
         }
     }, [subcategories]);
 
@@ -219,5 +252,5 @@ export const useModel = () => {
         sortCategories();
     }, [transactions, mainCategories, subcategories]);
 
-    return { transactions, mainCategories, subcategories, expenseTypes, transactionTypes };
+    return { transactions, mainCategories, subcategories, expenseTypes, transactionTypes, templates };
 };
