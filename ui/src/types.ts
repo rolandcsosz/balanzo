@@ -31,7 +31,7 @@ export type Transaction = {
 export type Template = {
     _id: string;
     name: string;
-    itemname: string | null;
+    itemName: string | null;
     amount: number | null;
     subcategory: Subcategory;
 }

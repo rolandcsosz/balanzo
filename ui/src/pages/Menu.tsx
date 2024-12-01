@@ -10,6 +10,7 @@ import { Home } from './Home';
 import { Transactions } from './Transactions';
 import { NewItem } from './NewItem';
 import { Categories } from './Categories';
+import { Templates } from './Templates';
 
 export function Menu() {
     const [menu, setMenu] = useState("Home");
@@ -25,6 +26,7 @@ export function Menu() {
                 {menu === "Home" && <Home />}
                 {menu === "Transactions" && <Transactions />}
                 {menu === "Categories" && <Categories />}
+                {menu === "Templates" && <Templates />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
                         <NewItem transaction={null} onFinished={closeSheet} />

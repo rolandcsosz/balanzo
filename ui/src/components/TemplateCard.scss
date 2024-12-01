@@ -1,0 +1,122 @@
+.template-container {
+    border-radius: 8px;
+    background: rgba(249, 249, 249, 1);
+    box-shadow: 0 0 20px -6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.template-card {
+    display: inline-flex;
+    flex-direction: column;
+    font-family: Inter, sans-serif;
+    justify-content: start;
+    padding: 20px 40px 20px 20px;
+    border: 1px solid rgba(239, 240, 246, 1);
+    box-sizing: border-box;
+    border-radius: 11px;
+    background: #fff;
+    border: 1px solid #eff0f6;
+    position: relative;
+    width: fit-content;
+
+    @media screen and (max-width: 600px) {
+        width: 100%;
+    }
+}
+
+.template-card.new {
+    border: 2px dashed rgba(42, 42, 51, 1);
+    padding: 20px 20px 20px 20px;
+}
+
+.template-heading {
+    color: var(--Base-Shade-100, #000);
+    font: 700 24px Inter, sans-serif;
+    margin: 0;
+}
+
+.template-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 20px;
+}
+
+.template-template-card {
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid rgba(239, 240, 246, 1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 177px;
+}
+
+.template-new-template-card {
+    border: 2px dashed rgba(42, 42, 51, 1);
+    width: 153px;
+}
+
+.template-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.template-card-title {
+    color: var(--Base-Shade-70, rgba(0, 0, 0, 0.7));
+    font: 700 16px Inter, sans-serif;
+    letter-spacing: -0.15px;
+    font-feature-settings: "liga" off, "clig" off;
+}
+
+.template-new-card-title {
+    color: rgba(92, 92, 92, 1);
+}
+
+.template-spacer {
+    flex: 1;
+}
+
+.template-icon-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    .template-card {
+        position: relative;
+    }
+}
+
+.template-icon {
+    width: 24px;
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
+.template-action-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(235, 241, 255, 1);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-top: 20px;
+    color: var(--highlight, #3772ff);
+    font: 400 14px Inter, sans-serif;
+    letter-spacing: -0.15px;
+    height: 33px;
+    width: fit-content;
+}
+
+.template-action-text {
+    font-feature-settings: "liga" off, "clig" off;
+}
+
+.template-action-icon {
+    width: 23px;
+    aspect-ratio: 1;
+    object-fit: contain;
+}

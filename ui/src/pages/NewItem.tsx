@@ -11,25 +11,27 @@ import dateUrl from '../assets/date.svg';
 import { formatDate } from '../utils/utlis';
 import { useModel } from '../hooks/useModel';
 import { useApiClient } from '../hooks/useApiClient';
-import { Transaction } from '../types';
+import { Template, Transaction } from '../types';
 
 interface NewItemProps {
-    transaction: Transaction | null;
+    transaction?: Transaction | null;
+    template?: Template | null;
     onFinished: () => void;
 }
 
-export function NewItem({ transaction, onFinished }: NewItemProps) {
+export function NewItem({ transaction = null, template = null, onFinished}: NewItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
-    const [itemName, setItemName] = useState(transaction?.item || '');
-    const [itemAmount, setItemAmount] = useState(transaction?.amount || '');
-    const [itemTransactionType, setItemTransactionType] = useState(
+    const [itemName, setItemName] = useState(template?.itemName || transaction?.item || '');
+    const [itemAmount, setItemAmount] = useState(template.amount || transaction?.amount || '');
+    const [itemTransactionType, setItemTransactionType] = useState( template?.subcategory?.mainCategory?.transactionType.name ||
         transaction?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || ''
     );
     const [itemCategory, setItemCategory] = useState(
+        template?.subcategory?.mainCategory?.name ||
         transaction?.subcategory?.mainCategory?.name || ''
     );
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
-    const [itemSubcategory, setItemSubcategory] = useState(transaction?.subcategory?.name || '');
+    const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || transaction?.subcategory?.name || '');
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
     const [itemDate, setItemDate] = useState(() => {
         const date = transaction?.date ? formatDate(transaction.date) : formatDate(new Date().toDateString());
@@ -126,7 +128,7 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{transaction === null ? 'New item' : 'Edit item'}</h1>
+                <h1 class="new-item-title">{!transaction || template ? 'New item' : 'Edit item'}</h1>
                 <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={itemUrl} alt="" />
@@ -174,13 +176,13 @@ export function NewItem({ transaction, onFinished }: NewItemProps) {
                     </div>
                 </form>
                 <div class="new-item-button-row">
-                    {transaction !== null && (
+                    {!transaction && !template && (
                         <button class="new-item-delete-button" onClick={handleDelete}>
                             Delete
                         </button>
                     )}
                     <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>
-                        {transaction === null ? 'Add' : 'Save'}
+                        {!transaction || template ? 'Add' : 'Save'}
                     </button>
                 </div>
             </div>
