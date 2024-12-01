@@ -4,6 +4,7 @@ import { useModel } from '../hooks/useModel';
 import { TemplateCard } from '../components/TemplateCard';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { NewItem } from './NewItem';
+import { NewTemplate } from './NewTemplate';
 
 export function Templates() {
   const { templates } = useModel();
@@ -22,13 +23,21 @@ export function Templates() {
               <NewItem template={template} onFinished={closeSheet} />
             );
           }}
-          onEditTemplate={() => { }}
+          onEditTemplate={() => {
+            openSheet(
+              <NewTemplate template={template} onFinished={closeSheet} />
+            );
+          }}
         />
       ))}
       <TemplateCard
         key={"add"}
         template={null}
-        onUseTemplate={() => { }}
+        onUseTemplate={() => {
+          openSheet(
+            <NewTemplate template={null} onFinished={closeSheet} />
+          );
+        }}
       />
     </div>
   );
