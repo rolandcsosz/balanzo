@@ -3,10 +3,10 @@ module.exports = function (repository) {
         let id = req.params.id;
 
         try {
-            const transaction = await repository.transaction.findById(id);
+            const template = await repository.template.findById(id);
 
-            if (transaction) {
-                return res.json(transaction);
+            if (template) {
+                return res.json(template);
             }
 
             return res.status(404).json({ message: "Entry not found" });

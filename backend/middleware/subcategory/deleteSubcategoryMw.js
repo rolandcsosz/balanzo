@@ -9,6 +9,7 @@ module.exports = function (repository) {
             }
 
             await repository.transaction.deleteMany({ subcategory: id });
+            await repository.template.deleteMany({ subcategory: id });
 
             return res.json({ message: "Subcategory and connecting transactions deleted successfully" });
 

@@ -11,6 +11,7 @@ module.exports = function (repository) {
             const subcategories = await repository.subcategory.find({ mainCategory: id });
             for (const subcategory of subcategories) {
                 await repository.transaction.deleteMany({ subcategory: subcategory._id });
+                await repository.template.deleteMany({ subcategory: subcategory._id });
             }
 
             await repository.subcategory.deleteMany({ mainCategory: id });

@@ -122,10 +122,10 @@ db.transactions.insertMany(transactions);
 
 
 let temapltes = [
-    { _id: ObjectId(), name: "LIDL", itemName: "Groceries", amount: null, date: null, subcategory: subcategories.find(item => item.name === "LIDL")._id },
-    { _id: ObjectId(), name: "ALDI", itemName: "Groceries", amount: null, date: null, subcategory: subcategories.find(item => item.name === "ALDI")._id },
-    { _id: ObjectId(), name: "Coffee shop", itemName: "Free time", amount: null, date: null, subcategory: subcategories.find(item => item.name === "Coffee shop")._id },
-    { _id: ObjectId(), name: "YouTube Premium", itemName: "Services", amount: 3290, date: null, subcategory: subcategories.find(item => item.name === "YouTube")._id },
+    { _id: ObjectId(), name: "LIDL", itemName: "Groceries", amount: null, subcategory: subcategories.find(item => item.name === "LIDL")._id },
+    { _id: ObjectId(), name: "ALDI", itemName: "Groceries", amount: null, subcategory: subcategories.find(item => item.name === "ALDI")._id },
+    { _id: ObjectId(), name: "Coffee shop", itemName: "Free time", amount: null, subcategory: subcategories.find(item => item.name === "Coffee shop")._id },
+    { _id: ObjectId(), name: "YouTube Premium", itemName: "Services", amount: 3290, subcategory: subcategories.find(item => item.name === "YouTube")._id },
 ];
 
 db.templates.insertMany(temapltes);
