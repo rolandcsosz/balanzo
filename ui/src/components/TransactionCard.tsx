@@ -6,7 +6,7 @@ import { formatCurrency } from '../utils/utlis';
 import './TransactionCard.scss';
 
 
-export const TransactionCard = ({ transaction }) => {
+export const TransactionCard = ({ transaction, onChange }) => {
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
     return (
@@ -15,7 +15,7 @@ export const TransactionCard = ({ transaction }) => {
                 <h3 class="transaction-card-item-name">{transaction.item}</h3>
                 <span>-</span>
                 <span class="transaction-card-amount">{formatCurrency(transaction.amount)}</span>
-                <button class="transaction-card-icon-wrapper" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={closeSheet} />) }}>
+                <button class="transaction-card-icon-wrapper" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
                     <img
                         loading="lazy"
                         src={openButtonUrl}

@@ -5,15 +5,10 @@ import './Transactions.scss';
 import { formatDate } from '../utils/utlis';
 import { DateDivider } from '../components/DateDivider';
 import { useModel } from '../hooks/useModel';
-import { useEffect } from 'preact/hooks';
 
 export function Transactions() {
-    const { transactions } = useModel();
+    const { transactions, refetchData } = useModel();
     const isMobile = useDevice();
-
-    useEffect(() => {
-        console.log(transactions.length);
-    }, [transactions]);
 
     return (
         isMobile ? (
@@ -23,7 +18,7 @@ export function Transactions() {
                     const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null;
                     return (
                         <>
-                            <TransactionCard key={transaction._id} transaction={transaction} />
+                            <TransactionCard key={transaction._id} transaction={transaction} onChange={refetchData} />
                             {currentDate !== nextDate && (
                                 <DateDivider date={nextDate} />
                             )}
@@ -43,7 +38,7 @@ export function Transactions() {
                     <div class="transaction-row-action-cell"></div>
                 </header>
                 {transactions.map(transaction => (
-                    <TransactionRow key={transaction._id} transaction={transaction} />
+                    <TransactionRow key={transaction._id} transaction={transaction} onChange={refetchData} />
                 ))}
             </div>)
     );

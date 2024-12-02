@@ -19,11 +19,11 @@ interface NewItemProps {
     onFinished: () => void;
 }
 
-export function NewItem({ transaction = null, template = null, onFinished}: NewItemProps) {
+export function NewItem({ transaction = null, template = null, onFinished }: NewItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
     const [itemName, setItemName] = useState(template?.itemName || transaction?.item || '');
-    const [itemAmount, setItemAmount] = useState(template.amount || transaction?.amount || '');
-    const [itemTransactionType, setItemTransactionType] = useState( template?.subcategory?.mainCategory?.transactionType.name ||
+    const [itemAmount, setItemAmount] = useState(template?.amount || transaction?.amount || '');
+    const [itemTransactionType, setItemTransactionType] = useState(template?.subcategory?.mainCategory?.transactionType.name ||
         transaction?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || ''
     );
     const [itemCategory, setItemCategory] = useState(
@@ -128,7 +128,7 @@ export function NewItem({ transaction = null, template = null, onFinished}: NewI
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{!transaction || template ? 'New item' : 'Edit item'}</h1>
+                <h1 class="new-item-title">{(transaction || template) ? 'Edit item' : 'New item'}</h1>
                 <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={itemUrl} alt="" />
@@ -176,13 +176,13 @@ export function NewItem({ transaction = null, template = null, onFinished}: NewI
                     </div>
                 </form>
                 <div class="new-item-button-row">
-                    {!transaction && !template && (
+                    {(transaction || template) && (
                         <button class="new-item-delete-button" onClick={handleDelete}>
                             Delete
                         </button>
                     )}
                     <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>
-                        {!transaction || template ? 'Add' : 'Save'}
+                        {transaction || template ? 'Save' : 'Add'}
                     </button>
                 </div>
             </div>

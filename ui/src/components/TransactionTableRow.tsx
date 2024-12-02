@@ -4,9 +4,16 @@ import openButtonUrl from '../assets/open-button.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { formatDate, formatCurrency, } from '../utils/utlis';
 import { NewItem } from '../pages/NewItem';
+import { Transaction } from '../types';
+
+interface TransactionRowProps {
+    transaction: Transaction;
+    onChange: () => void;
+}
 
 
-export const TransactionRow = ({ transaction }) => {
+
+export const TransactionRow = ({ transaction, onChange }) => {
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
     return (
@@ -21,7 +28,7 @@ export const TransactionRow = ({ transaction }) => {
             </div>
             <div class="transaction-row-cell transaction-row-date-cell">{formatDate(transaction.date)}</div>
             <div class="transaction-row-action-cell">
-                <button class="transaction-row-action-button" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={closeSheet} />) }}>
+                <button class="transaction-row-action-button" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
                     <img
                         src={openButtonUrl}
                         alt="Action"

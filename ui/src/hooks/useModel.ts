@@ -13,6 +13,36 @@ export const useModel = () => {
     const [mainCategoryCounts, setMainCategoryCounts] = useState<{ [key: string]: number }>({});
     const [subcategoriesCounts, setSubcategoriesCounts] = useState<{ [key: string]: number }>({});
 
+
+    useEffect(() => {
+        fetchExpenseTypes();
+        fetchTransactionTypes();
+    }, []);
+
+    useEffect(() => {
+        if (expenseTypes.length && transactionTypes.length) {
+            fetchMainCategories();
+        }
+    }, [expenseTypes, transactionTypes]);
+
+    useEffect(() => {
+        if (mainCategories.length) {
+            fetchSubcategories();
+        }
+    }, [mainCategories]);
+
+    useEffect(() => {
+        if (subcategories.length) {
+            fetchTransactions();
+            fetchTemplates();
+        }
+    }, [subcategories]);
+
+    useEffect(() => {
+        updateCounts();
+        sortCategories();
+    }, [transactions, mainCategories, subcategories]);
+
     const fetchExpenseTypes = async () => {
         try {
             const expenseTypesResponse = await fetchWithAuth('http://localhost:3000/expense_types', 'GET', '');
@@ -223,34 +253,16 @@ export const useModel = () => {
         }));
     }
 
-    useEffect(() => {
-        fetchExpenseTypes();
-        fetchTransactionTypes();
-    }, []);
-
-    useEffect(() => {
-        if (expenseTypes.length && transactionTypes.length) {
-            fetchMainCategories();
-        }
-    }, [expenseTypes, transactionTypes]);
-
-    useEffect(() => {
-        if (mainCategories.length) {
-            fetchSubcategories();
-        }
-    }, [mainCategories]);
-
-    useEffect(() => {
-        if (subcategories.length) {
-            fetchTransactions();
-            fetchTemplates();
-        }
-    }, [subcategories]);
-
-    useEffect(() => {
+    const refetchData = async () => {
+        await fetchExpenseTypes();
+        await fetchTransactionTypes();
+        await fetchMainCategories();
+        await fetchSubcategories();
+        await fetchTransactions();
+        await fetchTemplates();
         updateCounts();
         sortCategories();
-    }, [transactions, mainCategories, subcategories]);
+    };
 
-    return { transactions, mainCategories, subcategories, expenseTypes, transactionTypes, templates };
+    return { transactions, mainCategories, subcategories, expenseTypes, transactionTypes, templates, refetchData };
 };

@@ -11,12 +11,14 @@ import { Transactions } from './Transactions';
 import { NewItem } from './NewItem';
 import { Categories } from './Categories';
 import { Templates } from './Templates';
+import { useModel } from '../hooks/useModel';
 
 export function Menu() {
     const [menu, setMenu] = useState("Home");
     const isMobile = useDevice();
     const SidebarComponent = isMobile ? Navbar : Sidebar;
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
+    const { refetchData } = useModel();
 
     return (
         <main class="layout">
@@ -29,7 +31,7 @@ export function Menu() {
                 {menu === "Templates" && <Templates />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
-                        <NewItem transaction={null} onFinished={closeSheet} />
+                        <NewItem transaction={null} onFinished={() => { refetchData(); closeSheet(); }} />
                     );
                 }}>
                     <img src={largeAddUrl} alt="" />

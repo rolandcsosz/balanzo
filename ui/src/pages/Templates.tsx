@@ -7,7 +7,7 @@ import { NewItem } from './NewItem';
 import { NewTemplate } from './NewTemplate';
 
 export function Templates() {
-  const { templates } = useModel();
+  const { templates, refetchData } = useModel();
   const isMobile = useDevice();
   const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
@@ -25,7 +25,7 @@ export function Templates() {
           }}
           onEditTemplate={() => {
             openSheet(
-              <NewTemplate template={template} onFinished={closeSheet} />
+              <NewTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} />
             );
           }}
         />
@@ -35,7 +35,7 @@ export function Templates() {
         template={null}
         onUseTemplate={() => {
           openSheet(
-            <NewTemplate template={null} onFinished={closeSheet} />
+            <NewTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} />
           );
         }}
       />
