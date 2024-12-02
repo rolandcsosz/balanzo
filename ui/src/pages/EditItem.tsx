@@ -22,7 +22,7 @@ interface EditItemProps {
 export function EditItem({ transaction = null, template = null, onFinished }: EditItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
     const [itemName, setItemName] = useState("");
-    const [itemAmount, setItemAmount] = useState("");
+    const [itemAmount, setItemAmount] = useState<number | string>("");
     const [itemTransactionType, setItemTransactionType] = useState("");
     const [itemCategory, setItemCategory] = useState("");
     const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
@@ -48,20 +48,24 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
 
     useEffect(() => {
         if (transaction || template) {
+            const name = template?.itemName || transaction?.item || "";
+            const amount = template?.amount || transaction?.amount || "";
             const transactionType = template?.subcategory?.mainCategory?.transactionType.name ||
-                                    transaction?.subcategory?.mainCategory?.transactionType.name || "";
+                transaction?.subcategory?.mainCategory?.transactionType.name || "";
             const category = template?.subcategory?.mainCategory?.name ||
-                            transaction?.subcategory?.mainCategory?.name || "";
+                transaction?.subcategory?.mainCategory?.name || "";
             const subcategory = template?.subcategory?.name || transaction?.subcategory?.name || "";
+            const date = transaction?.date || new Date().toDateString();
 
-            console.log("transactionType", transactionType, "category", category, "subcategory", subcategory);
-    
+            setItemName(name);
+            setItemAmount(amount);
             setItemTransactionType(transactionType);
             setItemCategory(category);
             setItemSubcategory(subcategory);
+            setItemDate(formatDate(date));
         }
     }, [transaction, template]);
-    
+
 
     useEffect(() => {
         if (itemTransactionType) {
