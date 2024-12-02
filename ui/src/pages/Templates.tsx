@@ -3,8 +3,8 @@ import '../components/TransactionCard.scss';
 import { useModel } from '../hooks/useModel';
 import { TemplateCard } from '../components/TemplateCard';
 import { useBottomSheet } from '../hooks/useBottomSheet';
-import { NewItem } from './NewItem';
-import { NewTemplate } from './NewTemplate';
+import { EditItem } from './EditItem';
+import { EditTemplate } from './EditTemplate';
 
 export function Templates() {
   const { templates, refetchData } = useModel();
@@ -19,13 +19,14 @@ export function Templates() {
           key={index}
           template={template}
           onUseTemplate={() => {
+            console.log("template", JSON.stringify(template));
             openSheet(
-              <NewItem template={template} onFinished={closeSheet} />
+              <EditItem template={template} onFinished={closeSheet} />
             );
           }}
           onEditTemplate={() => {
             openSheet(
-              <NewTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} />
+              <EditTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} />
             );
           }}
         />
@@ -35,7 +36,7 @@ export function Templates() {
         template={null}
         onUseTemplate={() => {
           openSheet(
-            <NewTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} />
+            <EditTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} />
           );
         }}
       />

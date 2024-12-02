@@ -1,4 +1,4 @@
-import './NewItem.scss';
+import './EditItem.scss';
 import InputField from '../components/InputField';
 import { Dropdown } from '../components/Dropdown';
 import { useEffect, useState } from 'preact/hooks';
@@ -8,18 +8,16 @@ import amountUrl from '../assets/amount.svg';
 import expenseTypeUrl from '../assets/export-type.svg';
 import categoryUrl from '../assets/category.svg';
 import subcategoryUrl from '../assets/subcategory.svg';
-import dateUrl from '../assets/date.svg';
-import { formatDate } from '../utils/utlis';
 import { useModel } from '../hooks/useModel';
 import { useApiClient } from '../hooks/useApiClient';
 import { Template, Transaction } from '../types';
 
-interface NewItemProps {
+interface EditItemProps {
     template?: Template | null;
     onFinished: () => void;
 }
 
-export function NewTemplate({ template = null, onFinished }: NewItemProps) {
+export function EditTemplate({ template = null, onFinished }: EditItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
     const [templateName, setTemplateName] = useState(template?.name || '');
     const [itemName, setItemName] = useState(template?.itemName || '');
@@ -40,12 +38,6 @@ export function NewTemplate({ template = null, onFinished }: NewItemProps) {
             .filter((category) => category.transactionType.name === transactionType)
             .map((category) => category.name);
         setItemCategoryOptions(filteredCategories);
-
-        if (filteredCategories.length > 0) {
-            setItemCategory(filteredCategories[0]);
-        } else {
-            setItemCategory('');
-        }
     };
 
     const setSubcategoryOptions = (category: string) => {
@@ -54,12 +46,6 @@ export function NewTemplate({ template = null, onFinished }: NewItemProps) {
             .map((subcategory) => subcategory.name);
 
         setItemSubcategoryOptions(filteredSubcategories);
-
-        if (filteredSubcategories.length > 0) {
-            setItemSubcategory(filteredSubcategories[0]);
-        } else {
-            setItemSubcategory('');
-        }
     };
 
     useEffect(() => {
@@ -71,14 +57,10 @@ export function NewTemplate({ template = null, onFinished }: NewItemProps) {
     }, [itemCategory, subcategories]);
 
     useEffect(() => {
-        if (!template && transactionTypes.length > 0) {
-            const defaultTransactionType = transactionTypes[0]?.name || '';
-            setItemTransactionType(defaultTransactionType);
-            setCategoryOptions(defaultTransactionType);
-        }
+
     }, [template, transactionTypes]);
 
-    const handleNewItem = async () => {
+    const handleEditItem = async () => {
         const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
         if (!transactionType) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
@@ -176,7 +158,7 @@ export function NewTemplate({ template = null, onFinished }: NewItemProps) {
                             Delete
                         </button>
                     )}
-                    <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>
+                    <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
                         {template ? 'Save' : 'Add'}
                     </button>
                 </div>

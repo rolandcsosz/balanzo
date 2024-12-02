@@ -1,7 +1,7 @@
 
 import openButtonUrl from '../assets/open-button.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
-import { NewItem } from '../pages/NewItem';
+import { EditItem } from '../pages/EditItem';
 import { formatCurrency } from '../utils/utlis';
 import './TransactionCard.scss';
 
@@ -15,7 +15,7 @@ export const TransactionCard = ({ transaction, onChange }) => {
                 <h3 class="transaction-card-item-name">{transaction.item}</h3>
                 <span>-</span>
                 <span class="transaction-card-amount">{formatCurrency(transaction.amount)}</span>
-                <button class="transaction-card-icon-wrapper" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
+                <button class="transaction-card-icon-wrapper" onClick={() => { openSheet(<EditItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
                     <img
                         loading="lazy"
                         src={openButtonUrl}

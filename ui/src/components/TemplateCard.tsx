@@ -2,7 +2,7 @@
 import openButtonUrl from '../assets/open-button.svg';
 import arrowUrl from '../assets/arrow.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
-import { NewItem } from '../pages/NewItem';
+import { EditItem } from '../pages/EditItem';
 import { formatCurrency } from '../utils/utlis';
 import './TemplateCard.scss';
 import { Template } from '../types';

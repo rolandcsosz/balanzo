@@ -8,7 +8,7 @@ import { BottomSheet } from '../components/BottomSheet';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { Home } from './Home';
 import { Transactions } from './Transactions';
-import { NewItem } from './NewItem';
+import { EditItem } from './EditItem';
 import { Categories } from './Categories';
 import { Templates } from './Templates';
 import { useModel } from '../hooks/useModel';
@@ -31,7 +31,7 @@ export function Menu() {
                 {menu === "Templates" && <Templates />}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
-                        <NewItem transaction={null} onFinished={() => { refetchData(); closeSheet(); }} />
+                        <EditItem transaction={null} onFinished={() => { refetchData(); closeSheet(); }} />
                     );
                 }}>
                     <img src={largeAddUrl} alt="" />

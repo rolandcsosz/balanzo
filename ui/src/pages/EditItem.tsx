@@ -1,4 +1,4 @@
-import './NewItem.scss';
+import './EditItem.scss';
 import InputField from '../components/InputField';
 import { Dropdown } from '../components/Dropdown';
 import { useEffect, useState } from 'preact/hooks';
@@ -13,30 +13,22 @@ import { useModel } from '../hooks/useModel';
 import { useApiClient } from '../hooks/useApiClient';
 import { Template, Transaction } from '../types';
 
-interface NewItemProps {
+interface EditItemProps {
     transaction?: Transaction | null;
     template?: Template | null;
     onFinished: () => void;
 }
 
-export function NewItem({ transaction = null, template = null, onFinished }: NewItemProps) {
+export function EditItem({ transaction = null, template = null, onFinished }: EditItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
-    const [itemName, setItemName] = useState(template?.itemName || transaction?.item || '');
-    const [itemAmount, setItemAmount] = useState(template?.amount || transaction?.amount || '');
-    const [itemTransactionType, setItemTransactionType] = useState(template?.subcategory?.mainCategory?.transactionType.name ||
-        transaction?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || ''
-    );
-    const [itemCategory, setItemCategory] = useState(
-        template?.subcategory?.mainCategory?.name ||
-        transaction?.subcategory?.mainCategory?.name || ''
-    );
-    const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
-    const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || transaction?.subcategory?.name || '');
-    const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
-    const [itemDate, setItemDate] = useState(() => {
-        const date = transaction?.date ? formatDate(transaction.date) : formatDate(new Date().toDateString());
-        return date;
-    });
+    const [itemName, setItemName] = useState("");
+    const [itemAmount, setItemAmount] = useState("");
+    const [itemTransactionType, setItemTransactionType] = useState("");
+    const [itemCategory, setItemCategory] = useState("");
+    const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
+    const [itemSubcategory, setItemSubcategory] = useState("");
+    const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
+    const [itemDate, setItemDate] = useState(formatDate(new Date().toDateString()));
 
     const { fetchWithAuth } = useApiClient();
 
@@ -45,45 +37,46 @@ export function NewItem({ transaction = null, template = null, onFinished }: New
             .filter((category) => category.transactionType.name === transactionType)
             .map((category) => category.name);
         setItemCategoryOptions(filteredCategories);
-
-        if (filteredCategories.length > 0) {
-            setItemCategory(filteredCategories[0]);
-        } else {
-            setItemCategory('');
-        }
     };
 
     const setSubcategoryOptions = (category: string) => {
         const filteredSubcategories = subcategories
             .filter((subcategory) => subcategory.mainCategory.name === category)
             .map((subcategory) => subcategory.name);
-
         setItemSubcategoryOptions(filteredSubcategories);
-
-        if (filteredSubcategories.length > 0) {
-            setItemSubcategory(filteredSubcategories[0]);
-        } else {
-            setItemSubcategory('');
-        }
     };
 
     useEffect(() => {
-        setCategoryOptions(itemTransactionType);
+        if (transaction || template) {
+            const transactionType = template?.subcategory?.mainCategory?.transactionType.name ||
+                                    transaction?.subcategory?.mainCategory?.transactionType.name || "";
+            const category = template?.subcategory?.mainCategory?.name ||
+                            transaction?.subcategory?.mainCategory?.name || "";
+            const subcategory = template?.subcategory?.name || transaction?.subcategory?.name || "";
+
+            console.log("transactionType", transactionType, "category", category, "subcategory", subcategory);
+    
+            setItemTransactionType(transactionType);
+            setItemCategory(category);
+            setItemSubcategory(subcategory);
+        }
+    }, [transaction, template]);
+    
+
+    useEffect(() => {
+        if (itemTransactionType) {
+            setCategoryOptions(itemTransactionType);
+        }
     }, [itemTransactionType, mainCategories]);
 
     useEffect(() => {
-        setSubcategoryOptions(itemCategory);
+        if (itemCategory) {
+            setSubcategoryOptions(itemCategory);
+        }
     }, [itemCategory, subcategories]);
 
-    useEffect(() => {
-        if (!transaction && transactionTypes.length > 0) {
-            const defaultTransactionType = transactionTypes[0]?.name || '';
-            setItemTransactionType(defaultTransactionType);
-            setCategoryOptions(defaultTransactionType);
-        }
-    }, [transaction, transactionTypes]);
 
-    const handleNewItem = async () => {
+    const handleEditItem = async () => {
         const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
         if (!transactionType) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
@@ -128,7 +121,7 @@ export function NewItem({ transaction = null, template = null, onFinished }: New
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{(transaction || template) ? 'Edit item' : 'New item'}</h1>
+                <h1 class="new-item-title">{transaction || template ? 'Edit item' : 'New item'}</h1>
                 <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={itemUrl} alt="" />
@@ -176,12 +169,12 @@ export function NewItem({ transaction = null, template = null, onFinished }: New
                     </div>
                 </form>
                 <div class="new-item-button-row">
-                    {(transaction || template) && (
+                    {transaction && (
                         <button class="new-item-delete-button" onClick={handleDelete}>
                             Delete
                         </button>
                     )}
-                    <button type="submit" class="new-item-submit-button" onClick={handleNewItem}>
+                    <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
                         {transaction || template ? 'Save' : 'Add'}
                     </button>
                 </div>

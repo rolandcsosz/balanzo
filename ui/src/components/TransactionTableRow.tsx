@@ -3,7 +3,7 @@ import './TransactionTableRow.scss';
 import openButtonUrl from '../assets/open-button.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { formatDate, formatCurrency, } from '../utils/utlis';
-import { NewItem } from '../pages/NewItem';
+import { EditItem } from '../pages/EditItem';
 import { Transaction } from '../types';
 
 interface TransactionRowProps {
@@ -28,7 +28,7 @@ export const TransactionRow = ({ transaction, onChange }) => {
             </div>
             <div class="transaction-row-cell transaction-row-date-cell">{formatDate(transaction.date)}</div>
             <div class="transaction-row-action-cell">
-                <button class="transaction-row-action-button" onClick={() => { openSheet(<NewItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
+                <button class="transaction-row-action-button" onClick={() => { openSheet(<EditItem transaction={transaction} onFinished={() => { onChange(); closeSheet(); }} />) }}>
                     <img
                         src={openButtonUrl}
                         alt="Action"
