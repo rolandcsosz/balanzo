@@ -32,6 +32,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
 
     const { fetchWithAuth } = useApiClient();
 
+    // Set category options based on the selected transaction type
     const setCategoryOptions = (transactionType: string) => {
         const filteredCategories = mainCategories
             .filter((category) => category.transactionType.name === transactionType)
@@ -39,6 +40,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
         setItemCategoryOptions(filteredCategories);
     };
 
+    // Set subcategory options based on the selected category
     const setSubcategoryOptions = (category: string) => {
         const filteredSubcategories = subcategories
             .filter((subcategory) => subcategory.mainCategory.name === category)
@@ -46,6 +48,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
         setItemSubcategoryOptions(filteredSubcategories);
     };
 
+    // Initialize form fields if transaction or template is provided
     useEffect(() => {
         if (transaction || template) {
             const name = template?.itemName || transaction?.item || "";
@@ -66,20 +69,21 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
         }
     }, [transaction, template]);
 
-
+    // Update category options when transaction type changes
     useEffect(() => {
         if (itemTransactionType) {
             setCategoryOptions(itemTransactionType);
         }
     }, [itemTransactionType, mainCategories]);
 
+    // Update subcategory options when category changes
     useEffect(() => {
         if (itemCategory) {
             setSubcategoryOptions(itemCategory);
         }
     }, [itemCategory, subcategories]);
 
-
+    // Handle form submission for editing or adding an item
     const handleEditItem = async () => {
         const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
         if (!transactionType) {
@@ -112,6 +116,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
         onFinished();
     };
 
+    // Handle deletion of an item
     const handleDelete = async () => {
         if (!transaction) {
             console.error('No transaction found to delete');

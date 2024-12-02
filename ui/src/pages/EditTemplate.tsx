@@ -22,17 +22,15 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
     const [templateName, setTemplateName] = useState(template?.name || '');
     const [itemName, setItemName] = useState(template?.itemName || '');
     const [itemAmount, setItemAmount] = useState(template?.amount || '');
-    const [itemTransactionType, setItemTransactionType] = useState(template?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || ''
-    );
-    const [itemCategory, setItemCategory] = useState(
-        template?.subcategory?.mainCategory?.name || ''
-    );
+    const [itemTransactionType, setItemTransactionType] = useState(template?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || '');
+    const [itemCategory, setItemCategory] = useState(template?.subcategory?.mainCategory?.name || '');
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
     const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || '');
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
 
     const { fetchWithAuth } = useApiClient();
 
+    // Set category options based on the selected transaction type
     const setCategoryOptions = (transactionType: string) => {
         const filteredCategories = mainCategories
             .filter((category) => category.transactionType.name === transactionType)
@@ -40,26 +38,25 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
         setItemCategoryOptions(filteredCategories);
     };
 
+    // Set subcategory options based on the selected category
     const setSubcategoryOptions = (category: string) => {
         const filteredSubcategories = subcategories
             .filter((subcategory) => subcategory.mainCategory.name === category)
             .map((subcategory) => subcategory.name);
-
         setItemSubcategoryOptions(filteredSubcategories);
     };
 
+    // Update category options when transaction type changes
     useEffect(() => {
         setCategoryOptions(itemTransactionType);
     }, [itemTransactionType, mainCategories]);
 
+    // Update subcategory options when category changes
     useEffect(() => {
         setSubcategoryOptions(itemCategory);
     }, [itemCategory, subcategories]);
 
-    useEffect(() => {
-
-    }, [template, transactionTypes]);
-
+    // Handle editing the item
     const handleEditItem = async () => {
         const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
         if (!transactionType) {
@@ -92,6 +89,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
         onFinished();
     };
 
+    // Handle deleting the item
     const handleDelete = async () => {
         if (!template) {
             console.error('No transaction found to delete');

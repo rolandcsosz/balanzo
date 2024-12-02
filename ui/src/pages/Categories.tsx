@@ -8,19 +8,23 @@ import { NewCategoryRow } from '../components/NewCategoryRow';
 import { useEffect, useState } from 'preact/hooks';
 
 export function Categories() {
+    // Fetch initial data from the model
     const { mainCategories: initialMainCategories, subcategories: initialSubcategories, expenseTypes } = useModel();
     const [mainCategories, setMainCategories] = useState(initialMainCategories);
     const [subcategories, setSubcategories] = useState(initialSubcategories);
     const isMobile = useDevice();
     const { fetchWithAuth } = useApiClient();
 
+    // Update state when initial data changes
     useEffect(() => {
         setMainCategories(initialMainCategories);
         setSubcategories(initialSubcategories);
     }, [initialMainCategories, initialSubcategories]);
 
+    // Determine which component to use based on device type
     const CategoryComponent = isMobile ? CategoryRowMobile : CategoryRow;
 
+    // Handle category edit
     const handleCategoryEdit = async (id, name, type: string) => {
         const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?._id;
 
@@ -34,6 +38,7 @@ export function Categories() {
         await fetchWithAuth('http://localhost:3000/main_categories', 'POST', JSON.stringify(updatedCategory));
     };
 
+    // Handle subcategory edit
     const handleSubategoryEdit = async (id, name, type) => {
         const mainCategoryId = subcategories.find((subcategory) => subcategory._id === id)?.mainCategory._id;
         const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?._id;
@@ -53,6 +58,7 @@ export function Categories() {
         await fetchWithAuth('http://localhost:3000/subcategories', 'POST', JSON.stringify(body));
     };
 
+    // Handle category deletion
     const handleDeleteCategory = async (id) => {
         const response = await fetchWithAuth(`http://localhost:3000/main_categories/${id}`, 'DELETE', '');
         if (!response.ok) {
@@ -66,7 +72,7 @@ export function Categories() {
         );
     };
 
-
+    // Handle subcategory deletion
     const handleDeleteSubcategory = async (id) => {
         const response = await fetchWithAuth(`http://localhost:3000/subcategories/${id}`, 'DELETE', '');
 
@@ -78,6 +84,7 @@ export function Categories() {
         setSubcategories(subcategories.filter((subcategory) => subcategory._id !== id));
     };
 
+    // Create a new main category
     const createMainCategory = async () => {
         const body: any = {
             name: "New category",
@@ -95,6 +102,7 @@ export function Categories() {
         setMainCategories([...mainCategories, data]);
     }
 
+    // Create a new subcategory
     const createSubcategory = async (id) => {
         const body: any = {
             name: "New category",
@@ -114,8 +122,6 @@ export function Categories() {
             { ...data, mainCategory: { _id: id } },
         ]);
     };
-
-
 
     return (
         <div className="categories-container">

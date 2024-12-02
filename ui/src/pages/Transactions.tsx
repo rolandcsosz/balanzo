@@ -7,27 +7,26 @@ import { DateDivider } from '../components/DateDivider';
 import { useModel } from '../hooks/useModel';
 
 export function Transactions() {
-    const { transactions, refetchData } = useModel();
-    const isMobile = useDevice();
+    const { transactions, refetchData } = useModel(); // Fetch transactions and refetch function from the model
+    const isMobile = useDevice(); // Determine if the device is mobile
 
     return (
         isMobile ? (
             <div class="transaction-cards">
                 {transactions.map((transaction, index) => {
-                    const currentDate = formatDate(transaction.date);
-                    const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null;
+                    const currentDate = formatDate(transaction.date); // Format the current transaction date
+                    const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null; // Format the next transaction date if it exists
                     return (
                         <>
-                            <TransactionCard key={transaction._id} transaction={transaction} onChange={refetchData} />
+                            <TransactionCard key={transaction._id} transaction={transaction} onChange={refetchData} /> {/* Render transaction card */}
                             {currentDate !== nextDate && (
-                                <DateDivider date={nextDate} />
+                                <DateDivider date={nextDate} /> // Render date divider if the next transaction date is different
                             )}
                         </>
                     );
                 })}
             </div>
         ) : (
-
             <div class="transaction-table">
                 <header class="transaction-header">
                     <div class="transaction-header-cell">Item</div>
@@ -38,8 +37,9 @@ export function Transactions() {
                     <div class="transaction-row-action-cell"></div>
                 </header>
                 {transactions.map(transaction => (
-                    <TransactionRow key={transaction._id} transaction={transaction} onChange={refetchData} />
+                    <TransactionRow key={transaction._id} transaction={transaction} onChange={refetchData} /> // Render transaction row
                 ))}
-            </div>)
+            </div>
+        )
     );
 };

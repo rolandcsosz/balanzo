@@ -12,9 +12,11 @@ export function CategoryRow({
     onEdit,
     onDelete,
 }) {
+    // State for selected type and name
     const [selectedType, setSelectedType] = useState(item?.expenseType?.name || options[0] || "");
     const [name, setName] = useState(item?.name || "");
 
+    // Update state when item or options change
     useEffect(() => {
         setSelectedType(item?.expenseType?.name || options[0] || "");
         setName(item?.name || "");
@@ -34,7 +36,7 @@ export function CategoryRow({
                         placeholder=""
                         onChange={(value) => {
                             setName(value);
-                            onEdit(item._id, value, selectedType);
+                            onEdit(item._id, value, selectedType); // Call onEdit when name changes
                         }}
                         mini={true}
                         labelLike={true}
@@ -49,7 +51,7 @@ export function CategoryRow({
                     selected={selectedType}
                     onSelectedChange={(value) => {
                         setSelectedType(value);
-                        onEdit(item._id, name, value);
+                        onEdit(item._id, name, value); // Call onEdit when type changes
                     }}
                     mini={true}
                 />

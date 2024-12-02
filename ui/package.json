@@ -28,7 +28,6 @@
     "homepage": "https://github.com/rolandcsosz/balanzo#readme",
     "dependencies": {
         "dotenv": "^16.4.5",
-        "mongoose": "^8.8.1",
         "plotly.js": "^2.35.2",
         "preact": "^10.24.3",
         "react-plotly.js": "^2.6.0"

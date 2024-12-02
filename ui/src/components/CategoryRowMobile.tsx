@@ -12,9 +12,11 @@ export function CategoryRowMobile({
     onEdit,
     onDelete,
 }) {
+    // State for selected type and name
     const [selectedType, setSelectedType] = useState(item?.expenseType?.name || options[0] || "");
     const [name, setName] = useState(item?.name || "");
 
+    // Update state when item or options change
     useEffect(() => {
         setSelectedType(item?.expenseType?.name || options[0] || "");
         setName(item?.name || "");

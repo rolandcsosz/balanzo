@@ -14,30 +14,30 @@ import { Templates } from './Templates';
 import { useModel } from '../hooks/useModel';
 
 export function Menu() {
-    const [menu, setMenu] = useState("Home");
-    const isMobile = useDevice();
-    const SidebarComponent = isMobile ? Navbar : Sidebar;
-    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
-    const { refetchData } = useModel();
+    const [menu, setMenu] = useState("Home"); // State to track the current menu
+    const isMobile = useDevice(); // Determine if the device is mobile
+    const SidebarComponent = isMobile ? Navbar : Sidebar; // Use Navbar for mobile, Sidebar for desktop
+    const { isOpen, content, openSheet, closeSheet } = useBottomSheet(); // Bottom sheet state and handlers
+    const { refetchData } = useModel(); // Function to refetch data
 
     return (
         <main class="layout">
-            <SidebarComponent menu={menu} setMenu={setMenu} />
+            <SidebarComponent menu={menu} setMenu={setMenu} /> {/* Sidebar or Navbar component */}
             <section class="content">
-                <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1>
-                {menu === "Home" && <Home />}
-                {menu === "Transactions" && <Transactions />}
-                {menu === "Categories" && <Categories />}
-                {menu === "Templates" && <Templates />}
+                <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1> {/* Dynamic title */}
+                {menu === "Home" && <Home />} {/* Render Home component */}
+                {menu === "Transactions" && <Transactions />} {/* Render Transactions component */}
+                {menu === "Categories" && <Categories />} {/* Render Categories component */}
+                {menu === "Templates" && <Templates />} {/* Render Templates component */}
                 <button class="action-button" aria-label="Add new item" onClick={() => {
                     openSheet(
                         <EditItem transaction={null} onFinished={() => { refetchData(); closeSheet(); }} />
-                    );
+                    ); // Open bottom sheet with EditItem component
                 }}>
-                    <img src={largeAddUrl} alt="" />
+                    <img src={largeAddUrl} alt="" /> {/* Add button with icon */}
                 </button>
             </section>
-            <BottomSheet />
+            <BottomSheet /> {/* Bottom sheet component */}
         </main>
     );
 };

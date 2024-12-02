@@ -9,6 +9,7 @@ import { AddIcon } from './icons/AddIcon';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { EditItem } from '../pages/EditItem';
 
+// Initial navigation items with icons, labels, and active state
 const initialNavigationItems = [
     { icon: HomeIcon, label: 'Home', isActive: false },
     { icon: TransactionsIcon, label: 'Transactions', isActive: false },
@@ -27,6 +28,7 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
+    // Update navigation items' active state based on the clicked button
     const handleButtonClick = (newState) => {
         setNavigationItems(navigationItems.map((item) => ({
             ...item,
@@ -34,6 +36,7 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
         })));
     };
 
+    // Update active state when menu changes
     useEffect(() => {
         handleButtonClick(menu);
     }, [menu]);

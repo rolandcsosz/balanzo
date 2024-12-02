@@ -7,10 +7,9 @@ import { EditItem } from './EditItem';
 import { EditTemplate } from './EditTemplate';
 
 export function Templates() {
-    const { templates, refetchData } = useModel();
-    const isMobile = useDevice();
-    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
-
+    const { templates, refetchData } = useModel(); // Fetch templates and refetch function from the model hook
+    const isMobile = useDevice(); // Determine if the device is mobile
+    const { isOpen, content, openSheet, closeSheet } = useBottomSheet(); // Bottom sheet state and control functions
 
     return (
         <div class="template-grid-container">
@@ -20,12 +19,12 @@ export function Templates() {
                     template={template}
                     onUseTemplate={() => {
                         openSheet(
-                            <EditItem template={template} onFinished={closeSheet} />
+                            <EditItem template={template} onFinished={closeSheet} /> // Open bottom sheet with EditItem component
                         );
                     }}
                     onEditTemplate={() => {
                         openSheet(
-                            <EditTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} />
+                            <EditTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} /> // Open bottom sheet with EditTemplate component and refetch data on finish
                         );
                     }}
                 />
@@ -35,7 +34,7 @@ export function Templates() {
                 template={null}
                 onUseTemplate={() => {
                     openSheet(
-                        <EditTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} />
+                        <EditTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} /> // Open bottom sheet with EditTemplate component for adding a new template
                     );
                 }}
             />

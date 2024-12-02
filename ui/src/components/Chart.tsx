@@ -17,17 +17,22 @@ interface ChartProps {
 }
 
 export function Chart({ title, data, size, showLegend = false }: ChartProps) {
+    // State to track the window width
     const [windowWidth, setWindowWidth] = useState(window.outerWidth);
 
     useEffect(() => {
+        // Function to handle window resize
         const handleResize = () => {
             setWindowWidth(window.outerWidth);
         };
 
+        // Add event listener for window resize
         window.addEventListener('resize', handleResize);
+        // Cleanup event listener on component unmount
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Function to determine chart size based on the provided size and window width
     const getChartSize = (size: ChartSize, windowWidth: number) => {
         switch (size) {
             case ChartSize.FILL_CONTENT:
@@ -43,6 +48,7 @@ export function Chart({ title, data, size, showLegend = false }: ChartProps) {
         }
     };
 
+    // Calculate the chart size
     const chartSize = getChartSize(size, windowWidth);
 
     return (

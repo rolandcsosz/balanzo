@@ -9,10 +9,12 @@ export function Home() {
     const { transactions } = useModel();
     const isMobile = useDevice();
 
+    // Filter transactions to only include expenses
     const filterExpenseTransactions = (data: Transaction[]) => {
         return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense");
     }
 
+    // Create data structure for sunburst chart
     const createDataForSunburst = (data: Transaction[]) => {
         let labels = [];
         let parents = [];
@@ -49,6 +51,7 @@ export function Home() {
         };
     }
 
+    // Create data structure for main bar chart
     const createDataForMainBarChart = (data: Transaction[]) => {
         const mainCategories = [...new Set(data.map((item) => item.subcategory.mainCategory.name))];
         let barChartData = [];
@@ -70,6 +73,7 @@ export function Home() {
         return barChartData;
     }
 
+    // Create data structure for sub bar chart
     const createDataForSubBarChart = (data: Transaction[]) => {
         const subcategories = [...new Set(data.map((item) => item.subcategory.name))];
         let barChartData = [];
@@ -90,18 +94,22 @@ export function Home() {
         return barChartData;
     }
 
+    // Calculate total income
     const getIncome = (data: Transaction[]) => {
         return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Income").reduce((sum, item) => sum + item.amount, 0);
     }
 
+    // Calculate total spending
     const getSpending = (data: Transaction[]) => {
         return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense").reduce((sum, item) => sum + item.amount, 0) * -1;
     }
 
+    // Calculate balance
     const getBalance = (data: Transaction[]) => {
         return getIncome(data) + getSpending(data);
     }
 
+    // Create data structure for stacked bar chart
     const createDataForStackedBarChart = (data: Transaction[]) => {
         const mainCategories = [...new Set(data.map((item) => item.subcategory.mainCategory.name))];
         const subcategories = [...new Set(data.map((item) => item.subcategory.name))];
@@ -134,6 +142,7 @@ export function Home() {
         return barChartData;
     };
 
+    // Create data structure for expense type pie chart
     const createDataForExpenseTypePieChart = (data: Transaction[]) => {
         const expenseTypes = [...new Set(data.map((item) => item.subcategory.mainCategory.expenseType.name))].sort();
         let labels = [];
