@@ -35,7 +35,7 @@ export function Categories() {
 
         const updatedCategory = { id, name, expenseType: typeId };
 
-        await fetchWithAuth(process.env.BACKEND_URL + '/main_categories', 'POST', JSON.stringify(updatedCategory));
+        await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/main_categories', 'POST', JSON.stringify(updatedCategory));
     };
 
     // Handle subcategory edit
@@ -55,7 +55,7 @@ export function Categories() {
             expenseType: typeId,
         };
 
-        await fetchWithAuth(process.env.BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
+        await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
     };
 
     // Handle category deletion
@@ -92,7 +92,7 @@ export function Categories() {
             transactionType: expenseTypes.find((expenseType) => expenseType.name === "Expense")?._id,
         };
 
-        const response = await fetchWithAuth(process.env.BACKEND_URL + '/main_categories', 'POST', JSON.stringify(body));
+        const response = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/main_categories', 'POST', JSON.stringify(body));
         if (!response.ok) {
             console.error("Failed to create main category");
             return;
@@ -110,7 +110,7 @@ export function Categories() {
             expenseType: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?._id,
         };
 
-        const response = await fetchWithAuth(process.env.BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
+        const response = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
         if (!response.ok) {
             console.error("Failed to create subcategory");
             return;

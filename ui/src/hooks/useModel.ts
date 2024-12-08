@@ -45,7 +45,7 @@ export const useModel = () => {
 
     const fetchExpenseTypes = async () => {
         try {
-            const expenseTypesResponse = await fetchWithAuth(process.env.BACKEND_URL + '/expense_types', 'GET', '');
+            const expenseTypesResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/expense_types', 'GET', '');
             if (!expenseTypesResponse.ok) {
                 console.error(`Error fetching expense types: ${expenseTypesResponse.statusText}`);
                 setExpenseTypes([]);
@@ -61,7 +61,7 @@ export const useModel = () => {
 
     const fetchTransactionTypes = async () => {
         try {
-            const transactionTypesResponse = await fetchWithAuth(process.env.BACKEND_URL + '/transaction_types', 'GET', '');
+            const transactionTypesResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/transaction_types', 'GET', '');
             if (!transactionTypesResponse.ok) {
                 console.error(`Error fetching transaction types: ${transactionTypesResponse.statusText}`);
                 setTransactionTypes([]);
@@ -81,7 +81,7 @@ export const useModel = () => {
         }
 
         try {
-            const mainCategoriesResponse = await fetchWithAuth(process.env.BACKEND_URL + '/main_categories', 'GET', '');
+            const mainCategoriesResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/main_categories', 'GET', '');
             if (!mainCategoriesResponse.ok) {
                 console.error(`Error fetching main categories: ${mainCategoriesResponse.statusText}`);
                 setMainCategories([]);
@@ -120,7 +120,7 @@ export const useModel = () => {
         }
 
         try {
-            const subcategoriesResponse = await fetchWithAuth(process.env.BACKEND_URL + '/subcategories', 'GET', '');
+            const subcategoriesResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/subcategories', 'GET', '');
             if (!subcategoriesResponse.ok) {
                 console.error(`Error fetching subcategories: ${subcategoriesResponse.statusText}`);
                 setSubcategories([]);
@@ -159,7 +159,7 @@ export const useModel = () => {
         }
 
         try {
-            const transactionsResponse = await fetchWithAuth(process.env.BACKEND_URL + '/transactions', 'GET', '');
+            const transactionsResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/transactions', 'GET', '');
             if (!transactionsResponse.ok) {
                 console.error(`Error fetching transactions: ${transactionsResponse.statusText}`);
                 setTransactions([]);
@@ -191,7 +191,7 @@ export const useModel = () => {
         }
 
         try {
-            const templatesResponse = await fetchWithAuth(process.env.BACKEND_URL + '/templates', 'GET', '');
+            const templatesResponse = await fetchWithAuth(process.env.REACT_APP_BACKEND_URL + '/templates', 'GET', '');
             if (!templatesResponse.ok) {
                 console.error(`Error fetching templates: ${templatesResponse.statusText}`);
                 setTemplates([]);
