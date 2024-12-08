@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    environment:
+      - BACKEND_URL=http://backend:3000
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      MONGODB_URI: mongodb://admin:admin@local_mongodb:27017/
+      JWT_SECRET: secret
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+
+  mongodb:
+    image: mongo:latest
+    container_name: local_mongodb
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge

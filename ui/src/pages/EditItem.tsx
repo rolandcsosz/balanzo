@@ -112,7 +112,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             body.id = transaction._id;
         }
 
-        await fetchWithAuth('http://localhost:3000/transactions', 'POST', JSON.stringify(body));
+        await fetchWithAuth(process.env.BACKEND_URL + '/transactions', 'POST', JSON.stringify(body));
         onFinished();
     };
 

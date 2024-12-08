@@ -85,7 +85,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
             body.id = template._id;
         }
 
-        await fetchWithAuth('http://localhost:3000/templates', 'POST', JSON.stringify(body));
+        await fetchWithAuth(process.env.BACKEND_URL + '/templates', 'POST', JSON.stringify(body));
         onFinished();
     };
 
