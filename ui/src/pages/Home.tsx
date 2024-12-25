@@ -4,131 +4,164 @@ import { Chart, ChartSize } from '../components/Chart';
 import { Transaction } from '../types';
 import { useDevice } from '../hooks/useDevice';
 import { useModel } from '../hooks/useModel';
+import { useEffect, useMemo, useRef } from 'preact/hooks';
 
 export function Home() {
     const { transactions } = useModel();
     const isMobile = useDevice();
+    const prevTransactionsRef = useRef(transactions);
 
-    // Filter transactions to only include expenses
-    const filterExpenseTransactions = (data: Transaction[]) => {
-        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense");
-    }
+    useEffect(() => {
+        if (JSON.stringify(prevTransactionsRef.current) !== JSON.stringify(transactions)) {
+            console.log('Transactions changed:', {
+                prev: prevTransactionsRef.current.length,
+                current: transactions.length,
+            });
+            prevTransactionsRef.current = transactions;
+        }
+    }, [transactions]);
 
-    // Create data structure for sunburst chart
-    const createDataForSunburst = (data: Transaction[]) => {
+    const transactionsKey = useMemo(() => {
+        return transactions.map(t => `${t._id}-${t.amount}`).join('|');
+    }, [transactions]);
+
+    const expenseTransactions = useMemo(() => {
+        return transactions.filter((item) =>
+            item.subcategory?.mainCategory?.transactionType?.name === "Expense"
+        );
+    }, [transactionsKey]);
+
+    const sunburstData = useMemo(() => {
+        if (!transactions.length) return null;
+
         let labels = [];
         let parents = [];
         let values = [];
-        const mainCategories = [...new Set(data.map((item) => item.subcategory.mainCategory.name))];
-        const subcategories = [...new Set(data.map((item) => item.subcategory.name))];
-        const totalAmount = data.reduce((sum, item) => sum + item.amount, 0);
+
+        const mainCategories = [...new Set(transactions
+            .filter(item => item.subcategory?.mainCategory?.name)
+            .map((item) => item.subcategory.mainCategory.name))];
+
+        const subcategories = [...new Set(transactions
+            .filter(item => item.subcategory?.name)
+            .map((item) => item.subcategory.name))];
+
+        const totalAmount = transactions.reduce((sum, item) => sum + (item.amount || 0), 0);
 
         labels.push("Spendings");
         parents.push("");
         values.push(totalAmount);
 
-        mainCategories.forEach((category, index) => {
+        mainCategories.forEach((category) => {
+            if (!category) return;
+
             labels.push(category);
             parents.push("Spendings");
-            values.push(data.filter((item) => item.subcategory.mainCategory.name === category).reduce((sum, item) => sum + item.amount, 0));
+            const categoryAmount = transactions
+                .filter((item) => item.subcategory?.mainCategory?.name === category)
+                .reduce((sum, item) => sum + (item.amount || 0), 0);
+            values.push(categoryAmount);
         });
 
         subcategories.forEach((subcategory) => {
+            if (!subcategory) return;
+
+            const transaction = transactions.find((item) =>
+                item.subcategory?.name === subcategory);
+            if (!transaction?.subcategory?.mainCategory?.name) return;
+
             labels.push(subcategory);
-            parents.push(mainCategories.find((mainCategory) => data.find((item) => item.subcategory.name === subcategory).subcategory.mainCategory.name === mainCategory));
-            values.push(data.filter((item) => item.subcategory.name === subcategory).reduce((sum, item) => sum + item.amount, 0));
+            parents.push(transaction.subcategory.mainCategory.name);
+            const subcategoryAmount = transactions
+                .filter((item) => item.subcategory?.name === subcategory)
+                .reduce((sum, item) => sum + (item.amount || 0), 0);
+            values.push(subcategoryAmount);
         });
 
         return {
             type: "sunburst",
-            labels: labels,
-            parents: parents,
-            values: values,
+            labels,
+            parents,
+            values,
             branchvalues: "total",
             marker: {
                 colorscale: "Blues",
             }
         };
-    }
+    }, [transactionsKey]);
 
-    // Create data structure for main bar chart
-    const createDataForMainBarChart = (data: Transaction[]) => {
-        const mainCategories = [...new Set(data.map((item) => item.subcategory.mainCategory.name))];
-        let barChartData = [];
+    const mainBarChartData = useMemo(() => {
+        if (!transactions.length) return null;
 
-        mainCategories.forEach((category) => {
-            barChartData.push({
-                data: [],
-                type: 'bar',
-                x: [category],
-                y: [data.filter((item) => item.subcategory.mainCategory.name === category).reduce((sum, item) => sum + item.amount, 0)],
-                marker: {
-                    color: "#3772ff",
-                },
-            });
-        });
+        const mainCategories = [...new Set(transactions
+            .filter(item => item.subcategory?.mainCategory?.name)
+            .map((item) => item.subcategory.mainCategory.name))];
 
-        barChartData.sort((a, b) => b.y[0] - a.y[0]);
+        let barChartData = mainCategories.map((category) => ({
+            data: [],
+            type: 'bar',
+            x: [category],
+            y: [transactions
+                .filter((item) => item.subcategory?.mainCategory?.name === category)
+                .reduce((sum, item) => sum + (item.amount || 0), 0)
+            ],
+            marker: {
+                color: "#3772ff",
+            },
+        }));
 
-        return barChartData;
-    }
+        return barChartData.sort((a, b) => b.y[0] - a.y[0]);
+    }, [transactionsKey]);
 
-    // Create data structure for sub bar chart
-    const createDataForSubBarChart = (data: Transaction[]) => {
-        const subcategories = [...new Set(data.map((item) => item.subcategory.name))];
-        let barChartData = [];
+    const subBarChartData = useMemo(() => {
+        if (!transactions.length) return null;
 
-        subcategories.forEach((subcategory) => {
-            barChartData.push({
-                type: 'bar',
-                x: [subcategory],
-                y: [data.filter((item) => item.subcategory.name === subcategory).reduce((sum, item) => sum + item.amount, 0)],
-                marker: {
-                    color: "#3772ff",
-                },
-            });
-        });
+        const subcategories = [...new Set(transactions
+            .filter(item => item.subcategory?.name)
+            .map((item) => item.subcategory.name))];
 
-        barChartData.sort((a, b) => b.y[0] - a.y[0]);
+        let barChartData = subcategories.map((subcategory) => ({
+            type: 'bar',
+            x: [subcategory],
+            y: [transactions
+                .filter((item) => item.subcategory?.name === subcategory)
+                .reduce((sum, item) => sum + (item.amount || 0), 0)
+            ],
+            marker: {
+                color: "#3772ff",
+            },
+        }));
 
-        return barChartData;
-    }
+        return barChartData.sort((a, b) => b.y[0] - a.y[0]);
+    }, [transactionsKey]);
 
-    // Calculate total income
-    const getIncome = (data: Transaction[]) => {
-        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Income").reduce((sum, item) => sum + item.amount, 0);
-    }
+    const stackedBarChartData = useMemo(() => {
+        if (!transactions.length) return null;
 
-    // Calculate total spending
-    const getSpending = (data: Transaction[]) => {
-        return data.filter((item) => item.subcategory.mainCategory.transactionType.name === "Expense").reduce((sum, item) => sum + item.amount, 0) * -1;
-    }
+        const mainCategories = [...new Set(transactions
+            .filter(item => item.subcategory?.mainCategory?.name)
+            .map((item) => item.subcategory.mainCategory.name))];
 
-    // Calculate balance
-    const getBalance = (data: Transaction[]) => {
-        return getIncome(data) + getSpending(data);
-    }
-
-    // Create data structure for stacked bar chart
-    const createDataForStackedBarChart = (data: Transaction[]) => {
-        const mainCategories = [...new Set(data.map((item) => item.subcategory.mainCategory.name))];
-        const subcategories = [...new Set(data.map((item) => item.subcategory.name))];
-        const barChartData = [];
+        const subcategories = [...new Set(transactions
+            .filter(item => item.subcategory?.name)
+            .map((item) => item.subcategory.name))];
 
         const sortedCategories = mainCategories.sort((a, b) =>
-            data.filter((item) => item.subcategory.mainCategory.name === b).reduce((sum, item) => sum + item.amount, 0) -
-            data.filter((item) => item.subcategory.mainCategory.name === a).reduce((sum, item) => sum + item.amount, 0)
+            transactions.filter((item) => item.subcategory?.mainCategory?.name === b)
+                .reduce((sum, item) => sum + (item.amount || 0), 0) -
+            transactions.filter((item) => item.subcategory?.mainCategory?.name === a)
+                .reduce((sum, item) => sum + (item.amount || 0), 0)
         );
 
-        subcategories.forEach((subcategory) => {
+        return subcategories.map((subcategory) => {
             const yValues = sortedCategories.map((category) =>
-                data.filter((item) =>
-                    item.subcategory.mainCategory.name === category &&
-                    item.subcategory.name === subcategory
-                ).reduce((sum, item) => sum + item.amount, 0) || 0
+                transactions.filter((item) =>
+                    item.subcategory?.mainCategory?.name === category &&
+                    item.subcategory?.name === subcategory
+                ).reduce((sum, item) => sum + (item.amount || 0), 0) || 0
             );
 
-            barChartData.push({
+            return {
                 type: 'bar',
                 x: sortedCategories,
                 y: yValues,
@@ -136,52 +169,94 @@ export function Home() {
                 marker: {
                     color: "#3772FF",
                 },
-            });
+            };
         });
+    }, [transactionsKey]);
 
-        return barChartData;
-    };
+    const expenseTypePieChartData = useMemo(() => {
+        if (!transactions.length) return null;
 
-    // Create data structure for expense type pie chart
-    const createDataForExpenseTypePieChart = (data: Transaction[]) => {
-        const expenseTypes = [...new Set(data.map((item) => item.subcategory.mainCategory.expenseType.name))].sort();
-        let labels = [];
-        let values = [];
-        let colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF"];
+        const expenseTypes = [...new Set(transactions
+            .filter(item => item.subcategory?.mainCategory?.expenseType?.name)
+            .map((item) => item.subcategory.mainCategory.expenseType.name))].sort();
 
-        expenseTypes.forEach((type, index) => {
-            labels.push(type);
-            values.push(data.filter((item) => item.subcategory.mainCategory.expenseType.name === type).reduce((sum, item) => sum + item.amount, 0));
-        });
+        const labels = expenseTypes;
+        const values = expenseTypes.map(type =>
+            transactions
+                .filter((item) => item.subcategory?.mainCategory?.expenseType?.name === type)
+                .reduce((sum, item) => sum + (item.amount || 0), 0)
+        );
+        const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF"];
 
         return {
             type: 'pie',
-            labels: labels,
-            values: values,
+            labels,
+            values,
             textinfo: 'none',
             hoverinfo: 'label+percent+value',
             marker: {
-                colors: colors,
+                colors,
             },
         };
-    }
+    }, [transactionsKey]);
+
+    const income = useMemo(() => {
+        return transactions
+            .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Income")
+            .reduce((sum, item) => sum + (item.amount || 0), 0);
+    }, [transactionsKey]);
+
+    const spending = useMemo(() => {
+        return transactions
+            .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Expense")
+            .reduce((sum, item) => sum + (item.amount || 0), 0) * -1;
+    }, [transactionsKey]);
+
+    const balance = useMemo(() => {
+        return income + spending;
+    }, [income, spending]);
 
     return (
-        <div class="dashboard">
-            <div class="card-list">
-                <MetricCard title="Income" value={getIncome(transactions)} />
-                <MetricCard title="Spendings" value={getSpending(transactions)} />
-                <MetricCard title="Balance" value={getBalance(transactions)} />
+        <div className="dashboard">
+            <div className="card-list">
+                <MetricCard title="Income" value={income} />
+                <MetricCard title="Spendings" value={spending} />
+                <MetricCard title="Balance" value={balance} />
             </div>
-            <div class="card-list">
-                <Chart data={createDataForExpenseTypePieChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Budget Allocation' showLegend={true} />
-                <Chart data={createDataForStackedBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.MEDIUM} title='Grouped Categories' />
-            </div>
-            <div class="card-list">
-                <Chart data={createDataForMainBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title="Main Categories" />
-                <Chart data={createDataForSubBarChart(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Subcategories' />
-                <Chart data={createDataForSunburst(filterExpenseTransactions(transactions))} size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL} title='Spending Breakdown' />
-            </div>
+            {sunburstData && (
+                <>
+                    <div className="card-list">
+                        <Chart
+                            data={expenseTypePieChartData}
+                            size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL}
+                            title='Budget Allocation'
+                            showLegend={true}
+                        />
+                        <Chart
+                            data={stackedBarChartData}
+                            size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.MEDIUM}
+                            title='Grouped Categories'
+                        />
+                    </div>
+                    <div className="card-list">
+                        <Chart
+                            data={mainBarChartData}
+                            size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL}
+                            title="Main Categories"
+                        />
+                        <Chart
+                            data={subBarChartData}
+                            size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL}
+                            title='Subcategories'
+                        />
+                        <Chart
+                            data={sunburstData}
+                            size={isMobile ? ChartSize.FILL_CONTENT : ChartSize.SMALL}
+                            title='Spending Breakdown'
+                        />
+                    </div>
+                </>
+            )}
         </div>
     );
-};
+}
