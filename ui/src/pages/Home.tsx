@@ -1,52 +1,37 @@
 import './Home.scss';
 import { MetricCard } from '../components/MetricCard';
 import { Chart, ChartSize } from '../components/Chart';
-import { Transaction } from '../types';
+import { MonthInfo } from '../types';
 import { useDevice } from '../hooks/useDevice';
 import { useModel } from '../hooks/useModel';
-import { useEffect, useMemo, useRef } from 'preact/hooks';
+import { useMemo } from 'preact/hooks';
 
-export function Home() {
+export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
     const { transactions } = useModel();
     const isMobile = useDevice();
-    const prevTransactionsRef = useRef(transactions);
-
-    useEffect(() => {
-        if (JSON.stringify(prevTransactionsRef.current) !== JSON.stringify(transactions)) {
-            console.log('Transactions changed:', {
-                prev: prevTransactionsRef.current.length,
-                current: transactions.length,
-            });
-            prevTransactionsRef.current = transactions;
-        }
-    }, [transactions]);
-
-    const transactionsKey = useMemo(() => {
-        return transactions.map(t => `${t._id}-${t.amount}`).join('|');
-    }, [transactions]);
-
-    const expenseTransactions = useMemo(() => {
-        return transactions.filter((item) =>
-            item.subcategory?.mainCategory?.transactionType?.name === "Expense"
-        );
-    }, [transactionsKey]);
 
     const sunburstData = useMemo(() => {
-        if (!transactions.length) return null;
+        if (!transactions.length || !selectedMonth) return null;
+
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            console.log(date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
 
         let labels = [];
         let parents = [];
         let values = [];
 
-        const mainCategories = [...new Set(transactions
+        const mainCategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.mainCategory?.name)
             .map((item) => item.subcategory.mainCategory.name))];
 
-        const subcategories = [...new Set(transactions
+        const subcategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.name)
             .map((item) => item.subcategory.name))];
 
-        const totalAmount = transactions.reduce((sum, item) => sum + (item.amount || 0), 0);
+        const totalAmount = filteredTransactions.reduce((sum, item) => sum + (item.amount || 0), 0);
 
         labels.push("Spendings");
         parents.push("");
@@ -57,7 +42,7 @@ export function Home() {
 
             labels.push(category);
             parents.push("Spendings");
-            const categoryAmount = transactions
+            const categoryAmount = filteredTransactions
                 .filter((item) => item.subcategory?.mainCategory?.name === category)
                 .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(categoryAmount);
@@ -66,13 +51,13 @@ export function Home() {
         subcategories.forEach((subcategory) => {
             if (!subcategory) return;
 
-            const transaction = transactions.find((item) =>
+            const transaction = filteredTransactions.find((item) =>
                 item.subcategory?.name === subcategory);
             if (!transaction?.subcategory?.mainCategory?.name) return;
 
             labels.push(subcategory);
             parents.push(transaction.subcategory.mainCategory.name);
-            const subcategoryAmount = transactions
+            const subcategoryAmount = filteredTransactions
                 .filter((item) => item.subcategory?.name === subcategory)
                 .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(subcategoryAmount);
@@ -88,12 +73,17 @@ export function Home() {
                 colorscale: "Blues",
             }
         };
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const mainBarChartData = useMemo(() => {
-        if (!transactions.length) return null;
+        if (!transactions.length || !selectedMonth) return null;
 
-        const mainCategories = [...new Set(transactions
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        const mainCategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.mainCategory?.name)
             .map((item) => item.subcategory.mainCategory.name))];
 
@@ -101,7 +91,7 @@ export function Home() {
             data: [],
             type: 'bar',
             x: [category],
-            y: [transactions
+            y: [filteredTransactions
                 .filter((item) => item.subcategory?.mainCategory?.name === category)
                 .reduce((sum, item) => sum + (item.amount || 0), 0)
             ],
@@ -111,19 +101,24 @@ export function Home() {
         }));
 
         return barChartData.sort((a, b) => b.y[0] - a.y[0]);
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const subBarChartData = useMemo(() => {
-        if (!transactions.length) return null;
+        if (!transactions.length || !selectedMonth) return null;
 
-        const subcategories = [...new Set(transactions
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        const subcategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.name)
             .map((item) => item.subcategory.name))];
 
         let barChartData = subcategories.map((subcategory) => ({
             type: 'bar',
             x: [subcategory],
-            y: [transactions
+            y: [filteredTransactions
                 .filter((item) => item.subcategory?.name === subcategory)
                 .reduce((sum, item) => sum + (item.amount || 0), 0)
             ],
@@ -133,29 +128,34 @@ export function Home() {
         }));
 
         return barChartData.sort((a, b) => b.y[0] - a.y[0]);
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const stackedBarChartData = useMemo(() => {
-        if (!transactions.length) return null;
+        if (!transactions.length || !selectedMonth) return null;
 
-        const mainCategories = [...new Set(transactions
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        const mainCategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.mainCategory?.name)
             .map((item) => item.subcategory.mainCategory.name))];
 
-        const subcategories = [...new Set(transactions
+        const subcategories = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.name)
             .map((item) => item.subcategory.name))];
 
         const sortedCategories = mainCategories.sort((a, b) =>
-            transactions.filter((item) => item.subcategory?.mainCategory?.name === b)
+            filteredTransactions.filter((item) => item.subcategory?.mainCategory?.name === b)
                 .reduce((sum, item) => sum + (item.amount || 0), 0) -
-            transactions.filter((item) => item.subcategory?.mainCategory?.name === a)
+            filteredTransactions.filter((item) => item.subcategory?.mainCategory?.name === a)
                 .reduce((sum, item) => sum + (item.amount || 0), 0)
         );
 
         return subcategories.map((subcategory) => {
             const yValues = sortedCategories.map((category) =>
-                transactions.filter((item) =>
+                filteredTransactions.filter((item) =>
                     item.subcategory?.mainCategory?.name === category &&
                     item.subcategory?.name === subcategory
                 ).reduce((sum, item) => sum + (item.amount || 0), 0) || 0
@@ -171,18 +171,23 @@ export function Home() {
                 },
             };
         });
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const expenseTypePieChartData = useMemo(() => {
-        if (!transactions.length) return null;
+        if (!transactions.length || !selectedMonth) return null;
 
-        const expenseTypes = [...new Set(transactions
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        const expenseTypes = [...new Set(filteredTransactions
             .filter(item => item.subcategory?.mainCategory?.expenseType?.name)
             .map((item) => item.subcategory.mainCategory.expenseType.name))].sort();
 
         const labels = expenseTypes;
         const values = expenseTypes.map(type =>
-            transactions
+            filteredTransactions
                 .filter((item) => item.subcategory?.mainCategory?.expenseType?.name === type)
                 .reduce((sum, item) => sum + (item.amount || 0), 0)
         );
@@ -198,19 +203,34 @@ export function Home() {
                 colors,
             },
         };
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const income = useMemo(() => {
-        return transactions
+        if (!transactions.length || !selectedMonth) return 0;
+
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        return filteredTransactions
             .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Income")
             .reduce((sum, item) => sum + (item.amount || 0), 0);
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const spending = useMemo(() => {
-        return transactions
+
+        if (!transactions.length || !selectedMonth) return 0;
+
+        const filteredTransactions = transactions.filter((item) => {
+            const date = new Date(item.date);
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+        });
+
+        return filteredTransactions
             .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Expense")
             .reduce((sum, item) => sum + (item.amount || 0), 0) * -1;
-    }, [transactionsKey]);
+    }, [transactions, selectedMonth]);
 
     const balance = useMemo(() => {
         return income + spending;

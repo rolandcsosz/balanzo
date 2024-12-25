@@ -42,3 +42,9 @@ export type Subcategory = {
     mainCategory: MainCategory;
     expenseType: ExpenseType;
 };
+
+export type MonthInfo = {
+    startDate: Date;
+    endDate: Date;
+    name: string;
+};
