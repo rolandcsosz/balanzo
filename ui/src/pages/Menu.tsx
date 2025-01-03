@@ -89,6 +89,7 @@ export function Menu() {
                     <img src={largeAddUrl} alt="" /> {/* Add button with icon */}
                 </button>
             </section>
+            {isOpen && <div class="dark-overlay" />} {/* Dark overlay when bottom sheet is open */}
             <BottomSheet /> {/* Bottom sheet component */}
         </main>
     );
