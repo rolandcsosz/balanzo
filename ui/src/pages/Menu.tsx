@@ -19,7 +19,7 @@ export function Menu() {
     const [menu, setMenu] = useState("Home"); // State to track the current menu
     const isMobile = useDevice(); // Determine if the device is mobile
     const SidebarComponent = isMobile ? Navbar : Sidebar; // Use Navbar for mobile, Sidebar for desktop
-    const { openSheet, closeSheet } = useBottomSheet(); // Bottom sheet state and handlers
+    const { openSheet, closeSheet, isOpen } = useBottomSheet(); // Bottom sheet state and handlers
     const { transactions, refetchData } = useModel(); // Function to refetch data
     const [selectedMonth, setSelectedMonth] = useState<string>(""); // State to track the selected month
     const [monthList, setMonthList] = useState<MonthInfo[]>([]); // State to store the list of months
@@ -72,7 +72,7 @@ export function Menu() {
     return (
         <main class="layout">
             <SidebarComponent menu={menu} setMenu={setMenu} /> {/* Sidebar or Navbar component */}
-            <section class="content">
+            <section class={`content${isOpen ? " disabled-scrolling" : ""}`}>
                 <div class="menu-header-container">
                     <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1> {/* Dynamic title */}
                     {(menu === "Home") && <div class="year-selector-container"><Dropdown options={monthList.map((item) => item.name)} selected={selectedMonth} onSelectedChange={setSelectedMonth} mini={false} /></div>}

@@ -17,6 +17,9 @@
     border-color: #b1b1bb;
     background-color: #fff;
     outline: none;
+
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 .input-field.large-text {

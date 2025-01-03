@@ -12,8 +12,6 @@ services:
       - backend
     networks:
       - app-network
-    environment:
-      - VITE_BACKEND_URL=http://localhost:3000
     restart: unless-stopped
 
   backend:
