@@ -60,7 +60,7 @@ export function Categories() {
 
     // Handle category deletion
     const handleDeleteCategory = async (id) => {
-        const response = await fetchWithAuth(`http://localhost:3000/main_categories/${id}`, 'DELETE', '');
+        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/main_categories/${id}`, 'DELETE', '');
         if (!response.ok) {
             console.error("Failed to delete main category");
             return;
@@ -74,7 +74,7 @@ export function Categories() {
 
     // Handle subcategory deletion
     const handleDeleteSubcategory = async (id) => {
-        const response = await fetchWithAuth(`http://localhost:3000/subcategories/${id}`, 'DELETE', '');
+        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/subcategories/${id}`, 'DELETE', '');
 
         if (!response.ok) {
             console.error("Failed to delete subcategory");

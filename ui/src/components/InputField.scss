@@ -2,7 +2,8 @@
     align-self: center;
     width: 100%;
     max-width: 100%;
-    min-height: 45px;
+    line-height: 45px;
+    height: 45px;
     padding: 0 10px;
     gap: 10px;
     overflow: hidden;
@@ -23,7 +24,8 @@
 }
 
 .input-field.mini {
-    min-height: 35px;
+    line-height: 35px;
+    height: 35px;
 }
 
 .input-field.label-like {

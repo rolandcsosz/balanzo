@@ -96,7 +96,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
             return;
         }
 
-        await fetchWithAuth(`http://localhost:3000/templates/${template._id}`, 'DELETE', '');
+        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/templates/${template._id}`, 'DELETE', '');
         onFinished();
     };
 

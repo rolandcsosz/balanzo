@@ -123,7 +123,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             return;
         }
 
-        await fetchWithAuth(`http://localhost:3000/transactions/${transaction._id}`, 'DELETE', '');
+        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/transactions/${transaction._id}`, 'DELETE', '');
         onFinished();
     };
 
