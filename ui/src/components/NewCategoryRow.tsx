@@ -6,14 +6,24 @@ interface CategoryRowProps {
     text: string; // Text to display inside the button
     categoryId?: string; // Optional category ID
     subRow?: boolean; // Flag to indicate if this is a sub-row
+    latsRow?: boolean; // Flag to indicate if this is the last row
     isMobileView: boolean; // Flag to indicate if the view is mobile
 }
 
-export function NewCategoryRow({ onAdd, text, categoryId, subRow, isMobileView }: CategoryRowProps) {
+export function NewCategoryRow({
+    onAdd,
+    text,
+    categoryId,
+    subRow = false,
+    latsRow = false,
+    isMobileView,
+}: CategoryRowProps) {
     return (
         // Button element with dynamic classes based on props
         <button
-            className={`new-category-row ${subRow ? "sub" : ""} ${isMobileView ? "mobile" : ""}`}
+            className={
+                `new-category-row ${subRow ? "sub" : ""} ${isMobileView ? "mobile" : ""} ${latsRow ? "last" : ""}` /* Dynamic classes based on props */
+            }
             onClick={() => {
                 categoryId ? onAdd(categoryId) : onAdd("");
             }}

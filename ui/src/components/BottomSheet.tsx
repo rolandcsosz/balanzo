@@ -20,7 +20,7 @@ export function BottomSheet() {
 
     useEffect(() => {
         if (isOpen) {
-            openSheet(snapThreshold); // Open sheet to half size when isOpen is true
+            openSheet(SheetSize.HALF); // Open sheet to half size when isOpen is true
         }
     }, [isOpen]);
 
@@ -29,45 +29,28 @@ export function BottomSheet() {
     };
 
     const handleDrag = (event) => {
-        if (!isDragging) {
-            return;
-        }
+        if (!isDragging) return;
+
         const clientY = event.touches ? event.touches[0].clientY : event.clientY; // Get Y coordinate from event
         setSheetHeight(clientY); // Set sheet height based on drag position
     };
 
     const handleDragEnd = () => {
-        if (!isDragging) {
-            return;
-        }
+        if (!isDragging) return;
 
         setIsDragging(false); // Set dragging state to false
         setSheetHeight((prev) => (prev < snapThreshold ? 0 : snapThreshold)); // Snap to closest threshold
     };
 
     const closeSheetAnimated = () => {
-        const closeInterval = setInterval(() => {
-            setSheetHeight((prev) => {
-                if (prev >= window.innerHeight) {
-                    clearInterval(closeInterval); // Clear interval when sheet is fully closed
-                    closeSheet(); // Close the sheet
-                    return prev;
-                }
-                return prev + animatonStep; // Increment sheet height
-            });
-        }, animationFrameCount);
+        // Use CSS transition for smoother closing
+        setSheetHeight(SheetSize.CLOSED);
+        setTimeout(() => closeSheet(), 300); // Wait for the animation to complete before closing
     };
 
     const openSheet = (targetSize: SheetSize) => {
-        const openInterval = setInterval(() => {
-            setSheetHeight((prev) => {
-                if (prev <= targetSize) {
-                    clearInterval(openInterval); // Clear interval when target size is reached
-                    return targetSize;
-                }
-                return prev - animatonStep; // Decrement sheet height
-            });
-        }, animationFrameCount);
+        // Use CSS transition to smoothly open the sheet
+        setSheetHeight(targetSize);
     };
 
     useEffect(() => {
@@ -99,7 +82,7 @@ export function BottomSheet() {
                 style={{
                     transform: `translateY(${sheetHeight}px)`, // Translate sheet based on height
                     height: `100vh`,
-                    transition: isDragging ? "none" : "height 0.2s", // Disable transition during drag
+                    transition: isDragging ? "none" : "transform 0.3s ease-in-out", // Use transform instead of height for smoother animations
                 }}
             >
                 <div
@@ -107,7 +90,7 @@ export function BottomSheet() {
                     onMouseDown={handleDragStart} // Start drag on mousedown
                     onTouchStart={handleDragStart} // Start drag on touchstart
                     onClick={() => {
-                        openSheet(sheetHeight == SheetSize.FULL ? SheetSize.HALF : SheetSize.FULL);
+                        openSheet(sheetHeight === SheetSize.FULL ? SheetSize.HALF : SheetSize.FULL);
                     }} // Toggle sheet size on click
                 >
                     <div class="handle-bar" />

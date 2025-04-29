@@ -106,7 +106,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             amount: itemAmount,
             transactionType: transactionType,
             subcategory: subcategory,
-            date: itemDate,
+            date: new Date().toISOString(),
         };
 
         if (transaction) {

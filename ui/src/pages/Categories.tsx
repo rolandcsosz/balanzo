@@ -177,6 +177,7 @@ export function Categories() {
                     }}
                     text="Add Category"
                     subRow={false}
+                    latsRow={true}
                     isMobileView={isMobile}
                 />
             </div>
