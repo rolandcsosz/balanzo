@@ -1,11 +1,12 @@
 .plot {
-    height: 500px;
+    height: 100%;
     margin: 0 auto;
     padding: 20px;
     border-radius: 20px;
     background-color: #FFFFFF;
     border: 1px solid rgba(239, 240, 246, 1);
     box-sizing: border-box;
+    width: 100%;
 
     .title {
         font-family: Inter, sans-serif;

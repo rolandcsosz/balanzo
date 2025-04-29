@@ -1,0 +1,85 @@
+.cardList {
+  display: flex;
+  gap: 20px;
+  padding: 0px 10px 10px 10px;
+  margin: 0px 10px 10px 10px;
+
+  @media (max-width: 600px) {
+    margin-top: 0;
+    flex-direction: column;
+    gap: 0px;
+    padding: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
+  }
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 0px 10px 10px 10px;
+  margin: 0px 10px 10px 10px;
+
+  @media (max-width: 600px) {
+    margin-top: 0;
+    flex-direction: column;
+    gap: 0px;
+    padding: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
+  }
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+
+.gridItem {
+  position: relative;
+  width: 100%;
+  border: none;
+  height: 400px;
+
+  &:nth-child(1) {
+    grid-column: 1 / 2;
+  }
+
+  &:nth-child(2) {
+    grid-column: 2 / 4;
+  }
+
+  &:nth-child(3) {
+    grid-column: 1 / 2;
+  }
+
+  &:nth-child(4) {
+    grid-column: 2 / 3;
+  }
+
+  &:nth-child(5) {
+    grid-column: 3 / 4;
+  }
+
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: grid;
+    justify-items: start;
+    align-items: end;
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
