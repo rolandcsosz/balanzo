@@ -1,11 +1,11 @@
-import { useDevice } from '../hooks/useDevice';
-import '../components/TransactionCard.scss';
-import { useModel } from '../hooks/useModel';
-import { TemplateCard } from '../components/TemplateCard';
-import { useBottomSheet } from '../hooks/useBottomSheet';
-import { EditItem } from './EditItem';
-import { EditTemplate } from './EditTemplate';
-import { useMemo } from 'preact/hooks';
+import { useDevice } from "../hooks/useDevice";
+import "../components/TransactionCard.scss";
+import { useModel } from "../hooks/useModel";
+import { TemplateCard } from "../components/TemplateCard";
+import { useBottomSheet } from "../hooks/useBottomSheet";
+import { EditItem } from "./EditItem";
+import { EditTemplate } from "./EditTemplate";
+import { useMemo } from "preact/hooks";
 
 export function Templates() {
     const { templates, transactions, refetchData } = useModel(); // Fetch templates and refetch function from the model hook
@@ -29,12 +29,18 @@ export function Templates() {
                     template={template}
                     onUseTemplate={() => {
                         openSheet(
-                            <EditItem template={template} onFinished={closeSheet} /> // Open bottom sheet with EditItem component
+                            <EditItem template={template} onFinished={closeSheet} />, // Open bottom sheet with EditItem component
                         );
                     }}
                     onEditTemplate={() => {
                         openSheet(
-                            <EditTemplate template={template} onFinished={() => { refetchData(); closeSheet(); }} /> // Open bottom sheet with EditTemplate component and refetch data on finish
+                            <EditTemplate
+                                template={template}
+                                onFinished={() => {
+                                    refetchData();
+                                    closeSheet();
+                                }}
+                            />, // Open bottom sheet with EditTemplate component and refetch data on finish
                         );
                     }}
                 />
@@ -44,10 +50,16 @@ export function Templates() {
                 template={null}
                 onUseTemplate={() => {
                     openSheet(
-                        <EditTemplate template={null} onFinished={() => { refetchData(); closeSheet(); }} /> // Open bottom sheet with EditTemplate component for adding a new template
+                        <EditTemplate
+                            template={null}
+                            onFinished={() => {
+                                refetchData();
+                                closeSheet();
+                            }}
+                        />, // Open bottom sheet with EditTemplate component for adding a new template
                     );
                 }}
             />
         </div>
     );
-};
+}

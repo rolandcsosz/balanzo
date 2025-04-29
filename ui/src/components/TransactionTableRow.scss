@@ -36,19 +36,25 @@
 
 .transaction-row-item-cell {
     color: #323232;
-    font: 700 16px 'Inter', sans-serif;
+    font:
+        700 16px "Inter",
+        sans-serif;
 }
 
 .transaction-row-amount-cell {
     color: #5c5c5c;
-    font: 700 16px 'Roboto Mono', monospace;
+    font:
+        700 16px "Roboto Mono",
+        monospace;
 }
 
 .transaction-row-category-pill,
 .transaction-row-subcategory-pill {
     border-radius: 4px;
     padding: 4px 8px;
-    font: 400 14px/1.2 'Azeret Mono', monospace;
+    font:
+        400 14px/1.2 "Azeret Mono",
+        monospace;
 }
 
 .transaction-row-category-pill {
@@ -64,7 +70,9 @@
 .transaction-row-date-cell,
 .transaction-row-action-cell {
     color: #000;
-    font: 400 16px 'Inter', sans-serif;
+    font:
+        400 16px "Inter",
+        sans-serif;
 }
 
 .transaction-row-action-cell {

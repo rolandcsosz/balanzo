@@ -1,11 +1,11 @@
-import './Categories.scss';
-import { useModel } from '../hooks/useModel';
-import { CategoryRow } from '../components/CategoryRow';
-import { CategoryRowMobile } from '../components/CategoryRowMobile';
-import { useDevice } from '../hooks/useDevice';
-import { useApiClient } from '../hooks/useApiClient';
-import { NewCategoryRow } from '../components/NewCategoryRow';
-import { useEffect, useState } from 'preact/hooks';
+import "./Categories.scss";
+import { useModel } from "../hooks/useModel";
+import { CategoryRow } from "../components/CategoryRow";
+import { CategoryRowMobile } from "../components/CategoryRowMobile";
+import { useDevice } from "../hooks/useDevice";
+import { useApiClient } from "../hooks/useApiClient";
+import { NewCategoryRow } from "../components/NewCategoryRow";
+import { useEffect, useState } from "preact/hooks";
 
 export function Categories() {
     // Fetch initial data from the model
@@ -35,7 +35,11 @@ export function Categories() {
 
         const updatedCategory = { id, name, expenseType: typeId };
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + '/main_categories', 'POST', JSON.stringify(updatedCategory));
+        await fetchWithAuth(
+            import.meta.env.VITE_BACKEND_URL + "/main_categories",
+            "POST",
+            JSON.stringify(updatedCategory),
+        );
     };
 
     // Handle subcategory edit
@@ -55,12 +59,12 @@ export function Categories() {
             expenseType: typeId,
         };
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
+        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/subcategories", "POST", JSON.stringify(body));
     };
 
     // Handle category deletion
     const handleDeleteCategory = async (id) => {
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/main_categories/${id}`, 'DELETE', '');
+        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/main_categories/${id}`, "DELETE", "");
         if (!response.ok) {
             console.error("Failed to delete main category");
             return;
@@ -68,13 +72,13 @@ export function Categories() {
 
         setMainCategories((prevCategories) => prevCategories.filter((category) => category._id !== id));
         setSubcategories((prevSubcategories) =>
-            prevSubcategories.filter((subcategory) => subcategory.mainCategory._id !== id)
+            prevSubcategories.filter((subcategory) => subcategory.mainCategory._id !== id),
         );
     };
 
     // Handle subcategory deletion
     const handleDeleteSubcategory = async (id) => {
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/subcategories/${id}`, 'DELETE', '');
+        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/subcategories/${id}`, "DELETE", "");
 
         if (!response.ok) {
             console.error("Failed to delete subcategory");
@@ -92,7 +96,11 @@ export function Categories() {
             transactionType: expenseTypes.find((expenseType) => expenseType.name === "Expense")?._id,
         };
 
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + '/main_categories', 'POST', JSON.stringify(body));
+        const response = await fetchWithAuth(
+            import.meta.env.VITE_BACKEND_URL + "/main_categories",
+            "POST",
+            JSON.stringify(body),
+        );
         if (!response.ok) {
             console.error("Failed to create main category");
             return;
@@ -100,7 +108,7 @@ export function Categories() {
 
         const data = await response.json();
         setMainCategories([...mainCategories, data]);
-    }
+    };
 
     // Create a new subcategory
     const createSubcategory = async (id) => {
@@ -110,17 +118,18 @@ export function Categories() {
             expenseType: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?._id,
         };
 
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + '/subcategories', 'POST', JSON.stringify(body));
+        const response = await fetchWithAuth(
+            import.meta.env.VITE_BACKEND_URL + "/subcategories",
+            "POST",
+            JSON.stringify(body),
+        );
         if (!response.ok) {
             console.error("Failed to create subcategory");
             return;
         }
 
         const data = await response.json();
-        setSubcategories((prevSubcategories) => [
-            ...prevSubcategories,
-            { ...data, mainCategory: { _id: id } },
-        ]);
+        setSubcategories((prevSubcategories) => [...prevSubcategories, { ...data, mainCategory: { _id: id } }]);
     };
 
     return (
@@ -129,15 +138,48 @@ export function Categories() {
             <div className="categories-table-container">
                 {mainCategories.map((category) => (
                     <>
-                        <CategoryComponent key={category._id} item={category} options={expenseTypes?.map(item => item.name)} isSubcategory={false} firstSub={false} onEdit={handleCategoryEdit} onDelete={handleDeleteCategory} />
-                        {subcategories.filter(subcategory => subcategory.mainCategory._id === category._id).map((subcategory, index) => (
-                            <CategoryComponent key={subcategory._id} item={subcategory} options={expenseTypes?.map(item => item.name)} isSubcategory={true} firstSub={index === 0} onEdit={handleSubategoryEdit} onDelete={handleDeleteSubcategory} />
-                        ))}
-                        <NewCategoryRow onAdd={(id) => { createSubcategory(id); }} text="Add new subcategory" subRow={true} categoryId={category._id} isMobileView={isMobile} />
+                        <CategoryComponent
+                            key={category._id}
+                            item={category}
+                            options={expenseTypes?.map((item) => item.name)}
+                            isSubcategory={false}
+                            firstSub={false}
+                            onEdit={handleCategoryEdit}
+                            onDelete={handleDeleteCategory}
+                        />
+                        {subcategories
+                            .filter((subcategory) => subcategory.mainCategory._id === category._id)
+                            .map((subcategory, index) => (
+                                <CategoryComponent
+                                    key={subcategory._id}
+                                    item={subcategory}
+                                    options={expenseTypes?.map((item) => item.name)}
+                                    isSubcategory={true}
+                                    firstSub={index === 0}
+                                    onEdit={handleSubategoryEdit}
+                                    onDelete={handleDeleteSubcategory}
+                                />
+                            ))}
+                        <NewCategoryRow
+                            onAdd={(id) => {
+                                createSubcategory(id);
+                            }}
+                            text="Add new subcategory"
+                            subRow={true}
+                            categoryId={category._id}
+                            isMobileView={isMobile}
+                        />
                     </>
                 ))}
-                <NewCategoryRow onAdd={(id) => { createMainCategory(); }} text="Add Category" subRow={false} isMobileView={isMobile} />
+                <NewCategoryRow
+                    onAdd={(id) => {
+                        createMainCategory();
+                    }}
+                    text="Add Category"
+                    subRow={false}
+                    isMobileView={isMobile}
+                />
             </div>
         </div>
     );
-};
+}

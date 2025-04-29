@@ -1,11 +1,11 @@
-import './index.scss';
-import { render } from 'preact';
-import { useState } from 'preact/hooks';
-import { Menu } from './pages/Menu';
-import { Login } from './pages/Login';
-import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './hooks/useAuth';
-import { DeviceProvider } from './context/DeviceContext';
+import "./index.scss";
+import { render } from "preact";
+import { useState } from "preact/hooks";
+import { Menu } from "./pages/Menu";
+import { Login } from "./pages/Login";
+import { AuthProvider } from "./context/AuthContext";
+import { useAuth } from "./hooks/useAuth";
+import { DeviceProvider } from "./context/DeviceContext";
 import { BottomSheetProvider } from "./context/BottomSheetContext";
 
 function App() {
@@ -17,7 +17,9 @@ function App() {
     return (
         <div class="app-container">
             {/* Render Menu if authenticated, otherwise render Login */}
-            {authState.isAuthenticated ? <Menu /> : <Login />}
+            {authState.isAuthenticated ?
+                <Menu />
+            :   <Login />}
         </div>
     );
 }
@@ -31,5 +33,5 @@ render(
             </BottomSheetProvider>
         </DeviceProvider>
     </AuthProvider>,
-    document.getElementById('app')
+    document.getElementById("app"),
 );

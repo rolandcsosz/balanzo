@@ -3,7 +3,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font: 400 16px Inter, sans-serif;
+    font:
+        400 16px Inter,
+        sans-serif;
     height: 100vh;
     width: 100vw;
     padding: 0;
@@ -18,7 +20,13 @@
         linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77),
         linear-gradient(60deg, #037dff77 25%, transparent 25.5%, transparent 75%, #037dff77 75%, #037dff77);
     background-size: 58px 102px;
-    background-position: 0 0, 0 0, 29px 51px, 29px 51px, 0 0, 29px 51px;
+    background-position:
+        0 0,
+        0 0,
+        29px 51px,
+        29px 51px,
+        0 0,
+        29px 51px;
 
     @media (max-width: 600px) {
         height: 100vh;

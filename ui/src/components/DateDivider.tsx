@@ -1,6 +1,4 @@
-
-import './DateDivider.scss';
-
+import "./DateDivider.scss";
 
 export const DateDivider = ({ date }) => {
     return (

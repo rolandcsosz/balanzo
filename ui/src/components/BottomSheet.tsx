@@ -1,7 +1,7 @@
-import './BottomSheet.scss'
-import sheetCloseButtonUrl from '../assets/sheet-close-button.svg';
+import "./BottomSheet.scss";
+import sheetCloseButtonUrl from "../assets/sheet-close-button.svg";
 import { useRef, useState, useEffect } from "preact/hooks";
-import { useBottomSheetContext } from '../context/BottomSheetContext';
+import { useBottomSheetContext } from "../context/BottomSheetContext";
 
 enum SheetSize {
     FULL = 0,
@@ -93,7 +93,8 @@ export function BottomSheet() {
 
     return (
         isOpen && (
-            <div class="bottom-sheet"
+            <div
+                class="bottom-sheet"
                 ref={sheetRef}
                 style={{
                     transform: `translateY(${sheetHeight}px)`, // Translate sheet based on height
@@ -101,20 +102,22 @@ export function BottomSheet() {
                     transition: isDragging ? "none" : "height 0.2s", // Disable transition during drag
                 }}
             >
-                <div class="handle-area"
+                <div
+                    class="handle-area"
                     onMouseDown={handleDragStart} // Start drag on mousedown
                     onTouchStart={handleDragStart} // Start drag on touchstart
-                    onClick={() => { openSheet(sheetHeight == SheetSize.FULL ? SheetSize.HALF : SheetSize.FULL); }} // Toggle sheet size on click
+                    onClick={() => {
+                        openSheet(sheetHeight == SheetSize.FULL ? SheetSize.HALF : SheetSize.FULL);
+                    }} // Toggle sheet size on click
                 >
                     <div class="handle-bar" />
                 </div>
-
-                <button class="close-button"
+                <button
+                    class="close-button"
                     onClick={closeSheetAnimated} // Close sheet with animation
                 >
                     <img src={sheetCloseButtonUrl} alt="Close" />
                 </button>
-
                 <div class="bottom-sheet-content">{content}</div> {/* Render sheet content */}
             </div>
         )

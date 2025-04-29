@@ -1,5 +1,5 @@
-import { formatCurrency } from '../utils/utlis';
-import './MetricCard.scss';
+import { formatCurrency } from "../utils/utlis";
+import "./MetricCard.scss";
 
 // Define the properties for the MetricCard component
 export interface MetricCardProps {
@@ -16,4 +16,4 @@ export function MetricCard({ title, value }: MetricCardProps) {
             <p class={`value ${value < 0 ? "negative" : "positive"}`}>{formatCurrency(value)}</p>
         </section>
     );
-};
+}

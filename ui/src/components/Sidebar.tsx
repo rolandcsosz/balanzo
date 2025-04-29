@@ -1,20 +1,20 @@
-import './Sidebar.scss';
-import { useState, useEffect } from 'preact/hooks';
-import { SidebarButton } from './SidebarButton';
-import { HomeIcon } from './icons/HomeIcon';
-import { TransactionsIcon } from './icons/TransactionsIcon';
-import { CategoriesIcon } from './icons/CategoriesIcon';
-import { TemplatesIcon } from './icons/TemplatesIcon';
-import { LogoutIcon } from './icons/LogoutIcon';
-import { useAuth } from '../hooks/useAuth';
+import "./Sidebar.scss";
+import { useState, useEffect } from "preact/hooks";
+import { SidebarButton } from "./SidebarButton";
+import { HomeIcon } from "./icons/HomeIcon";
+import { TransactionsIcon } from "./icons/TransactionsIcon";
+import { CategoriesIcon } from "./icons/CategoriesIcon";
+import { TemplatesIcon } from "./icons/TemplatesIcon";
+import { LogoutIcon } from "./icons/LogoutIcon";
+import { useAuth } from "../hooks/useAuth";
 
 // Initial navigation items with icons and labels
 const initialNavigationItems = [
-    { icon: HomeIcon, label: 'Home', isActive: false },
-    { icon: TransactionsIcon, label: 'Transactions', isActive: false },
-    { icon: CategoriesIcon, label: 'Categories', isActive: false },
-    { icon: TemplatesIcon, label: 'Templates', isActive: false },
-    { icon: LogoutIcon, label: 'Logout', isActive: false }
+    { icon: HomeIcon, label: "Home", isActive: false },
+    { icon: TransactionsIcon, label: "Transactions", isActive: false },
+    { icon: CategoriesIcon, label: "Categories", isActive: false },
+    { icon: TemplatesIcon, label: "Templates", isActive: false },
+    { icon: LogoutIcon, label: "Logout", isActive: false },
 ];
 
 interface CategoriesIconProps {
@@ -28,10 +28,12 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
 
     // Update navigation items' active state based on the clicked button
     const handleButtonClick = (newState) => {
-        setNavigationItems(navigationItems.map((item) => ({
-            ...item,
-            isActive: item.label == newState
-        })));
+        setNavigationItems(
+            navigationItems.map((item) => ({
+                ...item,
+                isActive: item.label == newState,
+            })),
+        );
     };
 
     // Update active state when menu changes
@@ -65,4 +67,4 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
             </div>
         </nav>
     );
-};
+}

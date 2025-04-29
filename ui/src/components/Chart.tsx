@@ -1,6 +1,6 @@
-import './Chart.scss';
-import Plot from 'react-plotly.js';
-import { useEffect, useState } from 'preact/hooks';
+import "./Chart.scss";
+import Plot from "react-plotly.js";
+import { useEffect, useState } from "preact/hooks";
 
 interface ChartProps {
     title: string;
@@ -10,7 +10,7 @@ interface ChartProps {
 
 export function Chart({ title, data, showLegend = false }: ChartProps) {
     return (
-        <div className="plot" style={{ width: '100%', height: '100%' }}>
+        <div className="plot" style={{ width: "100%", height: "100%" }}>
             <h2 className="title">{title}</h2>
             <Plot
                 data={Array.isArray(data) ? data : [data]}
@@ -24,7 +24,7 @@ export function Chart({ title, data, showLegend = false }: ChartProps) {
                         r: 0,
                     },
                 }}
-                style={{ width: 'calc(100% - 40px)', height: 'calc(100% - 40px)' }}
+                style={{ width: "calc(100% - 40px)", height: "calc(100% - 40px)" }}
                 config={{
                     responsive: true,
                     displayModeBar: false,

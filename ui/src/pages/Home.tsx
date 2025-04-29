@@ -16,9 +16,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
             console.log(date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         let labels = [];
@@ -29,22 +27,17 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             ...new Set(
                 filteredTransactions
                     .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name)
+                    .map((item) => item.subcategory.mainCategory.name),
             ),
         ];
 
         const subcategories = [
             ...new Set(
-                filteredTransactions
-                    .filter((item) => item.subcategory?.name)
-                    .map((item) => item.subcategory.name)
+                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory.name),
             ),
         ];
 
-        const totalAmount = filteredTransactions.reduce(
-            (sum, item) => sum + (item.amount || 0),
-            0
-        );
+        const totalAmount = filteredTransactions.reduce((sum, item) => sum + (item.amount || 0), 0);
 
         labels.push("Spendings");
         parents.push("");
@@ -56,9 +49,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             labels.push(category);
             parents.push("Spendings");
             const categoryAmount = filteredTransactions
-                .filter(
-                    (item) => item.subcategory?.mainCategory?.name === category
-                )
+                .filter((item) => item.subcategory?.mainCategory?.name === category)
                 .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(categoryAmount);
         });
@@ -66,9 +57,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
         subcategories.forEach((subcategory) => {
             if (!subcategory) return;
 
-            const transaction = filteredTransactions.find(
-                (item) => item.subcategory?.name === subcategory
-            );
+            const transaction = filteredTransactions.find((item) => item.subcategory?.name === subcategory);
             if (!transaction?.subcategory?.mainCategory?.name) return;
 
             labels.push(subcategory);
@@ -96,16 +85,14 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         const mainCategories = [
             ...new Set(
                 filteredTransactions
                     .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name)
+                    .map((item) => item.subcategory.mainCategory.name),
             ),
         ];
 
@@ -115,10 +102,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             x: [category],
             y: [
                 filteredTransactions
-                    .filter(
-                        (item) =>
-                            item.subcategory?.mainCategory?.name === category
-                    )
+                    .filter((item) => item.subcategory?.mainCategory?.name === category)
                     .reduce((sum, item) => sum + (item.amount || 0), 0),
             ],
             marker: {
@@ -134,16 +118,12 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         const subcategories = [
             ...new Set(
-                filteredTransactions
-                    .filter((item) => item.subcategory?.name)
-                    .map((item) => item.subcategory.name)
+                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory.name),
             ),
         ];
 
@@ -168,39 +148,31 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         const mainCategories = [
             ...new Set(
                 filteredTransactions
                     .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name)
+                    .map((item) => item.subcategory.mainCategory.name),
             ),
         ];
 
         const subcategories = [
             ...new Set(
-                filteredTransactions
-                    .filter((item) => item.subcategory?.name)
-                    .map((item) => item.subcategory.name)
+                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory.name),
             ),
         ];
 
         const sortedCategories = mainCategories.sort(
             (a, b) =>
                 filteredTransactions
-                    .filter(
-                        (item) => item.subcategory?.mainCategory?.name === b
-                    )
+                    .filter((item) => item.subcategory?.mainCategory?.name === b)
                     .reduce((sum, item) => sum + (item.amount || 0), 0) -
                 filteredTransactions
-                    .filter(
-                        (item) => item.subcategory?.mainCategory?.name === a
-                    )
-                    .reduce((sum, item) => sum + (item.amount || 0), 0)
+                    .filter((item) => item.subcategory?.mainCategory?.name === a)
+                    .reduce((sum, item) => sum + (item.amount || 0), 0),
         );
 
         return subcategories.map((subcategory) => {
@@ -209,11 +181,10 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
                     filteredTransactions
                         .filter(
                             (item) =>
-                                item.subcategory?.mainCategory?.name ===
-                                category &&
-                                item.subcategory?.name === subcategory
+                                item.subcategory?.mainCategory?.name === category &&
+                                item.subcategory?.name === subcategory,
                         )
-                        .reduce((sum, item) => sum + (item.amount || 0), 0) || 0
+                        .reduce((sum, item) => sum + (item.amount || 0), 0) || 0,
             );
 
             return {
@@ -233,33 +204,22 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         const expenseTypes = [
             ...new Set(
                 filteredTransactions
-                    .filter(
-                        (item) =>
-                            item.subcategory?.mainCategory?.expenseType?.name
-                    )
-                    .map(
-                        (item) => item.subcategory.mainCategory.expenseType.name
-                    )
+                    .filter((item) => item.subcategory?.mainCategory?.expenseType?.name)
+                    .map((item) => item.subcategory.mainCategory.expenseType.name),
             ),
         ].sort();
 
         const labels = expenseTypes;
         const values = expenseTypes.map((type) =>
             filteredTransactions
-                .filter(
-                    (item) =>
-                        item.subcategory?.mainCategory?.expenseType?.name ===
-                        type
-                )
-                .reduce((sum, item) => sum + (item.amount || 0), 0)
+                .filter((item) => item.subcategory?.mainCategory?.expenseType?.name === type)
+                .reduce((sum, item) => sum + (item.amount || 0), 0),
         );
         const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF"];
 
@@ -280,17 +240,11 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         return filteredTransactions
-            .filter(
-                (item) =>
-                    item.subcategory?.mainCategory?.transactionType?.name ===
-                    "Income"
-            )
+            .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Income")
             .reduce((sum, item) => sum + (item.amount || 0), 0);
     }, [transactions, selectedMonth]);
 
@@ -299,18 +253,12 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            return (
-                date >= selectedMonth.startDate && date <= selectedMonth.endDate
-            );
+            return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
         return (
             filteredTransactions
-                .filter(
-                    (item) =>
-                        item.subcategory?.mainCategory?.transactionType
-                            ?.name === "Expense"
-                )
+                .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === "Expense")
                 .reduce((sum, item) => sum + (item.amount || 0), 0) * -1
         );
     }, [transactions, selectedMonth]);
@@ -330,46 +278,27 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             <div class={styles.gridContainer}>
                 <div class={styles.gridItem}>
                     <div class={styles.content}>
-                        <Chart
-                            data={expenseTypePieChartData}
-                            title="Budget Allocation"
-                            showLegend={true}
-                        />
+                        <Chart data={expenseTypePieChartData} title="Budget Allocation" showLegend={true} />
                     </div>
                 </div>
                 <div class={styles.gridItem}>
                     <div class={styles.content}>
-                        <Chart
-                            data={stackedBarChartData}
-                            title='Grouped Categories'
-                        />
+                        <Chart data={stackedBarChartData} title="Grouped Categories" />
                     </div>
                 </div>
                 <div class={styles.gridItem}>
                     <div class={styles.content}>
-                        <Chart
-                            data={mainBarChartData}
-
-                            title="Main Categories"
-                        />
+                        <Chart data={mainBarChartData} title="Main Categories" />
                     </div>
                 </div>
                 <div class={styles.gridItem}>
                     <div class={styles.content}>
-                        <Chart
-                            data={subBarChartData}
-
-                            title='Subcategories'
-                        />
+                        <Chart data={subBarChartData} title="Subcategories" />
                     </div>
                 </div>
                 <div class={styles.gridItem}>
                     <div class={styles.content}>
-                        <Chart
-                            data={sunburstData}
-
-                            title='Spending Breakdown'
-                        />
+                        <Chart data={sunburstData} title="Spending Breakdown" />
                     </div>
                 </div>
             </div>

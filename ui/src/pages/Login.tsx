@@ -1,7 +1,7 @@
-import './Login.scss';
-import InputField from '../components/InputField';
-import { useState } from 'preact/hooks';
-import { useAuth } from '../hooks/useAuth';
+import "./Login.scss";
+import InputField from "../components/InputField";
+import { useState } from "preact/hooks";
+import { useAuth } from "../hooks/useAuth";
 
 export function Login() {
     // State variables for email and password
@@ -17,12 +17,12 @@ export function Login() {
 
         try {
             // Send login request to the server
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/login', {
-                method: 'POST',
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/login", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password }),
             });
 
             if (response.ok) {
@@ -44,22 +44,14 @@ export function Login() {
                 <h1 class="title">Welcome back :)</h1>
                 <p class="subtitle">Type in your email and password</p>
                 <form class="login-form" onSubmit={handleSubmit}>
-                    <InputField
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={setEmail}
-                    />
-                    <InputField
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={setPassword}
-                    />
-                    <button type="submit" class="button">Sign in</button>
+                    <InputField type="email" placeholder="Email" value={email} onChange={setEmail} />
+                    <InputField type="password" placeholder="Password" value={password} onChange={setPassword} />
+                    <button type="submit" class="button">
+                        Sign in
+                    </button>
                 </form>
                 <div class="spacer" />
             </section>
         </main>
     );
-};
+}

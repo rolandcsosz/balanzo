@@ -1,6 +1,6 @@
-import './SidebarButton.scss'
-import { ComponentType } from 'preact';
-import { IconProps } from './icons/IconProps';
+import "./SidebarButton.scss";
+import { ComponentType } from "preact";
+import { IconProps } from "./icons/IconProps";
 
 interface SidebarButtonProps {
     Icon: ComponentType<IconProps>; // The icon component to be displayed
@@ -12,7 +12,15 @@ interface SidebarButtonProps {
     onClick?: () => void; // Click event handler
 }
 
-export function SidebarButton({ Icon, label, isActive = false, isFilled = false, isLabelVisible = true, isButtonBackgroundVisible = true, onClick }: SidebarButtonProps) {
+export function SidebarButton({
+    Icon,
+    label,
+    isActive = false,
+    isFilled = false,
+    isLabelVisible = true,
+    isButtonBackgroundVisible = true,
+    onClick,
+}: SidebarButtonProps) {
     return (
         <button
             class={`nav-button ${isActive && isButtonBackgroundVisible ? " active" : ""}`} // Apply active class if the button is active and background is visible
@@ -22,4 +30,4 @@ export function SidebarButton({ Icon, label, isActive = false, isFilled = false,
             {isLabelVisible && <span class="nav-label">{label}</span>} {/* Render the label if it should be visible */}
         </button>
     );
-};
+}

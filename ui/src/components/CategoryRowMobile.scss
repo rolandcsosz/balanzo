@@ -103,14 +103,15 @@
     overflow: visible;
 }
 
-
 .category-row-mobile-label {
     color: #000;
     font-size: 18px;
     font-weight: 700;
     width: 56px;
     flex-shrink: 0;
-    font: 700 18px Inter, sans-serif;
+    font:
+        700 18px Inter,
+        sans-serif;
 }
 
 .category-row-mobile-spacer {

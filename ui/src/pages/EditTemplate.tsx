@@ -1,16 +1,16 @@
-import './EditItem.scss';
-import InputField from '../components/InputField';
-import { Dropdown } from '../components/Dropdown';
-import { useEffect, useState } from 'preact/hooks';
-import templateUrl from '../assets/template.svg';
-import itemUrl from '../assets/item.svg';
-import amountUrl from '../assets/amount.svg';
-import expenseTypeUrl from '../assets/export-type.svg';
-import categoryUrl from '../assets/category.svg';
-import subcategoryUrl from '../assets/subcategory.svg';
-import { useModel } from '../hooks/useModel';
-import { useApiClient } from '../hooks/useApiClient';
-import { Template, Transaction } from '../types';
+import "./EditItem.scss";
+import InputField from "../components/InputField";
+import { Dropdown } from "../components/Dropdown";
+import { useEffect, useState } from "preact/hooks";
+import templateUrl from "../assets/template.svg";
+import itemUrl from "../assets/item.svg";
+import amountUrl from "../assets/amount.svg";
+import expenseTypeUrl from "../assets/export-type.svg";
+import categoryUrl from "../assets/category.svg";
+import subcategoryUrl from "../assets/subcategory.svg";
+import { useModel } from "../hooks/useModel";
+import { useApiClient } from "../hooks/useApiClient";
+import { Template, Transaction } from "../types";
 
 interface EditItemProps {
     template?: Template | null;
@@ -19,13 +19,15 @@ interface EditItemProps {
 
 export function EditTemplate({ template = null, onFinished }: EditItemProps) {
     const { mainCategories, subcategories, transactionTypes } = useModel();
-    const [templateName, setTemplateName] = useState(template?.name || '');
-    const [itemName, setItemName] = useState(template?.itemName || '');
-    const [itemAmount, setItemAmount] = useState(template?.amount || '');
-    const [itemTransactionType, setItemTransactionType] = useState(template?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || '');
-    const [itemCategory, setItemCategory] = useState(template?.subcategory?.mainCategory?.name || '');
+    const [templateName, setTemplateName] = useState(template?.name || "");
+    const [itemName, setItemName] = useState(template?.itemName || "");
+    const [itemAmount, setItemAmount] = useState(template?.amount || "");
+    const [itemTransactionType, setItemTransactionType] = useState(
+        template?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || "",
+    );
+    const [itemCategory, setItemCategory] = useState(template?.subcategory?.mainCategory?.name || "");
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
-    const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || '');
+    const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || "");
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
 
     const { fetchWithAuth } = useApiClient();
@@ -65,8 +67,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
         }
 
         const subcategory = subcategories.find(
-            (subcategory) =>
-                subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory
+            (subcategory) => subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory,
         )?._id;
         if (!subcategory) {
             console.error(`No subcategory found for: ${itemSubcategory}`);
@@ -85,25 +86,25 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
             body.id = template._id;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + '/templates', 'POST', JSON.stringify(body));
+        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/templates", "POST", JSON.stringify(body));
         onFinished();
     };
 
     // Handle deleting the item
     const handleDelete = async () => {
         if (!template) {
-            console.error('No transaction found to delete');
+            console.error("No transaction found to delete");
             return;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/templates/${template._id}`, 'DELETE', '');
+        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/templates/${template._id}`, "DELETE", "");
         onFinished();
     };
 
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{template ? 'Edit template' : 'New template'}</h1>
+                <h1 class="new-item-title">{template ? "Edit template" : "New template"}</h1>
                 <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={templateUrl} alt="" />
@@ -115,12 +116,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
                     </div>
                     <div class="new-item-form-row">
                         <img src={amountUrl} alt="" />
-                        <InputField
-                            type="number"
-                            placeholder="Amount"
-                            value={itemAmount}
-                            onChange={setItemAmount}
-                        />
+                        <InputField type="number" placeholder="Amount" value={itemAmount} onChange={setItemAmount} />
                     </div>
                     <div class="new-item-form-row">
                         <img src={expenseTypeUrl} alt="" />
@@ -157,7 +153,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
                         </button>
                     )}
                     <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
-                        {template ? 'Save' : 'Add'}
+                        {template ? "Save" : "Add"}
                     </button>
                 </div>
             </div>

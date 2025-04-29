@@ -1,6 +1,6 @@
-import './Icon.scss'
-import { IconProps } from './IconProps';
-import addButtonUrl from '../../assets/add-button.svg';
+import "./Icon.scss";
+import { IconProps } from "./IconProps";
+import addButtonUrl from "../../assets/add-button.svg";
 
 export const AddIcon = ({ isActive, isFilled }: IconProps) => {
     return (

@@ -1,17 +1,10 @@
-import './CategoryRow.scss';
-import { useEffect, useState } from 'preact/hooks';
-import { Dropdown } from './Dropdown';
-import InputField from './InputField';
-import deleteButtonUrl from '../assets/delete.svg';
+import "./CategoryRow.scss";
+import { useEffect, useState } from "preact/hooks";
+import { Dropdown } from "./Dropdown";
+import InputField from "./InputField";
+import deleteButtonUrl from "../assets/delete.svg";
 
-export function CategoryRow({
-    item,
-    options,
-    isSubcategory,
-    firstSub,
-    onEdit,
-    onDelete,
-}) {
+export function CategoryRow({ item, options, isSubcategory, firstSub, onEdit, onDelete }) {
     // State for selected type and name
     const [selectedType, setSelectedType] = useState(item?.expenseType?.name || options[0] || "");
     const [name, setName] = useState(item?.name || "");
@@ -23,9 +16,7 @@ export function CategoryRow({
     }, [item, options]);
 
     return (
-        <div
-            className={`category-row-table-row ${isSubcategory ? "sub" : "main"} ${firstSub ? "" : "nonfirstsub"}`}
-        >
+        <div className={`category-row-table-row ${isSubcategory ? "sub" : "main"} ${firstSub ? "" : "nonfirstsub"}`}>
             <div className={`category-row-highlight-bar ${isSubcategory ? "sub" : "main"}`} />
 
             <div className="category-row-category-cell">
@@ -57,14 +48,14 @@ export function CategoryRow({
                 />
             </div>
 
-            <button className="category-row-action-cell" onClick={() => { onDelete(item._id); }}>
-                <img
-                    loading="lazy"
-                    src={deleteButtonUrl}
-                    alt=""
-                    className="category-row-action-icon"
-                />
+            <button
+                className="category-row-action-cell"
+                onClick={() => {
+                    onDelete(item._id);
+                }}
+            >
+                <img loading="lazy" src={deleteButtonUrl} alt="" className="category-row-action-icon" />
             </button>
         </div>
     );
-};
+}

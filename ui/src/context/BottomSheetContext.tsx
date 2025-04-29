@@ -12,9 +12,7 @@ interface BottomSheetContextType {
 }
 
 // Create the BottomSheetContext with an undefined default value
-export const BottomSheetContext = createContext<BottomSheetContextType | undefined>(
-    undefined
-);
+export const BottomSheetContext = createContext<BottomSheetContextType | undefined>(undefined);
 
 export const BottomSheetProvider = ({ children }: { children: JSX.Element }) => {
     const [isOpen, setIsOpen] = useState(false); // State to track if the bottom sheet is open
@@ -41,13 +39,11 @@ export const BottomSheetProvider = ({ children }: { children: JSX.Element }) => 
                 openSheet(component);
             }
         },
-        [isOpen, closeSheet, openSheet]
+        [isOpen, closeSheet, openSheet],
     );
 
     return (
-        <BottomSheetContext.Provider
-            value={{ isOpen, content, openSheet, closeSheet, toggleSheet }}
-        >
+        <BottomSheetContext.Provider value={{ isOpen, content, openSheet, closeSheet, toggleSheet }}>
             {children}
         </BottomSheetContext.Provider>
     );
@@ -57,9 +53,7 @@ export const BottomSheetProvider = ({ children }: { children: JSX.Element }) => 
 export const useBottomSheetContext = () => {
     const context = useContext(BottomSheetContext);
     if (!context) {
-        throw new Error(
-            "useBottomSheetContext must be used within a BottomSheetProvider"
-        );
+        throw new Error("useBottomSheetContext must be used within a BottomSheetProvider");
     }
     return context;
 };

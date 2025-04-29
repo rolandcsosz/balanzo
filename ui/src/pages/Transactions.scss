@@ -16,7 +16,9 @@
         color: var(--highlight, #3772ff);
         justify-content: start;
         flex-wrap: wrap;
-        font: 700 16px Inter, sans-serif;
+        font:
+            700 16px Inter,
+            sans-serif;
     }
 
     .transaction-header-cell {

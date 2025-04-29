@@ -1,6 +1,6 @@
-import { createContext } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
-import { User } from '../types';
+import { createContext } from "preact";
+import { useState, useEffect } from "preact/hooks";
+import { User } from "../types";
 
 // Define the shape of the authentication state
 interface AuthState {
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     useEffect(() => {
         // Check if there is a user in local storage
-        const userFromLocalStorage = JSON.parse(localStorage.getItem('user') || 'null');
+        const userFromLocalStorage = JSON.parse(localStorage.getItem("user") || "null");
         if (userFromLocalStorage) {
             // If a user is found, update the authentication state
             setAuthState({
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
             user,
             isAuthenticated: true,
         });
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
     };
 
     // Function to log out a user
@@ -59,12 +59,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
             user: null,
             isAuthenticated: false,
         });
-        localStorage.removeItem('user');
+        localStorage.removeItem("user");
     };
 
-    return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;
 };

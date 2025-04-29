@@ -24,12 +24,16 @@
 
 .transaction-card-item-name {
     color: #2a2a33;
-    font: 700 18px Inter, sans-serif;
+    font:
+        700 18px Inter,
+        sans-serif;
 }
 
 .transaction-card-amount {
     color: #2a2a33;
-    font: 700 16px "Roboto Mono", monospace;
+    font:
+        700 16px "Roboto Mono",
+        monospace;
 }
 
 .transaction-card-icon-wrapper {
@@ -55,7 +59,9 @@
     align-items: center;
     gap: 7px;
     padding: 4px 0;
-    font: 400 14px/1.2 "Azeret Mono", monospace;
+    font:
+        400 14px/1.2 "Azeret Mono",
+        monospace;
 }
 
 .transaction-card-category-tag {

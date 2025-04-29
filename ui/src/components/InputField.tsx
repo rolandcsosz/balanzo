@@ -1,4 +1,4 @@
-import './InputField.scss';
+import "./InputField.scss";
 
 // Define the props for the InputField component
 interface InputFieldProps {
