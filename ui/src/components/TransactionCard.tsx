@@ -16,7 +16,7 @@ export const TransactionCard = ({ transaction, onChange }) => {
                 <h3 class="transaction-card-item-name">{transaction.item}</h3>
                 <span>-</span>
                 {/* Display the formatted transaction amount */}
-                <span class="transaction-card-amount">{formatCurrency(transaction.amount)}</span>
+                <span class="transaction-card-amount">{formatCurrency(transaction?.amount || 0)}</span>
                 {/* Button to open the bottom sheet for editing the transaction */}
                 <button
                     class="transaction-card-icon-wrapper"

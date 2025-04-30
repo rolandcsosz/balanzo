@@ -16,6 +16,7 @@
 
 .date-divider-divider {
     flex: 1;
-    height: 1px;
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='black' stroke-width='1' stroke-dasharray='1%2c 8' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
+    border-bottom: 2px dashed #9f9fac;
+    height: 0; /* no extra height */
+    margin: 8px 0; /* optional spacing */
 }

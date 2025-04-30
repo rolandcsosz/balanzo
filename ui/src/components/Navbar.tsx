@@ -8,6 +8,7 @@ import { SidebarButton } from "./SidebarButton";
 import { AddIcon } from "./icons/AddIcon";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { EditItem } from "../pages/EditItem";
+import { useModel } from "../hooks/useModel";
 
 // Initial navigation items with icons, labels, and active state
 const initialNavigationItems = [
@@ -26,7 +27,8 @@ interface CategoriesIconProps {
 
 export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIconProps) {
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
-    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
+    const { openSheet, closeSheet } = useBottomSheet();
+    const { refetchData } = useModel();
 
     // Update navigation items' active state based on the clicked button
     const handleButtonClick = (newState) => {
@@ -55,7 +57,15 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
                         isButtonBackgroundVisible={false}
                         onClick={() => {
                             if (item.label === "Add") {
-                                openSheet(<EditItem transaction={null} onFinished={closeSheet} />);
+                                openSheet(
+                                    <EditItem
+                                        transaction={null}
+                                        onFinished={() => {
+                                            refetchData();
+                                            closeSheet();
+                                        }}
+                                    />,
+                                );
                                 return;
                             }
                             setMenu(item.label);

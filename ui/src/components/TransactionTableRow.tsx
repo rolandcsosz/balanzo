@@ -10,7 +10,7 @@ interface TransactionRowProps {
     onChange: () => void;
 }
 
-export const TransactionRow = ({ transaction, onChange }) => {
+export const TransactionRow = ({ transaction, onChange }: TransactionRowProps) => {
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
 
     return (

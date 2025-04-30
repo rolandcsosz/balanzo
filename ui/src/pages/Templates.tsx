@@ -16,7 +16,6 @@ export function Templates() {
         return templates.sort((a, b) => {
             const aCount = transactions.filter((t) => t.subcategory._id === a.subcategory._id).length;
             const bCount = transactions.filter((t) => t.subcategory._id === b.subcategory._id).length;
-            console.log(aCount, bCount);
             return bCount - aCount;
         });
     }, [templates, transactions]);
@@ -29,7 +28,14 @@ export function Templates() {
                     template={template}
                     onUseTemplate={() => {
                         openSheet(
-                            <EditItem template={template} onFinished={closeSheet} />, // Open bottom sheet with EditItem component
+                            <EditItem
+                                template={template}
+                                transaction={null}
+                                onFinished={() => {
+                                    refetchData();
+                                    closeSheet();
+                                }}
+                            />, // Open bottom sheet with EditItem component
                         );
                     }}
                     onEditTemplate={() => {

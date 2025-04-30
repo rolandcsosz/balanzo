@@ -8,7 +8,7 @@ import expenseTypeUrl from "../assets/export-type.svg";
 import categoryUrl from "../assets/category.svg";
 import subcategoryUrl from "../assets/subcategory.svg";
 import dateUrl from "../assets/date.svg";
-import { formatDate } from "../utils/utlis";
+import { formatDate, formatDateToSet, formattedStringToDate } from "../utils/utlis";
 import { useModel } from "../hooks/useModel";
 import { useApiClient } from "../hooks/useApiClient";
 import { Template, Transaction } from "../types";
@@ -28,7 +28,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
     const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
     const [itemSubcategory, setItemSubcategory] = useState("");
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
-    const [itemDate, setItemDate] = useState(new Date().toDateString());
+    const [itemDate, setItemDate] = useState(new Date());
 
     const { fetchWithAuth } = useApiClient();
 
@@ -52,7 +52,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
     useEffect(() => {
         if (transaction || template) {
             const name = template?.itemName || transaction?.item || "";
-            const amount = template?.amount || transaction?.amount || "";
+            const amount = template?.amount || transaction?.amount || 0;
             const transactionType =
                 template?.subcategory?.mainCategory?.transactionType.name ||
                 transaction?.subcategory?.mainCategory?.transactionType.name ||
@@ -60,14 +60,14 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             const category =
                 template?.subcategory?.mainCategory?.name || transaction?.subcategory?.mainCategory?.name || "";
             const subcategory = template?.subcategory?.name || transaction?.subcategory?.name || "";
-            const date = transaction?.date || new Date().toDateString();
+            const date = transaction?.date ? new Date(transaction.date) : new Date();
 
             setItemName(name);
             setItemAmount(amount);
             setItemTransactionType(transactionType);
             setItemCategory(category);
             setItemSubcategory(subcategory);
-            setItemDate(formatDate(date));
+            setItemDate(date);
         }
     }, [transaction, template]);
 
@@ -101,12 +101,16 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             return;
         }
 
+        if (!itemName || typeof itemAmount === "string" || (typeof itemAmount === "number" && itemAmount <= 0)) {
+            return;
+        }
+
         const body: any = {
             item: itemName,
             amount: itemAmount,
             transactionType: transactionType,
             subcategory: subcategory,
-            date: new Date().toISOString(),
+            date: itemDate,
         };
 
         if (transaction) {
@@ -139,7 +143,15 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
                     </div>
                     <div class="new-item-form-row">
                         <img src={amountUrl} alt="" />
-                        <InputField type="number" placeholder="Amount" value={itemAmount} onChange={setItemAmount} />
+                        <InputField
+                            type="number"
+                            placeholder="Amount"
+                            value={itemAmount}
+                            onChange={(amount) => {
+                                const parsedAmount = parseFloat(amount);
+                                setItemAmount(isNaN(parsedAmount) ? 0 : parsedAmount);
+                            }}
+                        />
                     </div>
                     <div class="new-item-form-row">
                         <img src={expenseTypeUrl} alt="" />
@@ -173,8 +185,10 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
                         <InputField
                             type="datetime-local"
                             placeholder="Select date and time"
-                            value={itemDate}
-                            onChange={setItemDate}
+                            value={formatDateToSet(itemDate)}
+                            onChange={(date) => {
+                                setItemDate(formattedStringToDate(date));
+                            }}
                         />
                     </div>
                 </form>

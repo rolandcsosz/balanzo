@@ -103,7 +103,7 @@ export function Menu() {
         <main class={`layout${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
             <SidebarComponent menu={menu} setMenu={setMenu} /> {/* Sidebar or Navbar component */}
             <section class={`content${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
-                <div class="menu-header-container">
+                <div class={`menu-header-container ${isMobile ? "mobile" : ""}`}>
                     <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1> {/* Dynamic title */}
                     {menu === "Home" && (
                         <div class="year-selector-container">

@@ -15,7 +15,6 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const filteredTransactions = transactions.filter((item) => {
             const date = new Date(item.date);
-            console.log(date);
             return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
         });
 
