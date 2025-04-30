@@ -1,0 +1,3 @@
+target:
+  name: "mongo"
+  uri: mongodb://admin:admin@local_mongodb:27017/

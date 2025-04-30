@@ -39,6 +39,17 @@ services:
     networks:
       - app-network
 
+  mgob:
+    image: stefanprodan/mgob:latest
+    container_name: mgob
+    ports:
+      - "8090:8090"  # Mgob has a web UI
+    volumes:
+      - ./database/mgob/mongo-backup-plan.yml:/config/mongo-backup-plan.yml
+      - ./backup:/storage/mongo-backup-plan
+    networks:
+      - app-network
+
 volumes:
   mongodb_data:
 
