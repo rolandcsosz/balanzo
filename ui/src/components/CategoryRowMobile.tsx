@@ -3,8 +3,25 @@ import { useEffect, useState } from "preact/hooks";
 import { Dropdown } from "./Dropdown";
 import InputField from "./InputField";
 import deleteButtonUrl from "../assets/delete.svg";
+import { MainCategory, Subcategory } from "../types";
 
-export function CategoryRowMobile({ item, options, isSubcategory, firstSub, onEdit, onDelete }) {
+interface CategoryRowMobileProps {
+    item: MainCategory | Subcategory;
+    options: string[]; // Replace with the actual type of options
+    isSubcategory: boolean;
+    firstSub: boolean;
+    onEdit: (id: string, name: string, type: string) => void;
+    onDelete: (id: string) => void;
+}
+
+export function CategoryRowMobile({
+    item,
+    options,
+    isSubcategory,
+    firstSub,
+    onEdit,
+    onDelete,
+}: CategoryRowMobileProps) {
     // State for selected type and name
     const [selectedType, setSelectedType] = useState(item?.expenseType?.name || options[0] || "");
     const [name, setName] = useState(item?.name || "");

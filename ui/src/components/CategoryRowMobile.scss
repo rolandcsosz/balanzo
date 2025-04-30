@@ -24,7 +24,7 @@
 }
 
 .category-row-mobile-row.main {
-    background-color: #f8f8f8;
+    background-color: transparent;
     border-top: 1px solid rgba(223, 223, 223, 1);
     border-bottom: 1px solid rgba(223, 223, 223, 1);
     display: flex;
@@ -32,12 +32,12 @@
     justify-content: center;
 }
 
-.nonfirstsub {
-    border-top: 1px solid rgba(223, 223, 223, 1);
+.category-row-action-icon {
+    cursor: pointer;
 }
 
 .category-row-mobile-row.sub {
-    background-color: #f8f8f8;
+    background-color: transparent;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -152,6 +152,7 @@
     margin: auto 0;
     border: none;
     background-color: transparent;
+    cursor: pointer;
 }
 
 .category-row-mobile-typeIcon {

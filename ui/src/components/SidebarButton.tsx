@@ -22,12 +22,12 @@ export function SidebarButton({
     onClick,
 }: SidebarButtonProps) {
     return (
-        <button
+        <div
             class={`nav-button ${isActive && isButtonBackgroundVisible ? " active" : ""}`} // Apply active class if the button is active and background is visible
             onClick={onClick} // Attach the click event handler
         >
             <Icon isActive={isActive} isFilled={isFilled} /> {/* Render the icon with the provided props*/}
             {isLabelVisible && <span class="nav-label">{label}</span>} {/* Render the label if it should be visible */}
-        </button>
+        </div>
     );
 }

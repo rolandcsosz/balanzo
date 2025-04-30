@@ -28,16 +28,16 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
     const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
     const [itemSubcategory, setItemSubcategory] = useState("");
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
-    const [itemDate, setItemDate] = useState(formatDate(new Date().toDateString()));
+    const [itemDate, setItemDate] = useState(new Date().toDateString());
 
     const { fetchWithAuth } = useApiClient();
 
     // Set category options based on the selected transaction type
     const setCategoryOptions = (transactionType: string) => {
         const filteredCategories = mainCategories
-            .filter((category) => category.transactionType.name === transactionType)
-            .map((category) => category.name);
-        setItemCategoryOptions(filteredCategories);
+            ?.filter((category) => category.transactionType?.name === transactionType)
+            .map((category) => category?.name);
+        setItemCategoryOptions(filteredCategories || []);
     };
 
     // Set subcategory options based on the selected category
@@ -170,7 +170,12 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
                     </div>
                     <div class="new-item-form-row">
                         <img src={dateUrl} alt="" />
-                        <InputField type="date" placeholder="" value={itemDate} onChange={setItemDate} />
+                        <InputField
+                            type="datetime-local"
+                            placeholder="Select date and time"
+                            value={itemDate}
+                            onChange={setItemDate}
+                        />
                     </div>
                 </form>
                 <div class="new-item-button-row">

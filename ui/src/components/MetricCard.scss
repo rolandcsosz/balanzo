@@ -5,7 +5,7 @@
     flex-direction: column;
     font-family: Inter, sans-serif;
     justify-content: start;
-    padding: 20px 20px 0px 20px;
+    padding: 10px 20px 0px 20px;
     border: 1px solid rgba(239, 240, 246, 1);
     box-sizing: border-box;
     width: 100%;
@@ -13,12 +13,12 @@
 
     .title {
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: -0.15px;
     }
 
     .value {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
         margin-top: 10px;
 

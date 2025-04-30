@@ -34,16 +34,17 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
 
     // Set category options based on the selected transaction type
     const setCategoryOptions = (transactionType: string) => {
-        const filteredCategories = mainCategories
-            .filter((category) => category.transactionType.name === transactionType)
-            .map((category) => category.name);
-        setItemCategoryOptions(filteredCategories);
+        const filteredCategories =
+            mainCategories
+                ?.filter((category) => category.transactionType?.name === transactionType)
+                .map((category) => category?.name) || [];
+        setItemCategoryOptions(filteredCategories || []);
     };
 
     // Set subcategory options based on the selected category
     const setSubcategoryOptions = (category: string) => {
         const filteredSubcategories = subcategories
-            .filter((subcategory) => subcategory.mainCategory.name === category)
+            .filter((subcategory) => subcategory.mainCategory?.name === category)
             .map((subcategory) => subcategory.name);
         setItemSubcategoryOptions(filteredSubcategories);
     };

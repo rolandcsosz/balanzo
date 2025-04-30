@@ -1,11 +1,12 @@
 .navbar {
+    z-index: 2;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 64px;
-    margin-bottom: 20px;
+    padding-bottom: 20px;
     color: #000;
     text-align: center;
     letter-spacing: 0.2px;
@@ -16,6 +17,7 @@
     bottom: 0;
     left: 0;
     background-color: #fff;
+    border-top: 1px solid rgba(239, 240, 246, 1);
 
     .navigation-items {
         flex-grow: 1;

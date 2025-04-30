@@ -71,10 +71,38 @@ export function Menu() {
         }
     }, [getMonthList]);
 
+    useEffect(() => {
+        const preventTouchMove = (e) => {
+            e.preventDefault();
+        };
+
+        if (isOpen) {
+            const scrollY = window.scrollY;
+            document.body.style.position = "fixed";
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = "100%";
+            document.addEventListener("touchmove", preventTouchMove, { passive: false });
+        } else {
+            const scrollY = document.body.style.top;
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+            window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            document.removeEventListener("touchmove", preventTouchMove);
+        }
+
+        return () => {
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+            document.removeEventListener("touchmove", preventTouchMove);
+        };
+    }, [isOpen]);
+
     return (
-        <main class="layout">
+        <main class={`layout${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
             <SidebarComponent menu={menu} setMenu={setMenu} /> {/* Sidebar or Navbar component */}
-            <section class={`content${isOpen ? " disabled-scrolling" : ""}`}>
+            <section class={`content${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
                 <div class="menu-header-container">
                     <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1> {/* Dynamic title */}
                     {menu === "Home" && (

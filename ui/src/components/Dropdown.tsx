@@ -1,5 +1,5 @@
 import { useEffect } from "preact/hooks";
-import "./InputField.scss";
+import styles from "./Dropdown.module.scss";
 
 // Dropdown component definition
 export function Dropdown({ options, selected, onSelectedChange, mini }) {
@@ -17,7 +17,7 @@ export function Dropdown({ options, selected, onSelectedChange, mini }) {
 
     // Render the select element with options
     return (
-        <select className={`input-field ${mini ? "mini" : ""}`} value={selected} onChange={handleChange}>
+        <select className={`${styles.dropdown} ${mini ? styles.mini : ""}`} value={selected} onChange={handleChange}>
             {options.map((option: string, index: number) => (
                 <option key={index} value={option}>
                     {option}

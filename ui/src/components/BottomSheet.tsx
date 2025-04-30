@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "preact/hooks";
 import { useBottomSheetContext } from "../context/BottomSheetContext";
 
 enum SheetSize {
-    FULL = 0,
+    FULL = 0.05 * window.innerHeight,
     HALF = window.innerHeight * 0.5,
     CLOSED = window.innerHeight,
 }
@@ -20,7 +20,7 @@ export function BottomSheet() {
 
     useEffect(() => {
         if (isOpen) {
-            openSheet(SheetSize.HALF); // Open sheet to half size when isOpen is true
+            openSheet(SheetSize.FULL); // Open sheet to half size when isOpen is true
         }
     }, [isOpen]);
 

@@ -17,9 +17,8 @@
     border-color: #b1b1bb;
     background-color: #fff;
     outline: none;
-
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .input-field.large-text {

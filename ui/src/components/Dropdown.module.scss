@@ -1,0 +1,32 @@
+.dropdown {
+    align-self: center;
+    width: 100%;
+    max-width: 100%;
+    line-height: 45px;
+    height: 45px;
+    padding: 0 10px;
+    gap: 10px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: #292929;
+    font-family: "Roboto Mono", sans-serif;
+    align-items: center;
+    border-color: #b1b1bb;
+    background-color: #fff;
+    outline: none;
+    -webkit-appearance: none; /* Removes default styling in Safari */
+    appearance: none;
+    text-align: left !important; /* Forces text alignment */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23999" d="M7 10l5 5 5-5z"/></svg>'); /* Adds a 24x24 arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Positions the arrow */
+    background-size: 10px 10px; /* Adjusts the size of the arrow */
+}
+
+.mini {
+    line-height: 35px;
+    height: 35px;
+}

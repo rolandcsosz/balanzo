@@ -10,6 +10,7 @@ export function Transactions() {
     const { transactions, refetchData } = useModel(); // Fetch transactions and refetch function from the model
     const isMobile = useDevice(); // Determine if the device is mobile
 
+    console.log(transactions); // Log transactions for debugging
     return isMobile ?
             <div class="transaction-cards">
                 {transactions.map((transaction, index) => {

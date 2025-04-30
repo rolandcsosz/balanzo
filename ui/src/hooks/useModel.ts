@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ExpenseType, MainCategory, Subcategory, Transaction, Template } from "../types";
 import { useApiClient } from "../hooks/useApiClient";
+import { Console } from "console";
 
 const fetchExpenseTypes = async (fetchWithAuth: Function) => {
     const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/expense_types", "GET", "");
@@ -26,12 +27,16 @@ const fetchMainCategories = async (
     if (!expenseTypes.length || !transactionTypes.length) return [];
     const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/main_categories", "GET", "");
     const data = await response.json();
+    console.log("main categories", data);
 
-    return data.map((category) => ({
+    const T = data.map((category) => ({
         ...category,
         expenseType: expenseTypes.find((et) => et._id === category.expenseType) || null,
         transactionType: transactionTypes.find((tt) => tt._id === category.transactionType) || null,
     }));
+
+    console.log("main categories with types", T);
+    return T;
 };
 
 const fetchSubcategories = async (
@@ -54,6 +59,8 @@ const fetchTransactions = async (fetchWithAuth: Function, subcategories: Subcate
     if (!subcategories.length) return [];
     const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/transactions", "GET", "");
     const data = await response.json();
+
+    console.log("transactions", data);
 
     return data
         .map((transaction) => ({
