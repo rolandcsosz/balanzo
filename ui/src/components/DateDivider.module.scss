@@ -1,4 +1,4 @@
-.date-divider-container {
+.container {
     display: flex;
     align-items: center;
     gap: 17px;
@@ -7,16 +7,14 @@
     font:
         500 16px Inter,
         sans-serif;
-    margin: 15px 0;
 }
 
-.date-divider-date {
+.date {
     white-space: nowrap;
 }
 
-.date-divider-divider {
+.divider {
     flex: 1;
     border-bottom: 2px dashed #9f9fac;
     height: 0; /* no extra height */
-    margin: 8px 0; /* optional spacing */
 }

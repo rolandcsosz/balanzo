@@ -1,4 +1,4 @@
-.transaction-table {
+.transactionTable {
     border-radius: 8px;
     background: #fff;
     display: flex;
@@ -7,7 +7,7 @@
     justify-content: start;
     margin: 20px;
 
-    .transaction-header {
+    .transactionHeader {
         background: rgba(55, 114, 255, 0.1);
         display: flex;
         height: 46px;
@@ -21,7 +21,7 @@
             sans-serif;
     }
 
-    .transaction-header-cell {
+    .transactionHeaderCell {
         flex: 1;
         padding: 16px 20px;
         white-space: nowrap;
@@ -29,6 +29,17 @@
     }
 }
 
-.transaction-cards {
+.transactionCards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     margin: 20px;
+    & > :first-child .transactionDateDivider {
+        margin-bottom: 30px;
+    }
+}
+
+.transactionDateDivider {
+    margin-top: 30px;
+    margin-bottom: 10px;
 }

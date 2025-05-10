@@ -15,7 +15,7 @@
     padding: 20px 40px 20px 20px;
     border: 1px solid rgba(239, 240, 246, 1);
     box-sizing: border-box;
-    border-radius: 11px;
+    border-radius: 20px;
     background: #fff;
     border: 1px solid #eff0f6;
     position: relative;
@@ -42,7 +42,7 @@
 .template-grid-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
     margin: 20px;
 }
 
@@ -90,6 +90,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
 
     .template-card {
         position: relative;
@@ -117,6 +118,7 @@
     letter-spacing: -0.15px;
     height: 33px;
     width: fit-content;
+    cursor: pointer;
 }
 
 .template-action-text {

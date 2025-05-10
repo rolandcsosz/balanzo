@@ -7,9 +7,7 @@
     border: 1px solid rgba(239, 240, 246, 1);
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 10px;
-
-    border-radius: 11px;
+    border-radius: 20px;
     background: #fff;
     border: 1px solid #eff0f6;
 }
@@ -45,6 +43,7 @@
     margin-left: auto;
     border: none;
     background-color: transparent;
+    cursor: pointer;
 }
 
 .transaction-card-icon {

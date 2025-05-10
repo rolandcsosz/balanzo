@@ -1,10 +1,10 @@
-import "./DateDivider.scss";
+import styles from "./DateDivider.module.scss";
 
 export const DateDivider = ({ date }) => {
     return (
-        <div class="date-divider-container">
-            <time class="date-divider-date">{date}</time>
-            <div class="date-divider-divider" aria-hidden="true" />
+        <div class={styles.container}>
+            <time className={styles.date}>{date}</time>
+            <div className={styles.divider} aria-hidden="true" />
         </div>
     );
 };

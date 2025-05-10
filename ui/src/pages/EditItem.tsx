@@ -63,7 +63,9 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
             const date = transaction?.date ? new Date(transaction.date) : new Date();
 
             setItemName(name);
-            setItemAmount(amount);
+            if (amount > 0) {
+                setItemAmount(amount);
+            }
             setItemTransactionType(transactionType);
             setItemCategory(category);
             setItemSubcategory(subcategory);

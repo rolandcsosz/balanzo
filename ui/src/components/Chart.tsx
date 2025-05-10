@@ -19,12 +19,13 @@ export function Chart({ title, data, showLegend = false }: ChartProps) {
                     showlegend: showLegend,
                     margin: {
                         t: 30,
-                        b: 30,
+                        b: 80,
                         l: 40,
-                        r: 0,
+                        r: 40,
                     },
+                    barmode: "stack",
                 }}
-                style={{ width: "calc(100% - 40px)", height: "calc(100% - 40px)" }}
+                style={{ width: "calc(100%)", height: "calc(100% - 40px)" }}
                 config={{
                     responsive: true,
                     displayModeBar: false,
