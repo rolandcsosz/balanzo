@@ -5,6 +5,7 @@ import { MonthInfo } from "../types";
 import { useDevice } from "../hooks/useDevice";
 import { useModel } from "../hooks/useModel";
 import { useCallback, useMemo } from "preact/hooks";
+import { uniqueId } from "../utils/utlis";
 
 const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF", "#D7E3FF", "#EFF4FF"];
 const ignoerdSubcategories = ["Rent"];
@@ -35,69 +36,85 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
     const sunburstData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
-        let labels = [];
-        let parents = [];
-        let values = [];
+        const labels = [];
+        const parents = [];
+        const values = [];
+        const ids = [];
 
-        const mainCategories = [
-            ...new Set(
-                filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name),
-            ),
-        ];
-
-        const subcategories = [
-            ...new Set(
-                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory.name),
-            ),
-        ];
+        const mainCategories: { name: string; id: string }[] = filteredTransactions
+            .map((item) => ({ name: item.subcategory.mainCategory.name, id: item.subcategory.mainCategory._id }))
+            .filter((item, index, self) => index === self.findIndex((t) => t.id === item.id && t.name === item.name));
+        const subcategories: { name: string; id: string; parentId: string }[] = filteredTransactions
+            .map((item) => ({
+                name: item.subcategory.name,
+                id: item.subcategory._id,
+                parentId: item.subcategory.mainCategory._id,
+            }))
+            .filter(
+                (item, index, self) =>
+                    index ===
+                    self.findIndex((t) => t.id === item.id && t.name === item.name && t.parentId === item.parentId),
+            );
 
         const totalAmount = filteredTransactions.reduce((sum, item) => sum + (item.amount || 0), 0);
+        const spendingsId = uniqueId();
 
         labels.push("Spendings");
+        ids.push(spendingsId);
         parents.push("");
         values.push(totalAmount);
 
         mainCategories.forEach((category) => {
-            if (!category) return;
+            if (!category) {
+                return;
+            }
 
-            labels.push(category);
-            parents.push("Spendings");
+            labels.push(category.name);
+            ids.push(category.id);
+            parents.push(spendingsId);
             const categoryAmount = filteredTransactions
-                .filter((item) => item.subcategory?.mainCategory?.name === category)
+                .filter((item) => item.subcategory.mainCategory._id === category.id)
                 .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(categoryAmount);
         });
 
         subcategories.forEach((subcategory) => {
-            if (!subcategory) return;
+            if (!subcategory) {
+                return;
+            }
 
-            const transaction = filteredTransactions.find((item) => item.subcategory?.name === subcategory);
-            if (!transaction?.subcategory?.mainCategory?.name) return;
+            const transaction = filteredTransactions.filter((item) => item.subcategory._id === subcategory.id);
+            labels.push(subcategory.name);
+            ids.push(subcategory.id);
+            parents.push(subcategory.parentId);
 
-            labels.push(subcategory);
-            parents.push(transaction.subcategory.mainCategory.name);
-            const subcategoryAmount = filteredTransactions
-                .filter((item) => item.subcategory?.name === subcategory)
-                .reduce((sum, item) => sum + (item.amount || 0), 0);
+            if (!transaction || transaction.length === 0) {
+                values.push(0);
+                return;
+            }
+
+            const subcategoryAmount = transaction.reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(subcategoryAmount);
         });
+
+        console.log(values);
 
         return {
             type: "sunburst",
             labels,
             parents,
             values,
+            ids,
             branchvalues: "total",
             marker: {
                 colors: values,
                 colorscale: [
+                    // Custom scale for better visualization
                     [0.0, "#EFF4FF"],
-                    [0.2, "#D7E3FF"],
-                    [0.4, "#AFC7FF"],
-                    [0.6, "#87AAFF"],
-                    [0.8, "#5F8EFF"],
+                    [0.05, "#D7E3FF"],
+                    [0.1, "#AFC7FF"],
+                    [0.15, "#87AAFF"],
+                    [0.2, "#5F8EFF"],
                     [1.0, "#3772FF"],
                 ],
             },
@@ -160,74 +177,60 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
     const stackedBarChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
 
-        const mainCategories: { name: string; sum: number; subcategories: { name: string; sum: number }[] }[] = [
+        const mainCategories = [
             ...new Set(
                 filteredTransactions
                     .filter((item) => item.subcategory?.mainCategory?.name)
                     .map((item) => item.subcategory.mainCategory.name),
             ),
-        ]
-            .map((name) => ({
-                name,
-                sum: filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name === name)
-                    .reduce((sum, item) => sum + (item.amount || 0), 0),
-                subcategories: filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name === name && item.subcategory?.name)
-                    .map((item) => ({
-                        name: item.subcategory!.name!,
-                        sum: filteredTransactions
-                            .filter((subItem) => subItem.subcategory?.name === item.subcategory?.name)
-                            .reduce((subSum, subItem) => subSum + (subItem.amount || 0), 0),
-                    }))
-                    .sort((a, b) => b.sum - a.sum),
-            }))
-            .sort((a, b) => b.sum - a.sum);
+        ].map((name) => {
+            const subcategoriesRaw = filteredTransactions
+                .filter((item) => item.subcategory?.mainCategory?.name === name && item.subcategory?.name)
+                .map((item) => item.subcategory!.name!);
 
-        const subcategories: { name: string; sum: number; indexInCategory: number }[] = [
-            ...new Set(
-                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory?.name),
-            ),
-        ]
-            .map((name) => {
-                const mainCategory = filteredTransactions.find((item) => item.subcategory?.name === name)?.subcategory
-                    ?.mainCategory?.name;
-                const subcategoriesInOrder = mainCategories.find((item) => item.name === mainCategory)?.subcategories;
+            const uniqueSubcategories = [...new Set(subcategoriesRaw)];
 
-                return {
-                    name,
-                    sum: filteredTransactions
-                        .filter((item) => item.subcategory?.name === name)
-                        .reduce((sum, item) => sum + (item.amount || 0), 0),
-                    indexInCategory: subcategoriesInOrder?.findIndex((item) => item.name === name) || 0,
-                };
-            })
-            .sort((a, b) => b.sum - a.sum);
+            const subcategories = uniqueSubcategories
+                .map((subName) => {
+                    const sum = filteredTransactions
+                        .filter((item) => item.subcategory?.name === subName)
+                        .reduce((acc, item) => acc + (item.amount || 0), 0);
+                    return { name: subName, sum };
+                })
+                .sort((a, b) => b.sum - a.sum); // Descending order
 
-        const result = subcategories.map((subcategory) => {
-            const categoryData = mainCategories.map((category) => {
-                return filteredTransactions
-                    .filter(
-                        (item) =>
-                            item.subcategory?.name === subcategory.name &&
-                            item.subcategory?.mainCategory?.name === category.name,
-                    )
-                    .reduce((sum, item) => sum + (item.amount || 0), 0);
-            });
-
-            return {
-                x: mainCategories.map((category) => category.name),
-                y: categoryData,
-                name: subcategory.name,
-                type: "bar",
-                marker:
-                    subcategory.indexInCategory > colors.length - 1 ?
-                        { color: colors[colors.length - 1] }
-                    :   { color: colors[subcategory.indexInCategory] },
-            };
+            return { name, subcategories };
         });
 
-        return result;
+        const traces: any[] = [];
+
+        mainCategories.forEach((mainCategory) => {
+            mainCategory.subcategories.forEach((subcategory, index) => {
+                const yValues = mainCategories.map((cat) => {
+                    if (cat.name !== mainCategory.name) return 0;
+
+                    const matching = filteredTransactions.filter(
+                        (item) =>
+                            item.subcategory?.mainCategory?.name === cat.name &&
+                            item.subcategory?.name === subcategory.name,
+                    );
+
+                    return matching.reduce((acc, item) => acc + (item.amount || 0), 0);
+                });
+
+                traces.push({
+                    x: mainCategories.map((cat) => cat.name),
+                    y: yValues,
+                    name: subcategory.name,
+                    type: "bar",
+                    marker: {
+                        color: colors[Math.min(index, colors.length - 1)],
+                    },
+                });
+            });
+        });
+
+        return traces;
     }, [transactions, selectedMonth]);
 
     const expenseTypePieChartData = useMemo(() => {

@@ -9,7 +9,12 @@ import { useEffect, useState } from "preact/hooks";
 
 export function Categories() {
     // Fetch initial data from the model
-    const { mainCategories: initialMainCategories, subcategories: initialSubcategories, expenseTypes } = useModel();
+    const {
+        mainCategories: initialMainCategories,
+        subcategories: initialSubcategories,
+        expenseTypes,
+        transactionTypes,
+    } = useModel();
     const [mainCategories, setMainCategories] = useState(initialMainCategories);
     const [subcategories, setSubcategories] = useState(initialSubcategories);
     const isMobile = useDevice();
@@ -93,7 +98,7 @@ export function Categories() {
         const body: any = {
             name: "New category",
             expenseType: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?._id,
-            transactionType: expenseTypes.find((expenseType) => expenseType.name === "Expense")?._id,
+            transactionType: transactionTypes.find((transactionType) => transactionType.name === "Expense")?._id,
         };
 
         const response = await fetchWithAuth(

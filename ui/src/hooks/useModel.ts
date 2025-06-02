@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ExpenseType, MainCategory, Subcategory, Transaction, Template } from "../types";
+import { ExpenseType, MainCategory, Subcategory, Transaction, Template, TransactionType } from "../types";
 import { useApiClient } from "../hooks/useApiClient";
 import { Console } from "console";
 
@@ -84,7 +84,7 @@ export const useModel = () => {
         queryFn: () => fetchExpenseTypes(fetchWithAuth),
     });
 
-    const { data: transactionTypes = [], refetch: refetchTransactionTypes } = useQuery<ExpenseType[]>({
+    const { data: transactionTypes = [], refetch: refetchTransactionTypes } = useQuery<TransactionType[]>({
         queryKey: ["transactionTypes"],
         queryFn: () => fetchTransactionTypes(fetchWithAuth),
     });

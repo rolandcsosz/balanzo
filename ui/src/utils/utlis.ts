@@ -28,3 +28,7 @@ export function formatCurrency(value: number) {
         useGrouping: true,
     });
 }
+
+export function uniqueId(prefix = "id") {
+    return prefix + "_" + Math.random().toString(36).substr(2, 9);
+}

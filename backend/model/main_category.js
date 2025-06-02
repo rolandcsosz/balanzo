@@ -7,6 +7,10 @@ const mainCategorySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'ExpenseTypes'
     },
+    transactionType: {
+        type: Schema.Types.ObjectId,
+        ref: 'TransactionTypes'
+    },
 }, {
     collection: "main_categories",
     versionKey: false
