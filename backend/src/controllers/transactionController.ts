@@ -1,7 +1,7 @@
-import { Route, Tags, Path, Body, Security, Get, Post, Put, Delete, Response } from "tsoa";
+import { Route, Tags, Path, Body, Security, Get, Post, Put, Delete } from "tsoa";
 import { PrismaClient, Transaction as DbTransaction } from "@prisma/client";
 import { createCrudController } from "../crud.js";
-import { ErrorResponse, Transaction, TransactionRequest } from "../model.js";
+import { Transaction, TransactionRequest } from "../model.js";
 
 const prisma = new PrismaClient();
 
@@ -24,14 +24,16 @@ const getDbTransaction = (transaction: TransactionRequest): Omit<DbTransaction, 
     };
 };
 
-@Route("transactions")
-@Tags("Transactions")
-export class TransactionController extends createCrudController<Transaction, TransactionRequest, DbTransaction>({
+const BaseTransactionController = createCrudController<Transaction, TransactionRequest, DbTransaction>({
     prisma,
     model: "transaction",
     toClient: getClientTransaction,
     toDb: getDbTransaction,
-}) {
+});
+
+@Route("transactions")
+@Tags("Transactions")
+export class TransactionController extends BaseTransactionController {
     @Post("/")
     @Security("jwt")
     public create(@Body() body: TransactionRequest) {

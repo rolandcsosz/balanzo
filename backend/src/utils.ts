@@ -6,7 +6,7 @@ export const getErrorMessage = (error: unknown): string => {
     } else if (typeof error === "object" && error !== null && "message" in error && typeof error.message === "string") {
         return error.message;
     }
-    return "Ismeretlen hiba történt";
+    return "Unknown error";
 };
 
 export const getErrorCode = (error: unknown): string => {
@@ -38,7 +38,7 @@ export const checkFields = <T>(item: T): item is T => {
 };
 
 export const getErrorMessageForDate = (date: string): null | Error => {
-    const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[\+\-]\d{2}:\d{2})?$/;
+    const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
     if (!isoRegex.test(date)) {
         return {
             name: "InvalidDateError",

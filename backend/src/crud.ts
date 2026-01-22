@@ -1,14 +1,47 @@
 import { Controller } from "tsoa";
 import { ErrorResponse, SuccessResponse, successResponse } from "./model.js";
-import { checkFields, getErrorCode, getErrorMessage } from "./utils.js";
+import { checkFields, getErrorCode, getErrorMessage, getErrorMessageForDate } from "./utils.js";
+import { PrismaClient } from "@prisma/client/extension";
 
-export function createCrudController<TClient, TRequest, TDb extends { id: string }>(opts: {
-    prisma: any;
+export function createCrudController<TClient, TRequest extends object, TDb extends { id: string }>(opts: {
+    prisma: PrismaClient;
     model: string;
     toClient: (db: TDb) => TClient;
     toDb: (req: TRequest) => Omit<TDb, "id">;
 }) {
     return class extends Controller {
+        private validateDates(body: TRequest, dbExample: TDb): ErrorResponse | null {
+            for (const key of Object.keys(dbExample) as (keyof TDb)[]) {
+                const dbVal = dbExample[key];
+                const clientVal = body[key as keyof TRequest];
+
+                if (dbVal instanceof Date && typeof clientVal === "string") {
+                    const dateError = getErrorMessageForDate(clientVal);
+                    if (dateError) {
+                        return { message: dateError.message };
+                    }
+                }
+            }
+            return null;
+        }
+
+        private async validateForeignKeys(body: TRequest): Promise<ErrorResponse | null> {
+            for (const key of Object.keys(body)) {
+                if (key.endsWith("Id")) {
+                    const value = body[key as keyof TRequest] as string;
+                    const relatedModel = key.slice(0, -2);
+
+                    if (!opts.prisma[relatedModel]) continue;
+
+                    const exists = await opts.prisma[relatedModel].findUnique({ where: { id: value } });
+                    if (!exists) {
+                        return { message: `Referenced ${relatedModel} with id "${value}" does not exist` };
+                    }
+                }
+            }
+            return null;
+        }
+
         async create(body: TRequest): Promise<TClient | ErrorResponse> {
             if (!checkFields(body)) {
                 this.setStatus(400);
@@ -16,10 +49,23 @@ export function createCrudController<TClient, TRequest, TDb extends { id: string
             }
 
             try {
+                const dummyDb: TDb = opts.toDb(body) as TDb;
+                const dateError = this.validateDates(body, dummyDb);
+
+                if (dateError) {
+                    this.setStatus(400);
+                    return dateError;
+                }
+
+                const fkError = await this.validateForeignKeys(body);
+                if (fkError) {
+                    this.setStatus(400);
+                    return fkError;
+                }
+
                 const created: TDb = await opts.prisma[opts.model].create({
                     data: opts.toDb(body),
                 });
-                this.setStatus(201);
                 return opts.toClient(created);
             } catch (err) {
                 this.setStatus(500);
@@ -58,6 +104,20 @@ export function createCrudController<TClient, TRequest, TDb extends { id: string
             }
 
             try {
+                const dummyDb: TDb = opts.toDb(body) as TDb;
+                const dateError = this.validateDates(body, dummyDb);
+
+                if (dateError) {
+                    this.setStatus(400);
+                    return dateError;
+                }
+
+                const fkError = await this.validateForeignKeys(body);
+                if (fkError) {
+                    this.setStatus(400);
+                    return fkError;
+                }
+
                 await opts.prisma[opts.model].update({
                     where: { id },
                     data: opts.toDb(body),

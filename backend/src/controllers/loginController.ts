@@ -1,4 +1,4 @@
-import { Post, Route, Tags, Body, Response, Controller } from "tsoa";
+import { Post, Route, Tags, Body, Controller } from "tsoa";
 import { ErrorResponse, LogedInUser } from "../model.js";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -23,9 +23,6 @@ interface LoginSuccessResponse {
 @Tags("Login")
 export class LoginController extends Controller {
     @Post("/")
-    @Response<ErrorResponse>(400, "Bad Request")
-    @Response<ErrorResponse>(401, "Unauthorized")
-    @Response<ErrorResponse>(500, "Server error")
     public async login(@Body() body: LoginRequest): Promise<LoginSuccessResponse | ErrorResponse> {
         const isValidBody = checkFields<LoginRequest>(body);
 

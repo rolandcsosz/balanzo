@@ -67,7 +67,7 @@ export interface Template {
     name: string;
     itemName: string;
     amount: number | null;
-    date: Date | null;
+    date: string | null;
     subcategoryId: string;
 }
 
@@ -75,7 +75,7 @@ export interface TemplateRequest {
     name: string;
     itemName: string;
     amount: number | null;
-    date: Date | null;
+    date: string | null;
     subcategoryId: string;
 }
 

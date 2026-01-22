@@ -47,13 +47,13 @@ export const seed = async () => {
     ];
 
     const expenseTypeMap = Object.fromEntries(
-        (await prisma.expenseType.findMany()).map((et: { id: string; name: string }): [string, any] => {
+        (await prisma.expenseType.findMany()).map((et: { id: string; name: string }): [string, string] => {
             return [et.id, et.name];
         }),
     );
 
     const transactionTypeMap = Object.fromEntries(
-        (await prisma.transactionType.findMany()).map((tt: { id: string; name: string }): [string, any] => {
+        (await prisma.transactionType.findMany()).map((tt: { id: string; name: string }): [string, string] => {
             return [tt.id, tt.name];
         }),
     );

@@ -6,14 +6,16 @@ import { mapIdentity } from "../utils.js";
 
 const prisma = new PrismaClient();
 
-@Route("main_categories")
-@Tags("MainCategories")
-export class MainCategoryController extends createCrudController<MainCategory, MainCategoryRequest, DbMainCategory>({
+const BaseMainCategoryController = createCrudController<MainCategory, MainCategoryRequest, DbMainCategory>({
     prisma,
     model: "mainCategory",
     toClient: mapIdentity<DbMainCategory, MainCategory>,
     toDb: mapIdentity<MainCategoryRequest, Omit<DbMainCategory, "id">>,
-}) {
+});
+
+@Route("main_categories")
+@Tags("MainCategories")
+export class MainCategoryController extends BaseMainCategoryController {
     @Post("/")
     @Security("jwt")
     public create(@Body() body: MainCategoryRequest) {
