@@ -38,31 +38,31 @@ const BaseTemplateController = createCrudController<Template, TemplateRequest, D
 export class TemplateController extends BaseTemplateController {
     @Post("/")
     @Security("jwt")
-    public create(@Body() body: TemplateRequest) {
+    public createTemplate(@Body() body: TemplateRequest) {
         return super.create(body);
     }
 
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getTemplates() {
         return super.getAll();
     }
 
     @Get("{id}")
     @Security("jwt")
-    public getOne(@Path() id: string) {
+    public getTemplate(@Path() id: string) {
         return super.getOne(id);
     }
 
     @Put("{id}")
     @Security("jwt")
-    public update(@Path() id: string, @Body() body: TemplateRequest) {
+    public updateTemplate(@Path() id: string, @Body() body: TemplateRequest) {
         return super.update(id, body);
     }
 
     @Delete("{id}")
     @Security("jwt")
-    public delete(@Path() id: string) {
+    public deleteTemplate(@Path() id: string) {
         return super.delete(id);
     }
 }

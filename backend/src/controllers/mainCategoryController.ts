@@ -18,31 +18,31 @@ const BaseMainCategoryController = createCrudController<MainCategory, MainCatego
 export class MainCategoryController extends BaseMainCategoryController {
     @Post("/")
     @Security("jwt")
-    public create(@Body() body: MainCategoryRequest) {
+    public createMainCategory(@Body() body: MainCategoryRequest) {
         return super.create(body);
     }
 
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getMainCategories() {
         return super.getAll();
     }
 
     @Get("{id}")
     @Security("jwt")
-    public getOne(@Path() id: string) {
+    public getMainCategory(@Path() id: string) {
         return super.getOne(id);
     }
 
     @Put("{id}")
     @Security("jwt")
-    public update(@Path() id: string, @Body() body: MainCategoryRequest) {
+    public updateMainCategory(@Path() id: string, @Body() body: MainCategoryRequest) {
         return super.update(id, body);
     }
 
     @Delete("{id}")
     @Security("jwt")
-    public delete(@Path() id: string) {
+    public deleteMainCategory(@Path() id: string) {
         return super.delete(id);
     }
 }

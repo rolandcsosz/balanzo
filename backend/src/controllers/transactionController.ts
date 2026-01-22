@@ -36,31 +36,31 @@ const BaseTransactionController = createCrudController<Transaction, TransactionR
 export class TransactionController extends BaseTransactionController {
     @Post("/")
     @Security("jwt")
-    public create(@Body() body: TransactionRequest) {
+    public createTransaction(@Body() body: TransactionRequest) {
         return super.create(body);
     }
 
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getTransactions() {
         return super.getAll();
     }
 
     @Get("{id}")
     @Security("jwt")
-    public getOne(@Path() id: string) {
+    public getTransaction(@Path() id: string) {
         return super.getOne(id);
     }
 
     @Put("{id}")
     @Security("jwt")
-    public update(@Path() id: string, @Body() body: TransactionRequest) {
+    public updateTransaction(@Path() id: string, @Body() body: TransactionRequest) {
         return super.update(id, body);
     }
 
     @Delete("{id}")
     @Security("jwt")
-    public delete(@Path() id: string) {
+    public deleteTransaction(@Path() id: string) {
         return super.delete(id);
     }
 }

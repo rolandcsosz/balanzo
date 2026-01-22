@@ -278,7 +278,7 @@
     "paths": {
         "/transaction_types": {
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetTransactionTypes",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -312,7 +312,7 @@
         },
         "/transactions": {
             "post": {
-                "operationId": "Create",
+                "operationId": "CreateTransaction",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -351,7 +351,7 @@
                 }
             },
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetTransactions",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -385,7 +385,7 @@
         },
         "/transactions/{id}": {
             "get": {
-                "operationId": "GetOne",
+                "operationId": "GetTransaction",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -423,7 +423,7 @@
                 ]
             },
             "put": {
-                "operationId": "Update",
+                "operationId": "UpdateTransaction",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -471,7 +471,7 @@
                 }
             },
             "delete": {
-                "operationId": "Delete",
+                "operationId": "DeleteTransaction",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -511,7 +511,7 @@
         },
         "/templates": {
             "post": {
-                "operationId": "Create",
+                "operationId": "CreateTemplate",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -550,7 +550,7 @@
                 }
             },
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetTemplates",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -584,7 +584,7 @@
         },
         "/templates/{id}": {
             "get": {
-                "operationId": "GetOne",
+                "operationId": "GetTemplate",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -622,7 +622,7 @@
                 ]
             },
             "put": {
-                "operationId": "Update",
+                "operationId": "UpdateTemplate",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -670,7 +670,7 @@
                 }
             },
             "delete": {
-                "operationId": "Delete",
+                "operationId": "DeleteTemplate",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -710,7 +710,7 @@
         },
         "/subcategories": {
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetSubcategories",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -742,7 +742,7 @@
                 "parameters": []
             },
             "post": {
-                "operationId": "Create",
+                "operationId": "CreateSubcategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -783,7 +783,7 @@
         },
         "/subcategories/{id}": {
             "get": {
-                "operationId": "GetOne",
+                "operationId": "GetSubcategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -821,7 +821,7 @@
                 ]
             },
             "put": {
-                "operationId": "Update",
+                "operationId": "UpdateSubcategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -869,7 +869,7 @@
                 }
             },
             "delete": {
-                "operationId": "Delete",
+                "operationId": "DeleteSubcategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -909,7 +909,7 @@
         },
         "/main_categories": {
             "post": {
-                "operationId": "Create",
+                "operationId": "CreateMainCategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -948,7 +948,7 @@
                 }
             },
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetMainCategories",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -982,7 +982,7 @@
         },
         "/main_categories/{id}": {
             "get": {
-                "operationId": "GetOne",
+                "operationId": "GetMainCategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -1020,7 +1020,7 @@
                 ]
             },
             "put": {
-                "operationId": "Update",
+                "operationId": "UpdateMainCategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -1068,7 +1068,7 @@
                 }
             },
             "delete": {
-                "operationId": "Delete",
+                "operationId": "DeleteMainCategory",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -1126,36 +1126,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
                     }
                 },
                 "tags": ["Login"],
@@ -1175,7 +1145,7 @@
         },
         "/expense_types": {
             "get": {
-                "operationId": "GetAll",
+                "operationId": "GetExpenseTypes",
                 "responses": {
                     "200": {
                         "description": "Ok",

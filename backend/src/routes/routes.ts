@@ -217,20 +217,24 @@ export function RegisterRoutes(app: Router) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
 
-    const argsTransactionTypeController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsTransactionTypeController_getTransactionTypes: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/transaction_types",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionTypeController),
-        ...fetchMiddlewares<RequestHandler>(TransactionTypeController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(TransactionTypeController.prototype.getTransactionTypes),
 
-        async function TransactionTypeController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionTypeController_getTransactionTypes(
+            request: ExRequest,
+            response: ExResponse,
+            next: any,
+        ) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionTypeController_getAll,
+                    args: argsTransactionTypeController_getTransactionTypes,
                     request,
                     response,
                 });
@@ -238,7 +242,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionTypeController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getTransactionTypes",
                     controller,
                     response,
                     next,
@@ -251,22 +255,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTransactionController_create: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTransactionController_createTransaction: Record<string, TsoaRoute.ParameterSchema> = {
         body: { in: "body", name: "body", required: true, ref: "TransactionRequest" },
     };
     app.post(
         "/transactions",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionController),
-        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.create),
+        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.createTransaction),
 
-        async function TransactionController_create(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionController_createTransaction(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionController_create,
+                    args: argsTransactionController_createTransaction,
                     request,
                     response,
                 });
@@ -274,7 +278,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionController();
 
                 await templateService.apiHandler({
-                    methodName: "create",
+                    methodName: "createTransaction",
                     controller,
                     response,
                     next,
@@ -287,20 +291,20 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTransactionController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsTransactionController_getTransactions: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/transactions",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionController),
-        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.getTransactions),
 
-        async function TransactionController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionController_getTransactions(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionController_getAll,
+                    args: argsTransactionController_getTransactions,
                     request,
                     response,
                 });
@@ -308,7 +312,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getTransactions",
                     controller,
                     response,
                     next,
@@ -321,22 +325,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTransactionController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTransactionController_getTransaction: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/transactions/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionController),
-        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.getOne),
+        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.getTransaction),
 
-        async function TransactionController_getOne(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionController_getTransaction(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionController_getOne,
+                    args: argsTransactionController_getTransaction,
                     request,
                     response,
                 });
@@ -344,7 +348,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionController();
 
                 await templateService.apiHandler({
-                    methodName: "getOne",
+                    methodName: "getTransaction",
                     controller,
                     response,
                     next,
@@ -357,7 +361,7 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTransactionController_update: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTransactionController_updateTransaction: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "TransactionRequest" },
     };
@@ -365,15 +369,15 @@ export function RegisterRoutes(app: Router) {
         "/transactions/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionController),
-        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.update),
+        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.updateTransaction),
 
-        async function TransactionController_update(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionController_updateTransaction(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionController_update,
+                    args: argsTransactionController_updateTransaction,
                     request,
                     response,
                 });
@@ -381,7 +385,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionController();
 
                 await templateService.apiHandler({
-                    methodName: "update",
+                    methodName: "updateTransaction",
                     controller,
                     response,
                     next,
@@ -394,22 +398,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTransactionController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTransactionController_deleteTransaction: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/transactions/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TransactionController),
-        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.delete),
+        ...fetchMiddlewares<RequestHandler>(TransactionController.prototype.deleteTransaction),
 
-        async function TransactionController_delete(request: ExRequest, response: ExResponse, next: any) {
+        async function TransactionController_deleteTransaction(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTransactionController_delete,
+                    args: argsTransactionController_deleteTransaction,
                     request,
                     response,
                 });
@@ -417,7 +421,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TransactionController();
 
                 await templateService.apiHandler({
-                    methodName: "delete",
+                    methodName: "deleteTransaction",
                     controller,
                     response,
                     next,
@@ -430,22 +434,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTemplateController_create: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTemplateController_createTemplate: Record<string, TsoaRoute.ParameterSchema> = {
         body: { in: "body", name: "body", required: true, ref: "TemplateRequest" },
     };
     app.post(
         "/templates",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TemplateController),
-        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.create),
+        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.createTemplate),
 
-        async function TemplateController_create(request: ExRequest, response: ExResponse, next: any) {
+        async function TemplateController_createTemplate(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTemplateController_create,
+                    args: argsTemplateController_createTemplate,
                     request,
                     response,
                 });
@@ -453,7 +457,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TemplateController();
 
                 await templateService.apiHandler({
-                    methodName: "create",
+                    methodName: "createTemplate",
                     controller,
                     response,
                     next,
@@ -466,20 +470,20 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTemplateController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsTemplateController_getTemplates: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/templates",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TemplateController),
-        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.getTemplates),
 
-        async function TemplateController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function TemplateController_getTemplates(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTemplateController_getAll,
+                    args: argsTemplateController_getTemplates,
                     request,
                     response,
                 });
@@ -487,7 +491,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TemplateController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getTemplates",
                     controller,
                     response,
                     next,
@@ -500,22 +504,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTemplateController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTemplateController_getTemplate: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/templates/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TemplateController),
-        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.getOne),
+        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.getTemplate),
 
-        async function TemplateController_getOne(request: ExRequest, response: ExResponse, next: any) {
+        async function TemplateController_getTemplate(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTemplateController_getOne,
+                    args: argsTemplateController_getTemplate,
                     request,
                     response,
                 });
@@ -523,7 +527,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TemplateController();
 
                 await templateService.apiHandler({
-                    methodName: "getOne",
+                    methodName: "getTemplate",
                     controller,
                     response,
                     next,
@@ -536,7 +540,7 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTemplateController_update: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTemplateController_updateTemplate: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "TemplateRequest" },
     };
@@ -544,15 +548,15 @@ export function RegisterRoutes(app: Router) {
         "/templates/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TemplateController),
-        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.update),
+        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.updateTemplate),
 
-        async function TemplateController_update(request: ExRequest, response: ExResponse, next: any) {
+        async function TemplateController_updateTemplate(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTemplateController_update,
+                    args: argsTemplateController_updateTemplate,
                     request,
                     response,
                 });
@@ -560,7 +564,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TemplateController();
 
                 await templateService.apiHandler({
-                    methodName: "update",
+                    methodName: "updateTemplate",
                     controller,
                     response,
                     next,
@@ -573,22 +577,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsTemplateController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsTemplateController_deleteTemplate: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/templates/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(TemplateController),
-        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.delete),
+        ...fetchMiddlewares<RequestHandler>(TemplateController.prototype.deleteTemplate),
 
-        async function TemplateController_delete(request: ExRequest, response: ExResponse, next: any) {
+        async function TemplateController_deleteTemplate(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsTemplateController_delete,
+                    args: argsTemplateController_deleteTemplate,
                     request,
                     response,
                 });
@@ -596,7 +600,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new TemplateController();
 
                 await templateService.apiHandler({
-                    methodName: "delete",
+                    methodName: "deleteTemplate",
                     controller,
                     response,
                     next,
@@ -609,20 +613,20 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsSubcategoryController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsSubcategoryController_getSubcategories: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/subcategories",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(SubcategoryController),
-        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.getSubcategories),
 
-        async function SubcategoryController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function SubcategoryController_getSubcategories(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsSubcategoryController_getAll,
+                    args: argsSubcategoryController_getSubcategories,
                     request,
                     response,
                 });
@@ -630,7 +634,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SubcategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getSubcategories",
                     controller,
                     response,
                     next,
@@ -643,22 +647,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsSubcategoryController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsSubcategoryController_getSubcategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/subcategories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(SubcategoryController),
-        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.getOne),
+        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.getSubcategory),
 
-        async function SubcategoryController_getOne(request: ExRequest, response: ExResponse, next: any) {
+        async function SubcategoryController_getSubcategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsSubcategoryController_getOne,
+                    args: argsSubcategoryController_getSubcategory,
                     request,
                     response,
                 });
@@ -666,7 +670,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SubcategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "getOne",
+                    methodName: "getSubcategory",
                     controller,
                     response,
                     next,
@@ -679,22 +683,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsSubcategoryController_create: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsSubcategoryController_createSubcategory: Record<string, TsoaRoute.ParameterSchema> = {
         body: { in: "body", name: "body", required: true, ref: "SubcategoryRequest" },
     };
     app.post(
         "/subcategories",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(SubcategoryController),
-        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.create),
+        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.createSubcategory),
 
-        async function SubcategoryController_create(request: ExRequest, response: ExResponse, next: any) {
+        async function SubcategoryController_createSubcategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsSubcategoryController_create,
+                    args: argsSubcategoryController_createSubcategory,
                     request,
                     response,
                 });
@@ -702,7 +706,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SubcategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "create",
+                    methodName: "createSubcategory",
                     controller,
                     response,
                     next,
@@ -715,7 +719,7 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsSubcategoryController_update: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsSubcategoryController_updateSubcategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "SubcategoryRequest" },
     };
@@ -723,15 +727,15 @@ export function RegisterRoutes(app: Router) {
         "/subcategories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(SubcategoryController),
-        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.update),
+        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.updateSubcategory),
 
-        async function SubcategoryController_update(request: ExRequest, response: ExResponse, next: any) {
+        async function SubcategoryController_updateSubcategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsSubcategoryController_update,
+                    args: argsSubcategoryController_updateSubcategory,
                     request,
                     response,
                 });
@@ -739,7 +743,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SubcategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "update",
+                    methodName: "updateSubcategory",
                     controller,
                     response,
                     next,
@@ -752,22 +756,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsSubcategoryController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsSubcategoryController_deleteSubcategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/subcategories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(SubcategoryController),
-        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.delete),
+        ...fetchMiddlewares<RequestHandler>(SubcategoryController.prototype.deleteSubcategory),
 
-        async function SubcategoryController_delete(request: ExRequest, response: ExResponse, next: any) {
+        async function SubcategoryController_deleteSubcategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsSubcategoryController_delete,
+                    args: argsSubcategoryController_deleteSubcategory,
                     request,
                     response,
                 });
@@ -775,7 +779,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new SubcategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "delete",
+                    methodName: "deleteSubcategory",
                     controller,
                     response,
                     next,
@@ -788,22 +792,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsMainCategoryController_create: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsMainCategoryController_createMainCategory: Record<string, TsoaRoute.ParameterSchema> = {
         body: { in: "body", name: "body", required: true, ref: "MainCategoryRequest" },
     };
     app.post(
         "/main_categories",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(MainCategoryController),
-        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.create),
+        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.createMainCategory),
 
-        async function MainCategoryController_create(request: ExRequest, response: ExResponse, next: any) {
+        async function MainCategoryController_createMainCategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsMainCategoryController_create,
+                    args: argsMainCategoryController_createMainCategory,
                     request,
                     response,
                 });
@@ -811,7 +815,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new MainCategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "create",
+                    methodName: "createMainCategory",
                     controller,
                     response,
                     next,
@@ -824,20 +828,20 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsMainCategoryController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsMainCategoryController_getMainCategories: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/main_categories",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(MainCategoryController),
-        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.getMainCategories),
 
-        async function MainCategoryController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function MainCategoryController_getMainCategories(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsMainCategoryController_getAll,
+                    args: argsMainCategoryController_getMainCategories,
                     request,
                     response,
                 });
@@ -845,7 +849,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new MainCategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getMainCategories",
                     controller,
                     response,
                     next,
@@ -858,22 +862,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsMainCategoryController_getOne: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsMainCategoryController_getMainCategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.get(
         "/main_categories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(MainCategoryController),
-        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.getOne),
+        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.getMainCategory),
 
-        async function MainCategoryController_getOne(request: ExRequest, response: ExResponse, next: any) {
+        async function MainCategoryController_getMainCategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsMainCategoryController_getOne,
+                    args: argsMainCategoryController_getMainCategory,
                     request,
                     response,
                 });
@@ -881,7 +885,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new MainCategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "getOne",
+                    methodName: "getMainCategory",
                     controller,
                     response,
                     next,
@@ -894,7 +898,7 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsMainCategoryController_update: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsMainCategoryController_updateMainCategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
         body: { in: "body", name: "body", required: true, ref: "MainCategoryRequest" },
     };
@@ -902,15 +906,15 @@ export function RegisterRoutes(app: Router) {
         "/main_categories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(MainCategoryController),
-        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.update),
+        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.updateMainCategory),
 
-        async function MainCategoryController_update(request: ExRequest, response: ExResponse, next: any) {
+        async function MainCategoryController_updateMainCategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsMainCategoryController_update,
+                    args: argsMainCategoryController_updateMainCategory,
                     request,
                     response,
                 });
@@ -918,7 +922,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new MainCategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "update",
+                    methodName: "updateMainCategory",
                     controller,
                     response,
                     next,
@@ -931,22 +935,22 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsMainCategoryController_delete: Record<string, TsoaRoute.ParameterSchema> = {
+    const argsMainCategoryController_deleteMainCategory: Record<string, TsoaRoute.ParameterSchema> = {
         id: { in: "path", name: "id", required: true, dataType: "string" },
     };
     app.delete(
         "/main_categories/:id",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(MainCategoryController),
-        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.delete),
+        ...fetchMiddlewares<RequestHandler>(MainCategoryController.prototype.deleteMainCategory),
 
-        async function MainCategoryController_delete(request: ExRequest, response: ExResponse, next: any) {
+        async function MainCategoryController_deleteMainCategory(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsMainCategoryController_delete,
+                    args: argsMainCategoryController_deleteMainCategory,
                     request,
                     response,
                 });
@@ -954,7 +958,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new MainCategoryController();
 
                 await templateService.apiHandler({
-                    methodName: "delete",
+                    methodName: "deleteMainCategory",
                     controller,
                     response,
                     next,
@@ -1002,20 +1006,20 @@ export function RegisterRoutes(app: Router) {
         },
     );
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    const argsExpenseTypeController_getAll: Record<string, TsoaRoute.ParameterSchema> = {};
+    const argsExpenseTypeController_getExpenseTypes: Record<string, TsoaRoute.ParameterSchema> = {};
     app.get(
         "/expense_types",
         authenticateMiddleware([{ jwt: [] }]),
         ...fetchMiddlewares<RequestHandler>(ExpenseTypeController),
-        ...fetchMiddlewares<RequestHandler>(ExpenseTypeController.prototype.getAll),
+        ...fetchMiddlewares<RequestHandler>(ExpenseTypeController.prototype.getExpenseTypes),
 
-        async function ExpenseTypeController_getAll(request: ExRequest, response: ExResponse, next: any) {
+        async function ExpenseTypeController_getExpenseTypes(request: ExRequest, response: ExResponse, next: any) {
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
                 validatedArgs = templateService.getValidatedArgs({
-                    args: argsExpenseTypeController_getAll,
+                    args: argsExpenseTypeController_getExpenseTypes,
                     request,
                     response,
                 });
@@ -1023,7 +1027,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new ExpenseTypeController();
 
                 await templateService.apiHandler({
-                    methodName: "getAll",
+                    methodName: "getExpenseTypes",
                     controller,
                     response,
                     next,

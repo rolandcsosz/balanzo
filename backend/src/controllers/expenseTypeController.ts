@@ -18,7 +18,7 @@ const BaseExpenseTypeController = createCrudController<ExpenseType, ExpenseTypeR
 export class ExpenseTypeController extends BaseExpenseTypeController {
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getExpenseTypes() {
         return super.getAll();
     }
 }

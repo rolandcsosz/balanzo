@@ -18,7 +18,7 @@ const BaseTransactionTypeController = createCrudController<TransactionType, Tran
 export class TransactionTypeController extends BaseTransactionTypeController {
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getTransactionTypes() {
         return super.getAll();
     }
 }

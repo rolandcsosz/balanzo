@@ -18,31 +18,31 @@ const BaseSubcategoryController = createCrudController<Subcategory, SubcategoryR
 export class SubcategoryController extends BaseSubcategoryController {
     @Get("/")
     @Security("jwt")
-    public getAll() {
+    public getSubcategories() {
         return super.getAll();
     }
 
     @Get("/{id}")
     @Security("jwt")
-    public getOne(@Path() id: string) {
+    public getSubcategory(@Path() id: string) {
         return super.getOne(id);
     }
 
     @Post("/")
     @Security("jwt")
-    public create(@Body() body: SubcategoryRequest) {
+    public createSubcategory(@Body() body: SubcategoryRequest) {
         return super.create(body);
     }
 
     @Put("/{id}")
     @Security("jwt")
-    public update(@Path() id: string, @Body() body: SubcategoryRequest) {
+    public updateSubcategory(@Path() id: string, @Body() body: SubcategoryRequest) {
         return super.update(id, body);
     }
 
     @Delete("/{id}")
     @Security("jwt")
-    public delete(@Path() id: string) {
+    public deleteSubcategory(@Path() id: string) {
         return super.delete(id);
     }
 }
