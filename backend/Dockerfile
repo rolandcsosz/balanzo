@@ -1,10 +1,20 @@
-FROM node:20-alpine
+FROM node:20-slim
+
+RUN apt-get update -y && apt-get install -y openssl curl
 
 WORKDIR /app
+
 COPY package*.json ./
+
 RUN npm install
+
 COPY . .
 
-EXPOSE 3000
+RUN npm run generate:client
+RUN npm run generate:routes
+RUN npm run build
 
-CMD ["node", "index.js"]
+
+EXPOSE 8080
+
+CMD ["sh", "-c", "npm run db:deploy && npm run start"]
