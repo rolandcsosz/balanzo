@@ -1,11 +1,11 @@
 {
-    "entryFile": "index.ts",
+    "entryFile": "src/index.ts",
     "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": ["controllers/**/*.ts"],
+    "controllerPathGlobs": ["src/controllers/**/*.ts"],
     "spec": {
         "outputDirectory": "./dist",
         "specVersion": 3,
-        "basePath": "/",
+        "basePath": "/src",
         "securityDefinitions": {
             "jwt": {
                 "type": "http",
@@ -15,7 +15,7 @@
         }
     },
     "routes": {
-        "routesDir": "routes",
-        "authenticationModule": "routes/auth.ts"
+        "routesDir": "src/routes",
+        "authenticationModule": "src/routes/auth.ts"
     }
 }

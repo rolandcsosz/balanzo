@@ -15,7 +15,7 @@
     "main": "dist/index.js",
     "module": "CommonJS",
     "scripts": {
-        "dev": "tsx index.ts",
+        "dev": "tsx src/index.ts",
         "build": "tsc && tsoa spec -c tsoa.prod.json",
         "generate:client": "dotenv -e .env -- prisma generate",
         "generate:routes": "tsoa routes -c tsoa.dev.json && node scripts/fixTsoaImports.js",

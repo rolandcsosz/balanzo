@@ -7,7 +7,7 @@ import * as fs from "fs";
 import { ValidateError } from "tsoa";
 import { RegisterRoutes } from "./routes/routes.js";
 import http from "http";
-import { seed } from "./prisma/seed.js";
+import { seed } from "./seed.js";
 import { getErrorMessage } from "./utils.js";
 
 dotenv.config();
