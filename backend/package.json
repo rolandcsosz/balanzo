@@ -18,14 +18,15 @@
     "scripts": {
         "dev": "tsx src/index.ts",
         "build": "tsc && tsoa spec -c tsoa.prod.json",
-        "generate:client": "dotenv -e .env -- prisma generate",
-        "generate:routes": "tsoa routes -c tsoa.dev.json && node scripts/fixTsoaImports.js",
-        "generate:swagger": "tsoa spec -c tsoa.dev.json",
-        "generate:migration": "dotenv -e .env -- prisma migrate dev --name init",
         "start": "dotenv -e .env -- node dist/index.js",
         "clean": "rm -rf dist",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
         "lint": "eslint .",
+        "generate:client": "dotenv -e .env -- prisma generate",
+        "generate:routes": "tsoa routes -c tsoa.dev.json && node scripts/fixTsoaImports.js",
+        "generate:swagger": "tsoa spec -c tsoa.dev.json",
+        "generate:migration": "dotenv -e .env -- prisma migrate dev --name init",
+        "generate:sdk": "openapi-ts --input swagger.json --output ../libs/sdk",
         "db:deploy": "dotenv -e .env.prod -- prisma migrate deploy"
     },
     "dependencies": {
@@ -40,6 +41,7 @@
         "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
+        "@hey-api/openapi-ts": "^0.90.9",
         "@types/bcrypt": "^5.0.2",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
