@@ -12,6 +12,7 @@ COPY . .
 
 RUN npm run generate:client
 RUN npm run generate:routes
+RUN npm run generate:swagger
 RUN npm run build
 
 

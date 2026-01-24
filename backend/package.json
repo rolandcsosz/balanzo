@@ -14,7 +14,7 @@
     "homepage": "https://github.com/rolandcsosz/balanzo#readme",
     "main": "dist/index.js",
     "module": "CommonJS",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "dev": "tsx src/index.ts",
         "build": "tsc && tsoa spec -c tsoa.prod.json",
