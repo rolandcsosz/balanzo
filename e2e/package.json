@@ -1,0 +1,23 @@
+{
+    "name": "balanzo-tester",
+    "version": "0.0.1",
+    "description": "Node.js e2e tester for Balanzo.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rolandcsosz/balanzo.git"
+    },
+    "author": "Roland Csősz",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rolandcsosz/balanzo/issues"
+    },
+    "homepage": "https://github.com/rolandcsosz/balanzo#readme",
+    "scripts": {
+        "test": "playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.58.0",
+        "@types/node": "^25.0.10",
+        "dotenv": "^17.2.3"
+    }
+}
