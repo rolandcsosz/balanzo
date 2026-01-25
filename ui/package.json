@@ -7,8 +7,9 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
-        "check-format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\""
+        "check:format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
+        "format": "prettier --write \"**/*.{ts,tsx,cjs,js,jsx,json,css,scss,sass}\"",
+        "lint": "eslint ."
     },
     "repository": {
         "type": "git",
@@ -39,7 +40,6 @@
         "@preact/preset-vite": "^2.9.1",
         "@types/node": "^22.9.0",
         "@types/react-plotly.js": "^2.6.3",
-        "prettier": "^3.5.3",
         "sass": "^1.80.6",
         "typescript": "^5.6.3",
         "vite": "^5.4.10"

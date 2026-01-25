@@ -13,7 +13,9 @@
     },
     "homepage": "https://github.com/rolandcsosz/balanzo#readme",
     "scripts": {
-        "test": "playwright test"
+        "test": "playwright test",
+        "format": "prettier --write \"**/*.{ts,tsx,cjs,js,jsx,json,css,scss,sass}\"",
+        "lint": "eslint ."
     },
     "devDependencies": {
         "@playwright/test": "^1.58.0",

@@ -1,0 +1,35 @@
+{
+    "name": "balanzo",
+    "version": "0.0.1",
+    "description": "Another personal finance tracker application called Balanzo.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rolandcsosz/balanzo.git"
+    },
+    "author": "Roland Csősz",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rolandcsosz/balanzo/issues"
+    },
+    "homepage": "https://github.com/rolandcsosz/balanzo#readme",
+    "private": true,
+    "workspaces": [
+        "backend",
+        "ui",
+        "e2e"
+    ],
+    "type": "module",
+    "scripts": {
+        "format": "prettier --write \"**/*.{ts,tsx,cjs,js,jsx,json,css,scss,sass}\"",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.53.1",
+        "@typescript-eslint/parser": "^8.53.1",
+        "eslint": "^9.39.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "prettier": "^3.8.1",
+        "typescript-eslint": "^8.53.1"
+    }
+}
