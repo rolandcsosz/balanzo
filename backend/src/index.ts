@@ -12,10 +12,14 @@ import { getErrorMessage } from "./utils.js";
 
 dotenv.config();
 
-seed().catch((e) => {
-    console.error("Seeding failed:", e);
-    process.exit(1);
-});
+const initData = process.env.INIT_DATA === "true";
+
+if (initData) {
+    seed().catch((e) => {
+        console.error("Seeding failed:", e);
+        process.exit(1);
+    });
+}
 
 const app = express();
 const port = 8080;

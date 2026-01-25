@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import e from "express";
 
 const prisma = new PrismaClient();
 
@@ -26,10 +27,22 @@ export const seed = async () => {
         { name: "Discretionary" },
     ];
 
-    await prisma.expenseType.createMany({ data: expenseTypesData });
+    const expenseTypes = await Promise.all(
+        expenseTypesData.map((et) =>
+            prisma.expenseType.create({
+                data: et,
+            }),
+        ),
+    );
 
     const transactionTypesData = [{ name: "Expense" }, { name: "Income" }];
-    await prisma.transactionType.createMany({ data: transactionTypesData });
+    const transactionTypes = await Promise.all(
+        transactionTypesData.map((tt) =>
+            prisma.transactionType.create({
+                data: tt,
+            }),
+        ),
+    );
 
     const mainCategoriesData = [
         { name: "Housing", expenseTypeName: "Fixed", transactionTypeName: "Expense" },
@@ -46,25 +59,13 @@ export const seed = async () => {
         { name: "Salary", expenseTypeName: "Fixed", transactionTypeName: "Income" },
     ];
 
-    const expenseTypeMap = Object.fromEntries(
-        (await prisma.expenseType.findMany()).map((et: { id: string; name: string }): [string, string] => {
-            return [et.id, et.name];
-        }),
-    );
-
-    const transactionTypeMap = Object.fromEntries(
-        (await prisma.transactionType.findMany()).map((tt: { id: string; name: string }): [string, string] => {
-            return [tt.id, tt.name];
-        }),
-    );
-
     const mainCategories = await Promise.all(
         mainCategoriesData.map((mc) =>
             prisma.mainCategory.create({
                 data: {
                     name: mc.name,
-                    expenseTypeId: expenseTypeMap[mc.expenseTypeName],
-                    transactionTypeId: transactionTypeMap[mc.transactionTypeName],
+                    expenseTypeId: expenseTypes.find((et) => et.name === mc.expenseTypeName)!.id,
+                    transactionTypeId: transactionTypes.find((tt) => tt.name === mc.transactionTypeName)!.id,
                 },
             }),
         ),
@@ -92,7 +93,7 @@ export const seed = async () => {
 
     const mainCategoryMap = Object.fromEntries(mainCategories.map((mc) => [mc.name, mc.id]));
 
-    await Promise.all(
+    const subcategories = await Promise.all(
         subcategoriesData.map((sc) =>
             prisma.subcategory.create({
                 data: {
@@ -102,6 +103,24 @@ export const seed = async () => {
             }),
         ),
     );
+
+    await prisma.transaction.create({
+        data: {
+            amount: 5000,
+            date: new Date(),
+            item: "Initial Salary",
+            subcategoryId: subcategories.find((sc) => sc.name === "Salary")!.id,
+        },
+    });
+
+    await prisma.template.create({
+        data: {
+            name: "Monthly Gym Membership",
+            itemName: "Gym",
+            amount: 50,
+            subcategoryId: subcategories.find((sc) => sc.name === "Gym")!.id,
+        },
+    });
 
     await prisma.user.create({
         data: {
