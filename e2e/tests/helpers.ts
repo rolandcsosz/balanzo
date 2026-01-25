@@ -1,25 +1,41 @@
-import { client } from '../../libs/sdk/client.gen';
-import { getExpenseTypes, getMainCategories, getSubcategories, getTemplates, getTransactionTypes, login } from '../../libs/sdk/sdk.gen';
-import { ErrorResponse, LoginSuccessResponse } from '../../libs/sdk/types.gen';
+import { client } from "../../libs/sdk/client.gen";
+import {
+    getExpenseTypes,
+    getMainCategories,
+    getSubcategories,
+    getTemplates,
+    getTransactionTypes,
+    login,
+} from "../../libs/sdk/sdk.gen";
+import { ErrorResponse, LoginSuccessResponse } from "../../libs/sdk/types.gen";
 
 const API_URL = process.env.API_URL || "";
 const TEST_EMAIL = process.env.TEST_EMAIL || "";
 const TEST_PASSWORD = process.env.TEST_PASSWORD || "";
 
-export type ResponseStructure<T> = ({
-    data: ErrorResponse | T;
-    error: undefined;
-} | {
-    data: undefined;
-    error: unknown;
-}) & {
+export type ResponseStructure<T> = (
+    | {
+          data: ErrorResponse | T;
+          error: undefined;
+      }
+    | {
+          data: undefined;
+          error: unknown;
+      }
+) & {
     request: Request;
     response: Response;
 };
 
 export const isErrorResponse = <T>(obj: ErrorResponse | T): obj is ErrorResponse => {
-    return typeof obj === 'object' && obj !== null && Object.keys(obj).length === 1 && 'message' in obj && typeof obj['message'] === 'string';
-}
+    return (
+        typeof obj === "object" &&
+        obj !== null &&
+        Object.keys(obj).length === 1 &&
+        "message" in obj &&
+        typeof obj["message"] === "string"
+    );
+};
 
 export const checkResponseBody = <T>(response: ResponseStructure<ErrorResponse | T>): T => {
     if (isErrorResponse(response.error)) {
@@ -31,7 +47,7 @@ export const checkResponseBody = <T>(response: ResponseStructure<ErrorResponse |
     }
 
     if (!response.data) {
-        throw new Error('No data in response');
+        throw new Error("No data in response");
     }
 
     return response.data;
@@ -39,13 +55,13 @@ export const checkResponseBody = <T>(response: ResponseStructure<ErrorResponse |
 
 export const getAuthToken = async (): Promise<string> => {
     if (!API_URL || !TEST_EMAIL || !TEST_PASSWORD) {
-        throw new Error('API_URL, TEST_EMAIL, and TEST_PASSWORD must be set in environment variables');
+        throw new Error("API_URL, TEST_EMAIL, and TEST_PASSWORD must be set in environment variables");
     }
 
     const loginResponse: ResponseStructure<LoginSuccessResponse | ErrorResponse> = await login({
         body: {
             email: TEST_EMAIL,
-            password: TEST_PASSWORD
+            password: TEST_PASSWORD,
         },
     });
 
@@ -58,7 +74,7 @@ export const getAuthToken = async (): Promise<string> => {
 
 export const setupAuthenticatedClient = async () => {
     client.setConfig({
-        baseUrl: API_URL
+        baseUrl: API_URL,
     });
 
     const token = await getAuthToken();
@@ -79,7 +95,7 @@ export const setupUnauthenticatedClient = () => {
 export const setupInvalidTokenClient = () => {
     client.setConfig({
         baseUrl: API_URL,
-        auth: () => 'invalid-token-12345',
+        auth: () => "invalid-token-12345",
     });
 };
 
@@ -103,13 +119,13 @@ export const getValidIds = async (): Promise<ValidIds> => {
     };
 
     const config: { [key in keyof ValidIds]: () => Promise<ResponseStructure<ErrorResponse | { id: string }[]>> } = {
-        "expenseTypeId": getExpenseTypes,
-        "transactionTypeId": getTransactionTypes,
-        "mainCategoryId": getMainCategories,
-        "subcategoryId": getSubcategories,
-        "transactionId": getTemplates,
-        "templateId": getTemplates,
-    }
+        expenseTypeId: getExpenseTypes,
+        transactionTypeId: getTransactionTypes,
+        mainCategoryId: getMainCategories,
+        subcategoryId: getSubcategories,
+        transactionId: getTemplates,
+        templateId: getTemplates,
+    };
 
     for (const [key, func] of Object.entries(config)) {
         if (!func) {
@@ -125,4 +141,4 @@ export const getValidIds = async (): Promise<ValidIds> => {
     }
 
     return validIds;
-}
+};

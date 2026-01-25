@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 import {
     getTransactions,
     getTransaction,
@@ -22,9 +22,16 @@ import {
     deleteTemplate,
     getTransactionTypes,
     getExpenseTypes,
-} from '../../libs/sdk/sdk.gen';
+} from "../../libs/sdk/sdk.gen";
 
-import { setupUnauthenticatedClient, checkResponseBody, setupAuthenticatedClient, getValidIds, ValidIds, ResponseStructure } from './helpers';
+import {
+    setupUnauthenticatedClient,
+    checkResponseBody,
+    setupAuthenticatedClient,
+    getValidIds,
+    ValidIds,
+    ResponseStructure,
+} from "./helpers";
 
 import {
     TransactionRequest,
@@ -32,40 +39,34 @@ import {
     SubcategoryRequest,
     TemplateRequest,
     ErrorResponse,
-} from '../../libs/sdk/types.gen';
-
+} from "../../libs/sdk/types.gen";
 
 type GetAllAction<T> = {
-    kind: 'getAll';
+    kind: "getAll";
     call: () => Promise<ResponseStructure<T[]>>;
 };
 
 type CreateAction<T> = {
-    kind: 'create';
+    kind: "create";
     call: (config: { body: T }) => Promise<ResponseStructure<T>>;
 };
 
 type GetOneAction<T> = {
-    kind: 'getOne';
+    kind: "getOne";
     call: (config: { path: { id: string } }) => Promise<ResponseStructure<T>>;
 };
 
 type UpdateAction<T> = {
-    kind: 'update';
+    kind: "update";
     call: (config: { path: { id: string }; body: T }) => Promise<ResponseStructure<T>>;
 };
 
 type DeleteAction = {
-    kind: 'delete';
+    kind: "delete";
     call: (config: { path: { id: string } }) => Promise<ResponseStructure<unknown>>;
 };
 
-type EndpointAction<T> =
-    | GetAllAction<T>
-    | CreateAction<T>
-    | GetOneAction<T>
-    | UpdateAction<T>
-    | DeleteAction;
+type EndpointAction<T> = GetAllAction<T> | CreateAction<T> | GetOneAction<T> | UpdateAction<T> | DeleteAction;
 
 type Validator<T> = {
     list?: (items: T[]) => void;
@@ -84,94 +85,94 @@ type ConfigFactory<T> = (ids: ValidIds) => ConfigItem<T>;
 // Action order matters for CRUD flow. Get all -> Create(Id) -> Get one(Id) -> Update(Id) -> Delete(Id)
 const configFactories: ConfigFactory<any>[] = [
     (validIds) => ({
-        baseEndpoint: '/transactions',
+        baseEndpoint: "/transactions",
         sampleData: {
-            item: 'Sample Item',
+            item: "Sample Item",
             amount: 100,
             date: new Date().toISOString(),
             subcategoryId: validIds.subcategoryId,
         } satisfies TransactionRequest,
 
         validate: {
-            list: items => {
+            list: (items) => {
                 expect(items.length).toBeGreaterThan(0);
                 for (const item of items) {
-                    expect(item).toHaveProperty('id');
-                    expect(item).toHaveProperty('item');
+                    expect(item).toHaveProperty("id");
+                    expect(item).toHaveProperty("item");
                 }
             },
-            single: item => {
-                expect(item).toHaveProperty('id');
-                expect(item).toHaveProperty('item');
+            single: (item) => {
+                expect(item).toHaveProperty("id");
+                expect(item).toHaveProperty("item");
             },
         },
 
         actions: [
-            { kind: 'getAll', call: getTransactions },
-            { kind: 'create', call: createTransaction },
-            { kind: 'getOne', call: getTransaction },
-            { kind: 'update', call: updateTransaction },
-            { kind: 'delete', call: deleteTransaction },
+            { kind: "getAll", call: getTransactions },
+            { kind: "create", call: createTransaction },
+            { kind: "getOne", call: getTransaction },
+            { kind: "update", call: updateTransaction },
+            { kind: "delete", call: deleteTransaction },
         ],
     }),
     (validIds) => ({
-        baseEndpoint: '/main_categories',
+        baseEndpoint: "/main_categories",
         sampleData: {
-            name: 'Sample Main Category',
+            name: "Sample Main Category",
             expenseTypeId: validIds.expenseTypeId,
             transactionTypeId: validIds.transactionTypeId,
         } satisfies MainCategoryRequest,
 
         actions: [
-            { kind: 'getAll', call: getMainCategories },
-            { kind: 'create', call: createMainCategory },
-            { kind: 'getOne', call: getMainCategory },
-            { kind: 'update', call: updateMainCategory },
-            { kind: 'delete', call: deleteMainCategory },
+            { kind: "getAll", call: getMainCategories },
+            { kind: "create", call: createMainCategory },
+            { kind: "getOne", call: getMainCategory },
+            { kind: "update", call: updateMainCategory },
+            { kind: "delete", call: deleteMainCategory },
         ],
     }),
     (validIds) => ({
-        baseEndpoint: '/subcategories',
+        baseEndpoint: "/subcategories",
         sampleData: {
-            name: 'Sample Subcategory',
+            name: "Sample Subcategory",
             mainCategoryId: validIds.mainCategoryId,
         } satisfies SubcategoryRequest,
 
         actions: [
-            { kind: 'getAll', call: getSubcategories },
-            { kind: 'create', call: createSubcategory },
-            { kind: 'getOne', call: getSubcategory },
-            { kind: 'update', call: updateSubcategory },
-            { kind: 'delete', call: deleteSubcategory },
+            { kind: "getAll", call: getSubcategories },
+            { kind: "create", call: createSubcategory },
+            { kind: "getOne", call: getSubcategory },
+            { kind: "update", call: updateSubcategory },
+            { kind: "delete", call: deleteSubcategory },
         ],
     }),
     (validIds) => ({
-        baseEndpoint: '/templates',
+        baseEndpoint: "/templates",
         sampleData: {
-            name: 'Sample Template',
-            itemName: 'Sample Item',
+            name: "Sample Template",
+            itemName: "Sample Item",
             amount: 50,
             date: null,
             subcategoryId: validIds.subcategoryId,
         } satisfies TemplateRequest,
 
         actions: [
-            { kind: 'getAll', call: getTemplates },
-            { kind: 'create', call: createTemplate },
-            { kind: 'getOne', call: getTemplate },
-            { kind: 'update', call: updateTemplate },
-            { kind: 'delete', call: deleteTemplate },
+            { kind: "getAll", call: getTemplates },
+            { kind: "create", call: createTemplate },
+            { kind: "getOne", call: getTemplate },
+            { kind: "update", call: updateTemplate },
+            { kind: "delete", call: deleteTemplate },
         ],
     }),
     (validIds) => ({
-        baseEndpoint: '/transaction_types',
+        baseEndpoint: "/transaction_types",
         sampleData: {},
-        actions: [{ kind: 'getAll', call: getTransactionTypes }],
+        actions: [{ kind: "getAll", call: getTransactionTypes }],
     }),
     (validIds) => ({
-        baseEndpoint: '/expense_types',
+        baseEndpoint: "/expense_types",
         sampleData: {},
-        actions: [{ kind: 'getAll', call: getExpenseTypes }],
+        actions: [{ kind: "getAll", call: getExpenseTypes }],
     }),
 ];
 
@@ -180,19 +181,19 @@ async function runUnauthorizedChecks<T>(item: ConfigItem<T>) {
         let response: ResponseStructure<any>;
 
         switch (action.kind) {
-            case 'getAll':
+            case "getAll":
                 response = await action.call();
                 break;
-            case 'getOne':
-            case 'delete':
-                response = await action.call({ path: { id: 'x' } });
+            case "getOne":
+            case "delete":
+                response = await action.call({ path: { id: "x" } });
                 break;
-            case 'create':
+            case "create":
                 response = await action.call({ body: item.sampleData });
                 break;
-            case 'update':
+            case "update":
                 response = await action.call({
-                    path: { id: 'x' },
+                    path: { id: "x" },
                     body: item.sampleData,
                 });
                 break;
@@ -202,22 +203,19 @@ async function runUnauthorizedChecks<T>(item: ConfigItem<T>) {
     }
 }
 
-async function runCrudFlow<T extends { id?: string }>(
-    item: ConfigItem<T>
-) {
+async function runCrudFlow<T extends { id?: string }>(item: ConfigItem<T>) {
     let createdId: string | undefined;
 
     for (const action of item.actions) {
-
         switch (action.kind) {
-            case 'getAll': {
+            case "getAll": {
                 const res = await action.call();
                 const items = checkResponseBody(res);
                 item.validate?.list?.(items);
                 break;
             }
 
-            case 'create': {
+            case "create": {
                 const res = await action.call({ body: item.sampleData });
                 const created = checkResponseBody(res);
                 expect(created.id).toBeDefined();
@@ -226,7 +224,7 @@ async function runCrudFlow<T extends { id?: string }>(
                 break;
             }
 
-            case 'getOne': {
+            case "getOne": {
                 expect(createdId).toBeDefined();
                 const res = await action.call({ path: { id: createdId! } });
                 const entity = checkResponseBody(res);
@@ -234,7 +232,7 @@ async function runCrudFlow<T extends { id?: string }>(
                 break;
             }
 
-            case 'update': {
+            case "update": {
                 expect(createdId).toBeDefined();
                 const res = await action.call({
                     path: { id: createdId! },
@@ -245,7 +243,7 @@ async function runCrudFlow<T extends { id?: string }>(
                 break;
             }
 
-            case 'delete': {
+            case "delete": {
                 expect(createdId).toBeDefined();
                 const res = await action.call({ path: { id: createdId! } });
                 expect(res.response.status).toBe(200);
@@ -255,14 +253,14 @@ async function runCrudFlow<T extends { id?: string }>(
     }
 }
 
-test.describe('API - Authentication Tests', async () => {
+test.describe("API - Authentication Tests", async () => {
     const validIds: ValidIds = {
-        expenseTypeId: 'valid-expense-type-id',
-        transactionTypeId: 'valid-transaction-type-id',
-        mainCategoryId: 'valid-main-category-id',
-        subcategoryId: 'valid-subcategory-id',
-        transactionId: 'valid-transaction-id',
-        templateId: 'valid-template-id',
+        expenseTypeId: "valid-expense-type-id",
+        transactionTypeId: "valid-transaction-type-id",
+        mainCategoryId: "valid-main-category-id",
+        subcategoryId: "valid-subcategory-id",
+        transactionId: "valid-transaction-id",
+        templateId: "valid-template-id",
     };
 
     test.beforeAll(async () => {
@@ -270,15 +268,14 @@ test.describe('API - Authentication Tests', async () => {
     });
 
     for (const factory of configFactories) {
-        test(factory({} as ValidIds).baseEndpoint + ' rejects unauthenticated requests', async () => {
+        test(factory({} as ValidIds).baseEndpoint + " rejects unauthenticated requests", async () => {
             const item = factory(validIds);
             await runUnauthorizedChecks(item);
         });
     }
 });
 
-
-test.describe('API - CRUD Tests', () => {
+test.describe("API - CRUD Tests", () => {
     let validIds: ValidIds;
 
     test.beforeAll(async () => {
@@ -287,10 +284,9 @@ test.describe('API - CRUD Tests', () => {
     });
 
     for (const factory of configFactories) {
-        test(factory({} as ValidIds).baseEndpoint + ' CRUD works', async () => {
+        test(factory({} as ValidIds).baseEndpoint + " CRUD works", async () => {
             const item = factory(validIds);
             await runCrudFlow(item);
         });
     }
 });
-

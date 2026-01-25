@@ -1,8 +1,37 @@
-import { test, expect } from '@playwright/test';
-import { getTransactions, getMainCategories, getSubcategories, getTemplates, getTransactionTypes, getExpenseTypes, getTransaction, createTransaction, updateTransaction, deleteTransaction, getMainCategory, createMainCategory, updateMainCategory, deleteMainCategory, getSubcategory, createSubcategory, updateSubcategory, deleteSubcategory, getTemplate, createTemplate, updateTemplate, deleteTemplate } from '../../libs/sdk/sdk.gen';
-import { client } from '../../libs/sdk/client.gen';
-import { setupUnauthenticatedClient } from './helpers';
-import { ErrorResponse, MainCategoryRequest, SubcategoryRequest, TemplateRequest, TransactionRequest } from '../../libs/sdk/types.gen';
+import { test, expect } from "@playwright/test";
+import {
+    getTransactions,
+    getMainCategories,
+    getSubcategories,
+    getTemplates,
+    getTransactionTypes,
+    getExpenseTypes,
+    getTransaction,
+    createTransaction,
+    updateTransaction,
+    deleteTransaction,
+    getMainCategory,
+    createMainCategory,
+    updateMainCategory,
+    deleteMainCategory,
+    getSubcategory,
+    createSubcategory,
+    updateSubcategory,
+    deleteSubcategory,
+    getTemplate,
+    createTemplate,
+    updateTemplate,
+    deleteTemplate,
+} from "../../libs/sdk/sdk.gen";
+import { client } from "../../libs/sdk/client.gen";
+import { setupUnauthenticatedClient } from "./helpers";
+import {
+    ErrorResponse,
+    MainCategoryRequest,
+    SubcategoryRequest,
+    TemplateRequest,
+    TransactionRequest,
+} from "../../libs/sdk/types.gen";
 
 const API_URL = process.env.API_URL || "";
 
@@ -31,13 +60,7 @@ type DeleteAction<T> = {
     call: (config: { path: { id: string } }) => Promise<ResponseStructure<T>>;
 };
 
-type EndpointAction<T> =
-    | GetAllAction<T>
-    | GetOneAction<T>
-    | CreateAction<T>
-    | UpdateAction<T>
-    | DeleteAction<T>;
-
+type EndpointAction<T> = GetAllAction<T> | GetOneAction<T> | CreateAction<T> | UpdateAction<T> | DeleteAction<T>;
 
 type ConfigItem<T> = {
     baseEndpoint: string;
@@ -45,15 +68,18 @@ type ConfigItem<T> = {
     actions: EndpointAction<T>[];
 };
 
-type ResponseStructure<T> = ({
-    data: ErrorResponse | T;
-    error: undefined;
-} | {
-    data: undefined;
-    error: unknown;
-}) & {
-    request: Request,
-    response: Response
+type ResponseStructure<T> = (
+    | {
+          data: ErrorResponse | T;
+          error: undefined;
+      }
+    | {
+          data: undefined;
+          error: unknown;
+      }
+) & {
+    request: Request;
+    response: Response;
 };
 
 const config: ConfigItem<any>[] = [
@@ -71,7 +97,7 @@ const config: ConfigItem<any>[] = [
             { kind: "create", call: createTransaction },
             { kind: "update", call: updateTransaction },
             { kind: "delete", call: deleteTransaction },
-        ]
+        ],
     },
     {
         baseEndpoint: "/subcategories",
@@ -85,7 +111,7 @@ const config: ConfigItem<any>[] = [
             { kind: "create", call: createSubcategory },
             { kind: "update", call: updateSubcategory },
             { kind: "delete", call: deleteSubcategory },
-        ]
+        ],
     },
     {
         baseEndpoint: "/main_categories",
@@ -100,7 +126,7 @@ const config: ConfigItem<any>[] = [
             { kind: "create", call: createMainCategory },
             { kind: "update", call: updateMainCategory },
             { kind: "delete", call: deleteMainCategory },
-        ]
+        ],
     },
     {
         baseEndpoint: "/templates",
@@ -117,24 +143,19 @@ const config: ConfigItem<any>[] = [
             { kind: "create", call: createTemplate },
             { kind: "update", call: updateTemplate },
             { kind: "delete", call: deleteTemplate },
-        ]
+        ],
     },
     {
         baseEndpoint: "/transaction_types",
         sampleData: {},
-        actions: [
-            { kind: "getAll", call: getTransactionTypes },
-        ]
+        actions: [{ kind: "getAll", call: getTransactionTypes }],
     },
     {
         baseEndpoint: "/expense_types",
         sampleData: {},
-        actions: [
-            { kind: "getAll", call: getExpenseTypes },
-        ]
+        actions: [{ kind: "getAll", call: getExpenseTypes }],
     },
 ];
-
 
 test.beforeAll(async () => {
     client.setConfig({
@@ -144,7 +165,7 @@ test.beforeAll(async () => {
 
 async function runUnauthenticatedActions<T>(item: ConfigItem<T>) {
     for (const action of item.actions) {
-        let response : ResponseStructure<T>;
+        let response: ResponseStructure<T>;
 
         switch (action.kind) {
             case "getAll":
@@ -173,8 +194,7 @@ async function runUnauthenticatedActions<T>(item: ConfigItem<T>) {
     }
 }
 
-
-test.describe('API - Authentication Tests', () => {
+test.describe("API - Authentication Tests", () => {
     for (const item of config) {
         test(`Should reject ${item.baseEndpoint} requests without token`, async () => {
             setupUnauthenticatedClient();

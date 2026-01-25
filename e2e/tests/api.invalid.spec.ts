@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 import {
     createMainCategory,
     createSubcategory,
@@ -8,9 +8,9 @@ import {
     updateSubcategory,
     updateTransaction,
     updateTemplate,
-} from '../../libs/sdk/sdk.gen';
-import { setupAuthenticatedClient, getValidIds, ValidIds } from './helpers';
-import { MainCategoryRequest, SubcategoryRequest, TemplateRequest, TransactionRequest } from '../../libs/sdk/types.gen';
+} from "../../libs/sdk/sdk.gen";
+import { setupAuthenticatedClient, getValidIds, ValidIds } from "./helpers";
+import { MainCategoryRequest, SubcategoryRequest, TemplateRequest, TransactionRequest } from "../../libs/sdk/types.gen";
 
 type InvalidTestParam<T> = {
     createFunction: Function;
@@ -34,11 +34,9 @@ const testInvalidCreationOrUpdate = async <T>(config: InvalidTestParam<T>) => {
 
     expect(updateResponse.error).toBeDefined();
     expect(updateResponse.response.status).toBe(400);
-}
+};
 
-
-test.describe('API - Invalid date and foreign key test on create or update', () => {
-
+test.describe("API - Invalid date and foreign key test on create or update", () => {
     let validIds: ValidIds;
 
     test.beforeAll(async () => {
@@ -47,20 +45,20 @@ test.describe('API - Invalid date and foreign key test on create or update', () 
         validIds = await getValidIds();
     });
 
-    test('Should reject main category with invalid expenseTypeId', async () => {
+    test("Should reject main category with invalid expenseTypeId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createMainCategory,
             updateFunction: updateMainCategory,
             idToUpdate: validIds.mainCategoryId,
             param: {
                 name: `Test Invalid Expense Type ${Date.now()}`,
-                expenseTypeId: 'invalid-uuid-12345',
+                expenseTypeId: "invalid-uuid-12345",
                 transactionTypeId: validIds.transactionTypeId,
             } satisfies MainCategoryRequest,
         });
     });
 
-    test('Should reject main category with invalid transactionTypeId', async () => {
+    test("Should reject main category with invalid transactionTypeId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createMainCategory,
             updateFunction: updateMainCategory,
@@ -68,48 +66,48 @@ test.describe('API - Invalid date and foreign key test on create or update', () 
             param: {
                 name: `Test Invalid Transaction Type ${Date.now()}`,
                 expenseTypeId: validIds.expenseTypeId,
-                transactionTypeId: 'invalid-uuid-12345',
+                transactionTypeId: "invalid-uuid-12345",
             } satisfies MainCategoryRequest,
         });
     });
 
-    test('Should reject subcategory with invalid mainCategoryId', async () => {
+    test("Should reject subcategory with invalid mainCategoryId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createSubcategory,
             updateFunction: updateSubcategory,
             idToUpdate: validIds.subcategoryId,
             param: {
                 name: `Test Invalid Main Category ${Date.now()}`,
-                mainCategoryId: 'invalid-uuid-12345',
+                mainCategoryId: "invalid-uuid-12345",
             } satisfies SubcategoryRequest,
         });
     });
 
-    test('Should reject transaction with invalid subcategoryId', async () => {
+    test("Should reject transaction with invalid subcategoryId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createTransaction,
             updateFunction: updateTransaction,
             idToUpdate: validIds.transactionId,
             param: {
-                item: 'Test Invalid Subcategory',
+                item: "Test Invalid Subcategory",
                 amount: 100,
                 date: new Date().toISOString(),
-                subcategoryId: 'invalid-uuid-12345',
-            } satisfies TransactionRequest
+                subcategoryId: "invalid-uuid-12345",
+            } satisfies TransactionRequest,
         });
     });
 
-    test('Should reject transaction with invalid date format', async () => {
+    test("Should reject transaction with invalid date format", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createTransaction,
             updateFunction: updateTransaction,
             idToUpdate: validIds.transactionId,
             param: {
-                item: 'Test Invalid Date',
+                item: "Test Invalid Date",
                 amount: 100,
-                date: 'not-a-valid-date',
+                date: "not-a-valid-date",
                 subcategoryId: validIds.subcategoryId,
-            } satisfies TransactionRequest
+            } satisfies TransactionRequest,
         });
     });
 
@@ -128,33 +126,33 @@ test.describe('API - Invalid date and foreign key test on create or update', () 
         });
     });*/
 
-    test('Should reject Template with invalid subcategoryId', async () => {
+    test("Should reject Template with invalid subcategoryId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createTemplate,
             updateFunction: updateTemplate,
             idToUpdate: validIds.templateId,
             param: {
-                name: 'Test Invalid Subcategory',
-                itemName: 'Test Item',
+                name: "Test Invalid Subcategory",
+                itemName: "Test Item",
                 amount: 50,
                 date: new Date().toISOString(),
-                subcategoryId: 'invalid-uuid-12345',
-            } satisfies TemplateRequest
+                subcategoryId: "invalid-uuid-12345",
+            } satisfies TemplateRequest,
         });
     });
 
-    test('Should reject Template with invalid date format', async () => {
+    test("Should reject Template with invalid date format", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createTemplate,
             updateFunction: updateTemplate,
             idToUpdate: validIds.templateId,
             param: {
-                name: 'Test Invalid Date',
-                itemName: 'Test Item',
+                name: "Test Invalid Date",
+                itemName: "Test Item",
                 amount: 50,
-                date: 'invalid-date-format',
+                date: "invalid-date-format",
                 subcategoryId: validIds.subcategoryId,
-            } satisfies TemplateRequest
+            } satisfies TemplateRequest,
         });
     });
 
@@ -173,5 +171,4 @@ test.describe('API - Invalid date and foreign key test on create or update', () 
             } satisfies TemplateRequest
         });
     });*/
-
 });

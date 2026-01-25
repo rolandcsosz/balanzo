@@ -74,7 +74,7 @@ export type MainCategoryRequest = {
 };
 
 export type LoginSuccessResponse = {
-    role: 'user' | 'caregiver';
+    role: "user" | "caregiver";
     token: string;
     user: {
         email: string;
@@ -97,7 +97,7 @@ export type GetTransactionTypesData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/transaction_types';
+    url: "/transaction_types";
 };
 
 export type GetTransactionTypesResponses = {
@@ -113,7 +113,7 @@ export type GetTransactionsData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/transactions';
+    url: "/transactions";
 };
 
 export type GetTransactionsResponses = {
@@ -129,7 +129,7 @@ export type CreateTransactionData = {
     body: TransactionRequest;
     path?: never;
     query?: never;
-    url: '/transactions';
+    url: "/transactions";
 };
 
 export type CreateTransactionResponses = {
@@ -147,7 +147,7 @@ export type DeleteTransactionData = {
         id: string;
     };
     query?: never;
-    url: '/transactions/{id}';
+    url: "/transactions/{id}";
 };
 
 export type DeleteTransactionResponses = {
@@ -165,7 +165,7 @@ export type GetTransactionData = {
         id: string;
     };
     query?: never;
-    url: '/transactions/{id}';
+    url: "/transactions/{id}";
 };
 
 export type GetTransactionResponses = {
@@ -183,7 +183,7 @@ export type UpdateTransactionData = {
         id: string;
     };
     query?: never;
-    url: '/transactions/{id}';
+    url: "/transactions/{id}";
 };
 
 export type UpdateTransactionResponses = {
@@ -199,7 +199,7 @@ export type GetTemplatesData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/templates';
+    url: "/templates";
 };
 
 export type GetTemplatesResponses = {
@@ -215,7 +215,7 @@ export type CreateTemplateData = {
     body: TemplateRequest;
     path?: never;
     query?: never;
-    url: '/templates';
+    url: "/templates";
 };
 
 export type CreateTemplateResponses = {
@@ -233,7 +233,7 @@ export type DeleteTemplateData = {
         id: string;
     };
     query?: never;
-    url: '/templates/{id}';
+    url: "/templates/{id}";
 };
 
 export type DeleteTemplateResponses = {
@@ -251,7 +251,7 @@ export type GetTemplateData = {
         id: string;
     };
     query?: never;
-    url: '/templates/{id}';
+    url: "/templates/{id}";
 };
 
 export type GetTemplateResponses = {
@@ -269,7 +269,7 @@ export type UpdateTemplateData = {
         id: string;
     };
     query?: never;
-    url: '/templates/{id}';
+    url: "/templates/{id}";
 };
 
 export type UpdateTemplateResponses = {
@@ -285,7 +285,7 @@ export type GetSubcategoriesData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/subcategories';
+    url: "/subcategories";
 };
 
 export type GetSubcategoriesResponses = {
@@ -301,7 +301,7 @@ export type CreateSubcategoryData = {
     body: SubcategoryRequest;
     path?: never;
     query?: never;
-    url: '/subcategories';
+    url: "/subcategories";
 };
 
 export type CreateSubcategoryResponses = {
@@ -319,7 +319,7 @@ export type DeleteSubcategoryData = {
         id: string;
     };
     query?: never;
-    url: '/subcategories/{id}';
+    url: "/subcategories/{id}";
 };
 
 export type DeleteSubcategoryResponses = {
@@ -337,7 +337,7 @@ export type GetSubcategoryData = {
         id: string;
     };
     query?: never;
-    url: '/subcategories/{id}';
+    url: "/subcategories/{id}";
 };
 
 export type GetSubcategoryResponses = {
@@ -355,7 +355,7 @@ export type UpdateSubcategoryData = {
         id: string;
     };
     query?: never;
-    url: '/subcategories/{id}';
+    url: "/subcategories/{id}";
 };
 
 export type UpdateSubcategoryResponses = {
@@ -371,7 +371,7 @@ export type GetMainCategoriesData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/main_categories';
+    url: "/main_categories";
 };
 
 export type GetMainCategoriesResponses = {
@@ -387,7 +387,7 @@ export type CreateMainCategoryData = {
     body: MainCategoryRequest;
     path?: never;
     query?: never;
-    url: '/main_categories';
+    url: "/main_categories";
 };
 
 export type CreateMainCategoryResponses = {
@@ -405,7 +405,7 @@ export type DeleteMainCategoryData = {
         id: string;
     };
     query?: never;
-    url: '/main_categories/{id}';
+    url: "/main_categories/{id}";
 };
 
 export type DeleteMainCategoryResponses = {
@@ -423,7 +423,7 @@ export type GetMainCategoryData = {
         id: string;
     };
     query?: never;
-    url: '/main_categories/{id}';
+    url: "/main_categories/{id}";
 };
 
 export type GetMainCategoryResponses = {
@@ -441,7 +441,7 @@ export type UpdateMainCategoryData = {
         id: string;
     };
     query?: never;
-    url: '/main_categories/{id}';
+    url: "/main_categories/{id}";
 };
 
 export type UpdateMainCategoryResponses = {
@@ -457,7 +457,7 @@ export type LoginData = {
     body: LoginRequest;
     path?: never;
     query?: never;
-    url: '/login';
+    url: "/login";
 };
 
 export type LoginResponses = {
@@ -473,7 +473,7 @@ export type GetExpenseTypesData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/expense_types';
+    url: "/expense_types";
 };
 
 export type GetExpenseTypesResponses = {

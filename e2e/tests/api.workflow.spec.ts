@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 import {
     createMainCategory,
     createSubcategory,
@@ -8,11 +8,10 @@ import {
     updateSubcategory,
     updateTransaction,
     updateTemplate,
-} from '../../libs/sdk/sdk.gen';
-import { setupAuthenticatedClient, checkResponseBody, ValidIds, getValidIds } from './helpers';
+} from "../../libs/sdk/sdk.gen";
+import { setupAuthenticatedClient, checkResponseBody, ValidIds, getValidIds } from "./helpers";
 
-
-test.describe('API - Complex Workflow Tests', () => {
+test.describe("API - Complex Workflow Tests", () => {
     let valiodIds: ValidIds;
 
     test.beforeAll(async () => {
@@ -20,8 +19,7 @@ test.describe('API - Complex Workflow Tests', () => {
         valiodIds = await getValidIds();
     });
 
-    test('Workflow: Create Main Category -> Subcategory -> Transaction -> Template', async () => {
-
+    test("Workflow: Create Main Category -> Subcategory -> Transaction -> Template", async () => {
         const mainCatResponse = await createMainCategory({
             body: {
                 name: `Workflow Main Category ${Date.now()}`,
@@ -59,7 +57,7 @@ test.describe('API - Complex Workflow Tests', () => {
             body: {
                 name: `Workflow Template ${Date.now()}`,
                 itemName: `Workflow Item ${Date.now()}`,
-                amount: 75.50,
+                amount: 75.5,
                 date: new Date().toISOString(),
                 subcategoryId,
             },
@@ -69,7 +67,7 @@ test.describe('API - Complex Workflow Tests', () => {
         expect(templateId).toBeDefined();
     });
 
-    test('Workflow: Update Main Category -> Subcategory -> Transaction -> Template', async () => {
+    test("Workflow: Update Main Category -> Subcategory -> Transaction -> Template", async () => {
         const mainCatResponse = await createMainCategory({
             body: {
                 name: `Update Workflow Main Category ${Date.now()}`,
@@ -121,7 +119,7 @@ test.describe('API - Complex Workflow Tests', () => {
             },
         });
         const updatedMainCatData = checkResponseBody(updatedMainCatResponse);
-        expect(updatedMainCatData.name).toContain('Updated Workflow Main Category');
+        expect(updatedMainCatData.name).toContain("Updated Workflow Main Category");
 
         const updatedSubcatResponse = await updateSubcategory({
             path: { id: subcategoryId },
@@ -131,7 +129,7 @@ test.describe('API - Complex Workflow Tests', () => {
             },
         });
         const updatedSubcatData = checkResponseBody(updatedSubcatResponse);
-        expect(updatedSubcatData.name).toContain('Updated Workflow Subcategory');
+        expect(updatedSubcatData.name).toContain("Updated Workflow Subcategory");
 
         const updatedTransactionResponse = await updateTransaction({
             path: { id: transactionId },
@@ -143,7 +141,7 @@ test.describe('API - Complex Workflow Tests', () => {
             },
         });
         const updatedTransactionData = checkResponseBody(updatedTransactionResponse);
-        expect(updatedTransactionData.item).toContain('Updated Workflow Transaction');
+        expect(updatedTransactionData.item).toContain("Updated Workflow Transaction");
         expect(updatedTransactionData.amount).toBe(250);
 
         const updatedTemplateResponse = await updateTemplate({
@@ -157,8 +155,7 @@ test.describe('API - Complex Workflow Tests', () => {
             },
         });
         const updatedTemplateData = checkResponseBody(updatedTemplateResponse);
-        expect(updatedTemplateData.name).toContain('Updated Workflow Template');
+        expect(updatedTemplateData.name).toContain("Updated Workflow Template");
         expect(updatedTemplateData.amount).toBe(150);
     });
-
 });
