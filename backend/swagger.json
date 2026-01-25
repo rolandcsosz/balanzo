@@ -435,7 +435,7 @@
                                             "$ref": "#/components/schemas/ErrorResponse"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/SuccessResponse"
+                                            "$ref": "#/components/schemas/Transaction"
                                         }
                                     ]
                                 }
@@ -634,7 +634,7 @@
                                             "$ref": "#/components/schemas/ErrorResponse"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/SuccessResponse"
+                                            "$ref": "#/components/schemas/Template"
                                         }
                                     ]
                                 }
@@ -833,7 +833,7 @@
                                             "$ref": "#/components/schemas/ErrorResponse"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/SuccessResponse"
+                                            "$ref": "#/components/schemas/Subcategory"
                                         }
                                     ]
                                 }
@@ -1032,7 +1032,7 @@
                                             "$ref": "#/components/schemas/ErrorResponse"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/SuccessResponse"
+                                            "$ref": "#/components/schemas/MainCategory"
                                         }
                                     ]
                                 }

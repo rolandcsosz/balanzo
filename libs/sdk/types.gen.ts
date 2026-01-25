@@ -190,7 +190,7 @@ export type UpdateTransactionResponses = {
     /**
      * Ok
      */
-    200: ErrorResponse | SuccessResponse;
+    200: ErrorResponse | Transaction;
 };
 
 export type UpdateTransactionResponse = UpdateTransactionResponses[keyof UpdateTransactionResponses];
@@ -276,7 +276,7 @@ export type UpdateTemplateResponses = {
     /**
      * Ok
      */
-    200: ErrorResponse | SuccessResponse;
+    200: ErrorResponse | Template;
 };
 
 export type UpdateTemplateResponse = UpdateTemplateResponses[keyof UpdateTemplateResponses];
@@ -362,7 +362,7 @@ export type UpdateSubcategoryResponses = {
     /**
      * Ok
      */
-    200: ErrorResponse | SuccessResponse;
+    200: ErrorResponse | Subcategory;
 };
 
 export type UpdateSubcategoryResponse = UpdateSubcategoryResponses[keyof UpdateSubcategoryResponses];
@@ -448,7 +448,7 @@ export type UpdateMainCategoryResponses = {
     /**
      * Ok
      */
-    200: ErrorResponse | SuccessResponse;
+    200: ErrorResponse | MainCategory;
 };
 
 export type UpdateMainCategoryResponse = UpdateMainCategoryResponses[keyof UpdateMainCategoryResponses];

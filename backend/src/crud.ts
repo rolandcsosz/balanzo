@@ -97,7 +97,7 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
             }
         }
 
-        async update(id: string, body: TRequest): Promise<SuccessResponse | ErrorResponse> {
+        async update(id: string, body: TRequest): Promise<TClient | ErrorResponse> {
             if (!checkFields(body)) {
                 this.setStatus(400);
                 return { message: "Missing fields" };
@@ -118,11 +118,11 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
                     return fkError;
                 }
 
-                await opts.prisma[opts.model].update({
+                const updated: TDb = await opts.prisma[opts.model].update({
                     where: { id },
                     data: opts.toDb(body),
                 });
-                return successResponse;
+                return opts.toClient(updated);
             } catch (err) {
                 if (getErrorCode(err) === "P2025") {
                     this.setStatus(404);
