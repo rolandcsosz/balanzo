@@ -6,24 +6,22 @@ const API_URL = process.env.API_URL || "";
 const TEST_EMAIL = process.env.TEST_EMAIL || "";
 const TEST_PASSWORD = process.env.TEST_PASSWORD || "";
 
-export type ResponseType<T> =
-    | {
-        data: undefined;
-        error: unknown;
-    }
-    | {
-        data: ErrorResponse | T;
-        error: undefined;
-    } & {
-        request: Request;
-        response: Response;
-    };
+export type ResponseStructure<T> = ({
+    data: ErrorResponse | T;
+    error: undefined;
+} | {
+    data: undefined;
+    error: unknown;
+}) & {
+    request: Request;
+    response: Response;
+};
 
 export const isErrorResponse = <T>(obj: ErrorResponse | T): obj is ErrorResponse => {
     return typeof obj === 'object' && obj !== null && Object.keys(obj).length === 1 && 'message' in obj && typeof obj['message'] === 'string';
 }
 
-export const checkResponseBody = <T>(response: ResponseType<ErrorResponse | T>): T => {
+export const checkResponseBody = <T>(response: ResponseStructure<ErrorResponse | T>): T => {
     if (isErrorResponse(response.error)) {
         throw new Error(response.error.message);
     }
@@ -44,7 +42,7 @@ export const getAuthToken = async (): Promise<string> => {
         throw new Error('API_URL, TEST_EMAIL, and TEST_PASSWORD must be set in environment variables');
     }
 
-    const loginResponse: ResponseType<LoginSuccessResponse | ErrorResponse> = await login({
+    const loginResponse: ResponseStructure<LoginSuccessResponse | ErrorResponse> = await login({
         body: {
             email: TEST_EMAIL,
             password: TEST_PASSWORD
@@ -95,7 +93,7 @@ export type ValidIds = {
 };
 
 export const getValidIds = async (): Promise<ValidIds> => {
-    let validIds : ValidIds = {
+    let validIds: ValidIds = {
         expenseTypeId: "",
         transactionTypeId: "",
         mainCategoryId: "",
@@ -104,7 +102,7 @@ export const getValidIds = async (): Promise<ValidIds> => {
         templateId: "",
     };
 
-    const config : { [key in keyof ValidIds]: () => Promise<ResponseType<ErrorResponse | {id: string}[]>> } = {
+    const config: { [key in keyof ValidIds]: () => Promise<ResponseStructure<ErrorResponse | { id: string }[]>> } = {
         "expenseTypeId": getExpenseTypes,
         "transactionTypeId": getTransactionTypes,
         "mainCategoryId": getMainCategories,
@@ -113,7 +111,7 @@ export const getValidIds = async (): Promise<ValidIds> => {
         "templateId": getTemplates,
     }
 
-    for(const [key, func] of Object.entries(config)) {
+    for (const [key, func] of Object.entries(config)) {
         if (!func) {
             throw new Error(`Function for ${key} is not defined`);
         }
