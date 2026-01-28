@@ -1,6 +1,6 @@
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { EditItem } from "../pages/EditItem";
+import { EditItemForm } from "../pages/EditItemForm";
 import { formatCurrency } from "../utils/utlis";
 import "./TransactionCard.scss";
 
@@ -22,7 +22,7 @@ export const TransactionCard = ({ transaction, onChange }) => {
                     class="transaction-card-icon-wrapper"
                     onClick={() => {
                         openSheet(
-                            <EditItem
+                            <EditItemForm
                                 transaction={transaction}
                                 onFinished={() => {
                                     onChange();

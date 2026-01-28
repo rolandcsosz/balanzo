@@ -1,50 +1,32 @@
+import { ErrorResponse } from "../../libs/sdk/types.gen";
+
 export type User = {
     email: string;
     token: string;
-};
-
-export type TransactionType = {
-    _id: string;
-    name: string;
-};
-
-export type ExpenseType = {
-    _id: string;
-    name: string;
-};
-
-export type MainCategory = {
-    _id: string;
-    name: string;
-    expenseType: ExpenseType;
-    transactionType: TransactionType;
-};
-
-export type Transaction = {
-    _id: string;
-    item: string;
-    amount: number;
-    date: string;
-    subcategory: Subcategory;
-};
-
-export type Template = {
-    _id: string;
-    name: string;
-    itemName: string | null;
-    amount: number | null;
-    subcategory: Subcategory;
-};
-
-export type Subcategory = {
-    _id: string;
-    name: string;
-    mainCategory: MainCategory;
-    expenseType: ExpenseType;
 };
 
 export type MonthInfo = {
     startDate: Date;
     endDate: Date;
     name: string;
+};
+
+export type FetchResponse<T> = {
+    ok: boolean;
+    data?: T;
+    error?: string | null;
+};
+
+export type ResponseStructure<T> = (
+    | {
+          data: ErrorResponse | T;
+          error: undefined;
+      }
+    | {
+          data: undefined;
+          error: unknown;
+      }
+) & {
+    request: Request;
+    response: Response;
 };

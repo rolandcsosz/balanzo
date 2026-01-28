@@ -8,7 +8,7 @@ import { BottomSheet } from "../components/BottomSheet";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { Home } from "./Home";
 import { Transactions } from "./Transactions";
-import { EditItem } from "./EditItem";
+import { EditItemForm } from "./EditItemForm";
 import { Categories } from "./Categories";
 import { Templates } from "./Templates";
 import { useModel } from "../hooks/useModel";
@@ -16,13 +16,14 @@ import { Dropdown } from "../components/Dropdown";
 import { MonthInfo } from "../types";
 
 export function Menu() {
-    const [menu, setMenu] = useState("Home"); // State to track the current menu
-    const isMobile = useDevice(); // Determine if the device is mobile
-    const SidebarComponent = isMobile ? Navbar : Sidebar; // Use Navbar for mobile, Sidebar for desktop
-    const { openSheet, closeSheet, isOpen } = useBottomSheet(); // Bottom sheet state and handlers
-    const { transactions, refetchData } = useModel(); // Function to refetch data
-    const [selectedMonth, setSelectedMonth] = useState<string>(""); // State to track the selected month
-    const [monthList, setMonthList] = useState<MonthInfo[]>([]); // State to store the list of months
+    const [menu, setMenu] = useState("Home");
+    const isMobile = useDevice();
+    const SidebarComponent = isMobile ? Navbar : Sidebar;
+    const { openSheet, closeSheet, isOpen } = useBottomSheet();
+    const { transaction, refetchData } = useModel();
+    const transactions = transaction.list;
+    const [selectedMonth, setSelectedMonth] = useState<string>("");
+    const [monthList, setMonthList] = useState<MonthInfo[]>([]);
 
     useEffect(() => {
         setMonthList(getMonthList);
@@ -126,14 +127,14 @@ export function Menu() {
                     aria-label="Add new item"
                     onClick={() => {
                         openSheet(
-                            <EditItem
-                                transaction={null}
+                            <EditItemForm
+                                transactionToEdit={null}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
                                 }}
                             />,
-                        ); // Open bottom sheet with EditItem component
+                        ); // Open bottom sheet with EditItemForm component
                     }}
                 >
                     <img src={largeAddUrl} alt="" /> {/* Add button with icon */}

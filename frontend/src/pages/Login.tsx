@@ -2,40 +2,32 @@ import "./Login.scss";
 import InputField from "../components/InputField";
 import { useState } from "preact/hooks";
 import { useAuth } from "../hooks/useAuth";
+import { useApi } from "../hooks/useApi";
+import { login as loginRequest } from "../../../libs/sdk/sdk.gen";
+import { isErrorResponse } from "../utils/utlis";
+import { client } from "../../../libs/sdk/client.gen";
 
 export function Login() {
-    // State variables for email and password
-    let [email, setEmail] = useState("");
-    let [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { login } = useAuth();
+    const { request } = useApi();
 
-    // Get the login function from the authentication hook
-    let { login } = useAuth();
-
-    // Handle form submission
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
 
-        try {
-            // Send login request to the server
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
+        const response = await request(loginRequest, { body: { email, password } });
 
-            if (response.ok) {
-                const result = await response.json();
-
-                // If the response contains a token, log the user in
-                if ("token" in result) {
-                    login({ email, token: result.token });
-                }
-            }
-        } catch (error) {
-            // Handle errors here (e.g., show an error message)
+        if (!response || response.error || !response.data?.data) {
+            return;
         }
+
+        if (isErrorResponse(response.data.data)) {
+            return;
+        }
+        const token = response.data.data.token;
+
+        login({ email, token: token });
     };
 
     return (

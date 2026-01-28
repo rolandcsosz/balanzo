@@ -8,29 +8,23 @@ import { useEffect } from "preact/hooks";
 import styles from "./Transactions.module.scss";
 
 export function Transactions() {
-    const { transactions, refetchData } = useModel(); // Fetch transactions and refetch function from the model
-    const isMobile = useDevice(); // Determine if the device is mobile
-
-    useEffect(() => {
-        refetchData(); // ✅ Always refetch when Transactions mounts
-    }, []);
+    const { transaction, refetchData } = useModel();
+    const transactions = transaction.list;
+    const isMobile = useDevice();
 
     return isMobile ?
             <div className={styles.transactionCards}>
                 {transactions.map((transaction, index) => {
-                    const currentDate = formatDate(transaction.date); // Format the current transaction date
-                    const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null; // Format the next transaction date if it exists
+                    const currentDate = formatDate(transaction.date);
+                    const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null;
                     return (
-                        <div key={transaction._id}>
-                            {
-                                index === 0 && (
-                                    <div class={styles.transactionDateDivider}>
-                                        <DateDivider date={currentDate} />
-                                    </div>
-                                ) /* Render date divider before the first card */
-                            }
+                        <div key={transaction.id}>
+                            {index === 0 && (
+                                <div class={styles.transactionDateDivider}>
+                                    <DateDivider date={currentDate} />
+                                </div>
+                            )}
                             <TransactionCard transaction={transaction} onChange={refetchData} />{" "}
-                            {/* Render transaction card */}
                             {nextDate && currentDate !== nextDate && (
                                 <div class={styles.transactionDateDivider}>
                                     <DateDivider date={nextDate} />
@@ -50,7 +44,7 @@ export function Transactions() {
                     <div className={styles.transactionRowActionCell}></div>
                 </header>
                 {transactions.map((transaction) => (
-                    <TransactionRow key={transaction._id} transaction={transaction} onChange={refetchData} /> // Render transaction row
+                    <TransactionRow key={transaction.id} transaction={transaction} onChange={refetchData} />
                 ))}
             </div>;
 }

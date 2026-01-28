@@ -45,14 +45,14 @@ export function CategoryRowMobile({
                         placeholder=""
                         onChange={(value) => {
                             setName(value);
-                            onEdit(item._id, value, selectedType);
+                            onEdit(item.id, value, selectedType);
                         }}
                         mini={true}
                     />
                     <button
                         className="category-row-mobile-icon"
                         onClick={() => {
-                            onDelete(item._id);
+                            onDelete(item.id);
                         }}
                     >
                         <img loading="lazy" src={deleteButtonUrl} alt="" className="category-row-action-icon" />
@@ -67,7 +67,7 @@ export function CategoryRowMobile({
                         selected={selectedType}
                         onSelectedChange={(value) => {
                             setSelectedType(value);
-                            onEdit(item._id, name, value);
+                            onEdit(item.id, name, value);
                         }}
                         mini={true}
                     />

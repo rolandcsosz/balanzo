@@ -7,7 +7,7 @@ import { TemplatesIcon } from "./icons/TemplatesIcon";
 import { SidebarButton } from "./SidebarButton";
 import { AddIcon } from "./icons/AddIcon";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { EditItem } from "../pages/EditItem";
+import { EditItemForm } from "../pages/EditItemForm";
 import { useModel } from "../hooks/useModel";
 
 // Initial navigation items with icons, labels, and active state
@@ -58,8 +58,8 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
                         onClick={() => {
                             if (item.label === "Add") {
                                 openSheet(
-                                    <EditItem
-                                        transaction={null}
+                                    <EditItemForm
+                                        transactionToEdit={null}
                                         onFinished={() => {
                                             refetchData();
                                             closeSheet();

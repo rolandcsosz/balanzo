@@ -3,19 +3,29 @@ import "../components/TransactionCard.scss";
 import { useModel } from "../hooks/useModel";
 import { TemplateCard } from "../components/TemplateCard";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { EditItem } from "./EditItem";
+import { EditItemForm } from "./EditItemForm";
 import { EditTemplate } from "./EditTemplate";
 import { useMemo } from "preact/hooks";
+import { useEntityQuery } from "../hooks/useEntityQuery";
 
 export function Templates() {
-    const { templates, transactions, refetchData } = useModel(); // Fetch templates and refetch function from the model hook
-    const isMobile = useDevice(); // Determine if the device is mobile
-    const { isOpen, content, openSheet, closeSheet } = useBottomSheet(); // Bottom sheet state and control functions
+    const { template, transaction, refetchData } = useModel();
+    const templates = template.list;
+    const transactions = transaction.list;
+    const isMobile = useDevice();
+    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
+    const { store } = useEntityQuery();
 
     const getOrerderedTemplates = useMemo(() => {
         return templates.sort((a, b) => {
-            const aCount = transactions.filter((t) => t.subcategory._id === a.subcategory._id).length;
-            const bCount = transactions.filter((t) => t.subcategory._id === b.subcategory._id).length;
+            const aCount = transactions.filter(
+                (t) =>
+                    store.subcategory(t.subcategoryId).tryGet()?.id === store.subcategory(a.subcategoryId).tryGet()?.id,
+            ).length;
+            const bCount = transactions.filter(
+                (t) =>
+                    store.subcategory(t.subcategoryId).tryGet()?.id === store.subcategory(b.subcategoryId).tryGet()?.id,
+            ).length;
             return bCount - aCount;
         });
     }, [templates, transactions]);
@@ -28,20 +38,20 @@ export function Templates() {
                     template={template}
                     onUseTemplate={() => {
                         openSheet(
-                            <EditItem
-                                template={template}
-                                transaction={null}
+                            <EditItemForm
+                                templateToEdit={template}
+                                transactionToEdit={null}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
                                 }}
-                            />, // Open bottom sheet with EditItem component
+                            />, // Open bottom sheet with EditItemForm component
                         );
                     }}
                     onEditTemplate={() => {
                         openSheet(
                             <EditTemplate
-                                template={template}
+                                templateToEdit={template}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -57,7 +67,7 @@ export function Templates() {
                 onUseTemplate={() => {
                     openSheet(
                         <EditTemplate
-                            template={null}
+                            templateToEdit={null}
                             onFinished={() => {
                                 refetchData();
                                 closeSheet();

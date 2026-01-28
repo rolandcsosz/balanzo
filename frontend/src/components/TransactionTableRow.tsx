@@ -2,7 +2,7 @@ import "./TransactionTableRow.scss";
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { formatDate, formatCurrency } from "../utils/utlis";
-import { EditItem } from "../pages/EditItem";
+import { EditItemForm } from "../pages/EditItemForm";
 import { Transaction } from "../types";
 
 interface TransactionRowProps {
@@ -40,7 +40,7 @@ export const TransactionRow = ({ transaction, onChange }: TransactionRowProps) =
                     class="transaction-row-action-button"
                     onClick={() => {
                         openSheet(
-                            <EditItem
+                            <EditItemForm
                                 transaction={transaction}
                                 onFinished={() => {
                                     onChange();

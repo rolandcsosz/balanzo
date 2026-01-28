@@ -1,4 +1,4 @@
-import "./EditItem.scss";
+import "./EditItemForm.scss";
 import InputField from "../components/InputField";
 import { Dropdown } from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
@@ -8,19 +8,18 @@ import expenseTypeUrl from "../assets/export-type.svg";
 import categoryUrl from "../assets/category.svg";
 import subcategoryUrl from "../assets/subcategory.svg";
 import dateUrl from "../assets/date.svg";
-import { formatDate, formatDateToSet, formattedStringToDate } from "../utils/utlis";
+import { formatDateToSet, formattedStringToDate } from "../utils/utlis";
 import { useModel } from "../hooks/useModel";
-import { useApiClient } from "../hooks/useApiClient";
-import { Template, Transaction } from "../types";
+import { Template, Transaction } from "../../../libs/sdk/types.gen";
 
-interface EditItemProps {
-    transaction?: Transaction | null;
-    template?: Template | null;
+interface EditItemFormProps {
+    transactionToEdit?: Transaction | null;
+    templateToEdit?: Template | null;
     onFinished: () => void;
 }
 
-export function EditItem({ transaction = null, template = null, onFinished }: EditItemProps) {
-    const { mainCategories, subcategories, transactionTypes } = useModel();
+export function EditItemForm({ transactionToEdit = null, templateToEdit = null, onFinished }: EditItemFormProps) {
+    const { mainCategory, subcategory, transactionType, transaction } = useModel();
     const [itemName, setItemName] = useState("");
     const [itemAmount, setItemAmount] = useState<number | string>("");
     const [itemTransactionType, setItemTransactionType] = useState("");
@@ -30,114 +29,131 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
     const [itemDate, setItemDate] = useState(new Date());
 
-    const { fetchWithAuth } = useApiClient();
-
-    // Set category options based on the selected transaction type
-    const setCategoryOptions = (transactionType: string) => {
-        const filteredCategories = mainCategories
-            ?.filter((category) => category.transactionType?.name === transactionType)
+    const setCategoryOptions = (transactionTypeName: string) => {
+        const transactionTypeId = transactionType.list.find((type) => type.name === transactionTypeName)?.id;
+        if (!transactionTypeId) {
+            setItemCategoryOptions([]);
+            return;
+        }
+        const filteredCategories = mainCategory.list
+            ?.filter((category) => category.transactionTypeId === transactionTypeId)
             .map((category) => category?.name);
         setItemCategoryOptions(filteredCategories || []);
     };
 
-    // Set subcategory options based on the selected category
     const setSubcategoryOptions = (category: string) => {
-        const filteredSubcategories = subcategories
-            .filter((subcategory) => subcategory.mainCategory.name === category)
+        const mainCategoryId = mainCategory.list.find((cat) => cat.name === category)?.id;
+        if (!mainCategoryId) {
+            setItemSubcategoryOptions([]);
+            return;
+        }
+        const filteredSubcategories = subcategory.list
+            .filter((subcategory) => subcategory.mainCategoryId === mainCategoryId)
             .map((subcategory) => subcategory.name);
         setItemSubcategoryOptions(filteredSubcategories);
     };
 
-    // Initialize form fields if transaction or template is provided
     useEffect(() => {
-        if (transaction || template) {
-            const name = template?.itemName || transaction?.item || "";
-            const amount = template?.amount || transaction?.amount || 0;
-            const transactionType =
-                template?.subcategory?.mainCategory?.transactionType.name ||
-                transaction?.subcategory?.mainCategory?.transactionType.name ||
-                "";
-            const category =
-                template?.subcategory?.mainCategory?.name || transaction?.subcategory?.mainCategory?.name || "";
-            const subcategory = template?.subcategory?.name || transaction?.subcategory?.name || "";
-            const date = transaction?.date ? new Date(transaction.date) : new Date();
+        if (transactionToEdit || templateToEdit) {
+            const name = templateToEdit?.itemName || transactionToEdit?.item || "";
+            const amount = templateToEdit?.amount || transactionToEdit?.amount || 0;
+            const subcategoryId = templateToEdit?.subcategoryId || transactionToEdit?.subcategoryId || "";
+            const subcategoryName = subcategory.list.find((sub) => sub.id === subcategoryId)?.name || "";
+            const mainCategoryId = subcategory.list.find((sub) => sub.id === subcategoryId).mainCategoryId || "";
+            const mainCategoryName = mainCategory.list.find((cat) => cat.id === mainCategoryId)?.name || "";
+            const transactionTypeId =
+                mainCategory.list.find((type) => type.id === mainCategoryId)?.transactionTypeId || "";
+            const transactionTypeName = transactionType.list.find((type) => type.id === transactionTypeId)?.name || "";
+            const date = templateToEdit?.date || transactionToEdit?.date || new Date();
 
             setItemName(name);
             if (amount > 0) {
                 setItemAmount(amount);
             }
-            setItemTransactionType(transactionType);
-            setItemCategory(category);
-            setItemSubcategory(subcategory);
-            setItemDate(date);
+            setItemTransactionType(transactionTypeName);
+            setItemCategory(mainCategoryName);
+            setItemSubcategory(subcategoryName);
+            setItemDate(new Date(date));
         }
-    }, [transaction, template]);
+    }, [transactionToEdit, templateToEdit, mainCategory.list, subcategory.list, transactionType.list]);
 
-    // Update category options when transaction type changes
     useEffect(() => {
         if (itemTransactionType) {
             setCategoryOptions(itemTransactionType);
         }
-    }, [itemTransactionType, mainCategories]);
+    }, [itemTransactionType, mainCategory.list]);
 
-    // Update subcategory options when category changes
     useEffect(() => {
         if (itemCategory) {
             setSubcategoryOptions(itemCategory);
         }
-    }, [itemCategory, subcategories]);
+    }, [itemCategory, subcategory.list]);
 
-    // Handle form submission for editing or adding an item
     const handleEditItem = async () => {
-        const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
-        if (!transactionType) {
+        const transactionTypeId = transactionType.list.find((type) => type.name === itemTransactionType)?.id;
+        if (!transactionTypeId) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
             return;
         }
 
-        const subcategory = subcategories.find(
-            (subcategory) => subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory,
-        )?._id;
-        if (!subcategory) {
+        const mainCategoryId = mainCategory.list.find(
+            (category) => category.name === itemCategory && category.transactionTypeId === transactionTypeId,
+        )?.id;
+
+        const subcategoryId = subcategory.list.find(
+            (subcategory) => subcategory.name === itemSubcategory && subcategory.mainCategoryId === mainCategoryId,
+        )?.id;
+
+        if (!subcategoryId) {
             console.error(`No subcategory found for: ${itemSubcategory}`);
             return;
         }
 
-        if (!itemName || typeof itemAmount === "string" || (typeof itemAmount === "number" && itemAmount <= 0)) {
+        if (!itemName || typeof itemAmount !== "number" || itemAmount <= 0) {
             return;
         }
 
-        const body: any = {
-            item: itemName,
-            amount: itemAmount,
-            transactionType: transactionType,
-            subcategory: subcategory,
-            date: itemDate,
-        };
-
-        if (transaction) {
-            body.id = transaction._id;
+        if (transactionToEdit && transactionToEdit.id) {
+            transaction.update({
+                path: { id: transactionToEdit.id },
+                body: {
+                    item: itemName,
+                    amount: itemAmount,
+                    //transactionTypeId: transactionTypeId, TODO
+                    subcategoryId,
+                    date: itemDate.toISOString(),
+                },
+            });
+            onFinished();
+            return;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/transactions", "POST", JSON.stringify(body));
+        transaction.create({
+            body: {
+                item: itemName,
+                amount: itemAmount,
+                //transactionTypeId: transactionTypeId, TODO
+                subcategoryId,
+                date: itemDate.toISOString(),
+            },
+        });
         onFinished();
     };
 
-    // Handle deletion of an item
     const handleDelete = async () => {
-        if (!transaction) {
+        if (!transactionToEdit) {
             console.error("No transaction found to delete");
             return;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/transactions/${transaction._id}`, "DELETE", "");
+        transaction.delete({ path: { id: transactionToEdit.id } });
         onFinished();
     };
 
     return (
         <div class="new-item-container">
             <div class="new-item-content">
-                <h1 class="new-item-title">{transaction || template ? "Edit item" : "New item"}</h1>
+                <h1 class="new-item-title">{transactionToEdit || templateToEdit ? "Edit item" : "New item"}</h1>
                 <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
                     <div class="new-item-form-row">
                         <img src={itemUrl} alt="" />
@@ -158,7 +174,7 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
                     <div class="new-item-form-row">
                         <img src={expenseTypeUrl} alt="" />
                         <Dropdown
-                            options={transactionTypes.map((type) => type.name)}
+                            options={transactionType.list.map((type) => type.name)}
                             selected={itemTransactionType}
                             onSelectedChange={setItemTransactionType}
                             mini={false}
@@ -195,13 +211,13 @@ export function EditItem({ transaction = null, template = null, onFinished }: Ed
                     </div>
                 </form>
                 <div class="new-item-button-row">
-                    {transaction && (
+                    {transactionToEdit && (
                         <button class="new-item-delete-button" onClick={handleDelete}>
                             Delete
                         </button>
                     )}
                     <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
-                        {transaction || template ? "Save" : "Add"}
+                        {transactionToEdit || templateToEdit ? "Save" : "Add"}
                     </button>
                 </div>
             </div>

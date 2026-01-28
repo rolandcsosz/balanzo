@@ -27,7 +27,7 @@ export function CategoryRow({ item, options, isSubcategory, firstSub, onEdit, on
                         placeholder=""
                         onChange={(value) => {
                             setName(value);
-                            onEdit(item._id, value, selectedType); // Call onEdit when name changes
+                            onEdit(item.id, value, selectedType); // Call onEdit when name changes
                         }}
                         mini={true}
                         labelLike={true}
@@ -42,7 +42,7 @@ export function CategoryRow({ item, options, isSubcategory, firstSub, onEdit, on
                     selected={selectedType}
                     onSelectedChange={(value) => {
                         setSelectedType(value);
-                        onEdit(item._id, name, value); // Call onEdit when type changes
+                        onEdit(item.id, name, value); // Call onEdit when type changes
                     }}
                     mini={true}
                 />
@@ -51,7 +51,7 @@ export function CategoryRow({ item, options, isSubcategory, firstSub, onEdit, on
             <button
                 className="category-row-action-cell"
                 onClick={() => {
-                    onDelete(item._id);
+                    onDelete(item.id);
                 }}
             >
                 <img loading="lazy" src={deleteButtonUrl} alt="" className="category-row-action-icon" />

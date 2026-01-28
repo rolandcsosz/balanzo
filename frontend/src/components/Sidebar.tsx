@@ -8,7 +8,6 @@ import { TemplatesIcon } from "./icons/TemplatesIcon";
 import { LogoutIcon } from "./icons/LogoutIcon";
 import { useAuth } from "../hooks/useAuth";
 
-// Initial navigation items with icons and labels
 const initialNavigationItems = [
     { icon: HomeIcon, label: "Home", isActive: false },
     { icon: TransactionsIcon, label: "Transactions", isActive: false },
@@ -26,7 +25,6 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
     const { logout } = useAuth();
 
-    // Update navigation items' active state based on the clicked button
     const handleButtonClick = (newState) => {
         setNavigationItems(
             navigationItems.map((item) => ({
@@ -36,7 +34,6 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
         );
     };
 
-    // Update active state when menu changes
     useEffect(() => {
         handleButtonClick(menu);
     }, [menu]);
@@ -62,7 +59,7 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
                     Icon={navigationItems[navigationItems.length - 1].icon}
                     label={navigationItems[navigationItems.length - 1].label}
                     isActive={navigationItems[navigationItems.length - 1].isActive}
-                    onClick={() => logout()}
+                    onClick={logout}
                 />
             </div>
         </nav>

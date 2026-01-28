@@ -3,138 +3,75 @@ import { useModel } from "../hooks/useModel";
 import { CategoryRow } from "../components/CategoryRow";
 import { CategoryRowMobile } from "../components/CategoryRowMobile";
 import { useDevice } from "../hooks/useDevice";
-import { useApiClient } from "../hooks/useApiClient";
 import { NewCategoryRow } from "../components/NewCategoryRow";
-import { useEffect, useState } from "preact/hooks";
 
 export function Categories() {
-    // Fetch initial data from the model
-    const {
-        mainCategories: initialMainCategories,
-        subcategories: initialSubcategories,
-        expenseTypes,
-        transactionTypes,
-    } = useModel();
-    const [mainCategories, setMainCategories] = useState(initialMainCategories);
-    const [subcategories, setSubcategories] = useState(initialSubcategories);
+    const { mainCategory, subcategory, expenseType, transactionType } = useModel();
+    const expenseTypes = expenseType.list;
+    const transactionTypes = transactionType.list;
+    const mainCategories = mainCategory.list;
+    const subcategories = subcategory.list;
     const isMobile = useDevice();
-    const { fetchWithAuth } = useApiClient();
 
-    // Update state when initial data changes
-    useEffect(() => {
-        setMainCategories(initialMainCategories);
-        setSubcategories(initialSubcategories);
-    }, [initialMainCategories, initialSubcategories]);
-
-    // Determine which component to use based on device type
     const CategoryComponent = isMobile ? CategoryRowMobile : CategoryRow;
 
-    // Handle category edit
-    const handleCategoryEdit = async (id, name, type: string) => {
-        const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?._id;
+    const handleCategoryEdit = (id: string, name: string, type: string) => {
+        const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?.id;
 
         if (!typeId) {
             console.error(`No expense type found for: ${type}`);
             return;
         }
 
-        const updatedCategory = { id, name, expenseType: typeId };
-
-        await fetchWithAuth(
-            import.meta.env.VITE_BACKEND_URL + "/main_categories",
-            "POST",
-            JSON.stringify(updatedCategory),
-        );
+        // TODO: Fix transactionTypeId being hardcoded to "ERROR"
+        mainCategory.update({ path: { id }, body: { name, expenseTypeId: typeId, transactionTypeId: "ERROR" } });
     };
 
-    // Handle subcategory edit
-    const handleSubategoryEdit = async (id, name, type) => {
-        const mainCategoryId = subcategories.find((subcategory) => subcategory._id === id)?.mainCategory._id;
-        const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?._id;
+    const handleSubategoryEdit = (id: string, name: string, type: string) => {
+        const mainCategoryId = subcategory.list.find((subcategory) => subcategory.id === id)?.mainCategoryId;
+        const typeId = expenseTypes.find((expenseType) => expenseType.name === type)?.id;
 
         if (!typeId) {
             console.error(`No expense type found for: ${type}`);
             return;
         }
 
-        const body: any = {
-            id: id,
-            name: name,
-            mainCategory: mainCategoryId,
-            expenseType: typeId,
-        };
-
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/subcategories", "POST", JSON.stringify(body));
+        subcategory.update({
+            path: { id },
+            body: {
+                name,
+                mainCategoryId,
+                //expenseType: typeId, TODO: restore expenseType for subcategories
+            },
+        });
     };
 
-    // Handle category deletion
-    const handleDeleteCategory = async (id) => {
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/main_categories/${id}`, "DELETE", "");
-        if (!response.ok) {
-            console.error("Failed to delete main category");
-            return;
-        }
-
-        setMainCategories((prevCategories) => prevCategories.filter((category) => category._id !== id));
-        setSubcategories((prevSubcategories) =>
-            prevSubcategories.filter((subcategory) => subcategory.mainCategory._id !== id),
-        );
+    const handleDeleteCategory = (id: string) => {
+        mainCategory.delete({ path: { id } });
     };
 
-    // Handle subcategory deletion
-    const handleDeleteSubcategory = async (id) => {
-        const response = await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/subcategories/${id}`, "DELETE", "");
-
-        if (!response.ok) {
-            console.error("Failed to delete subcategory");
-            return;
-        }
-
-        setSubcategories(subcategories.filter((subcategory) => subcategory._id !== id));
+    const handleDeleteSubcategory = (id: string) => {
+        subcategory.delete({ path: { id } });
     };
 
-    // Create a new main category
     const createMainCategory = async () => {
-        const body: any = {
-            name: "New category",
-            expenseType: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?._id,
-            transactionType: transactionTypes.find((transactionType) => transactionType.name === "Expense")?._id,
-        };
-
-        const response = await fetchWithAuth(
-            import.meta.env.VITE_BACKEND_URL + "/main_categories",
-            "POST",
-            JSON.stringify(body),
-        );
-        if (!response.ok) {
-            console.error("Failed to create main category");
-            return;
-        }
-
-        const data = await response.json();
-        setMainCategories([...mainCategories, data]);
+        mainCategory.create({
+            body: {
+                name: "New category",
+                expenseTypeId: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?.id,
+                transactionTypeId: transactionTypes.find((transactionType) => transactionType.name === "Expense")?.id,
+            },
+        });
     };
 
-    // Create a new subcategory
-    const createSubcategory = async (id) => {
-        const body: any = {
-            name: "New category",
-            mainCategory: id,
-            expenseType: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?._id,
-        };
-
-        const response = await fetchWithAuth(
-            import.meta.env.VITE_BACKEND_URL + "/subcategories",
-            "POST",
-            JSON.stringify(body),
-        );
-        if (!response.ok) {
-            console.error("Failed to create subcategory");
-            return;
-        }
-
-        const data = await response.json();
-        setSubcategories((prevSubcategories) => [...prevSubcategories, { ...data, mainCategory: { _id: id } }]);
+    const createSubcategory = (id: string) => {
+        subcategory.create({
+            body: {
+                name: "New category",
+                mainCategoryId: id,
+                //expenseTypeId: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?.id, TODO
+            },
+        });
     };
 
     return (
@@ -144,7 +81,7 @@ export function Categories() {
                 {mainCategories.map((category) => (
                     <>
                         <CategoryComponent
-                            key={category._id}
+                            key={category.id}
                             item={category}
                             options={expenseTypes?.map((item) => item.name)}
                             isSubcategory={false}
@@ -153,10 +90,10 @@ export function Categories() {
                             onDelete={handleDeleteCategory}
                         />
                         {subcategories
-                            .filter((subcategory) => subcategory.mainCategory._id === category._id)
+                            .filter((subcategory) => subcategory.mainCategoryId === category.id)
                             .map((subcategory, index) => (
                                 <CategoryComponent
-                                    key={subcategory._id}
+                                    key={subcategory.id}
                                     item={subcategory}
                                     options={expenseTypes?.map((item) => item.name)}
                                     isSubcategory={true}
@@ -171,7 +108,7 @@ export function Categories() {
                             }}
                             text="Add new subcategory"
                             subRow={true}
-                            categoryId={category._id}
+                            categoryId={category.id}
                             isMobileView={isMobile}
                         />
                     </>

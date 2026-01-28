@@ -1,6 +1,9 @@
 import "./Chart.scss";
-import Plot from "react-plotly.js";
-import { useEffect, useState } from "preact/hooks";
+import createPlotlyComponent from "react-plotly.js/factory";
+import Plotly from "plotly.js-basic-dist";
+
+const Plot = createPlotlyComponent(Plotly);
+
 
 interface ChartProps {
     title: string;

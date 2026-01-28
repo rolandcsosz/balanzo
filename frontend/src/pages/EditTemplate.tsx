@@ -1,4 +1,4 @@
-import "./EditItem.scss";
+import "./EditItemForm.scss";
 import InputField from "../components/InputField";
 import { Dropdown } from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
@@ -9,68 +9,92 @@ import expenseTypeUrl from "../assets/export-type.svg";
 import categoryUrl from "../assets/category.svg";
 import subcategoryUrl from "../assets/subcategory.svg";
 import { useModel } from "../hooks/useModel";
-import { useApiClient } from "../hooks/useApiClient";
-import { Template, Transaction } from "../types";
+import { Template } from "../../../libs/sdk/types.gen";
+import { useEntityQuery } from "../hooks/useEntityQuery";
+import { removeNullishValuesFromList } from "../utils/utlis";
 
 interface EditItemProps {
-    template?: Template | null;
+    templateToEdit?: Template | null;
     onFinished: () => void;
 }
 
-export function EditTemplate({ template = null, onFinished }: EditItemProps) {
-    const { mainCategories, subcategories, transactionTypes } = useModel();
-    const [templateName, setTemplateName] = useState(template?.name || "");
-    const [itemName, setItemName] = useState(template?.itemName || "");
-    const [itemAmount, setItemAmount] = useState(template?.amount || "");
+export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProps) {
+    const { mainCategory, subcategory, transactionType, template } = useModel();
+    const transactionTypes = transactionType.list;
+    const mainCategories = mainCategory.list;
+    const subcategories = subcategory.list;
+    const [templateName, setTemplateName] = useState(templateToEdit?.name || "");
+    const [itemName, setItemName] = useState(templateToEdit?.itemName || "");
+    const [itemAmount, setItemAmount] = useState(templateToEdit?.amount || "");
+    const { store } = useEntityQuery();
+
     const [itemTransactionType, setItemTransactionType] = useState(
-        template?.subcategory?.mainCategory?.transactionType.name || transactionTypes[0]?.name || "",
+        store
+            .template(templateToEdit?.id || "")
+            .subcategory()
+            .mainCategory()
+            .transactionType()
+            .tryGet()?.name ||
+            transactionTypes[0]?.name ||
+            "",
     );
-    const [itemCategory, setItemCategory] = useState(template?.subcategory?.mainCategory?.name || "");
+    const [itemCategory, setItemCategory] = useState(
+        store
+            .template(templateToEdit?.id || "")
+            .subcategory()
+            .mainCategory()
+            .tryGet()?.name || "",
+    );
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
-    const [itemSubcategory, setItemSubcategory] = useState(template?.subcategory?.name || "");
+    const [itemSubcategory, setItemSubcategory] = useState(
+        store
+            .template(templateToEdit?.id || "")
+            .subcategory()
+            .tryGet() || "",
+    );
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
 
-    const { fetchWithAuth } = useApiClient();
-
-    // Set category options based on the selected transaction type
     const setCategoryOptions = (transactionType: string) => {
-        const filteredCategories =
-            mainCategories
-                ?.filter((category) => category.transactionType?.name === transactionType)
-                .map((category) => category?.name) || [];
+        const filteredCategories = mainCategory.list
+            .map((cat) => store.mainCategory(cat.id))
+            .filter((category) => category.transactionType().tryGet()?.name === transactionType)
+            .map((category) => category.tryGet()?.name)
+            .pipe(removeNullishValuesFromList);
         setItemCategoryOptions(filteredCategories || []);
     };
 
-    // Set subcategory options based on the selected category
     const setSubcategoryOptions = (category: string) => {
-        const filteredSubcategories = subcategories
-            .filter((subcategory) => subcategory.mainCategory?.name === category)
-            .map((subcategory) => subcategory.name);
+        const filteredSubcategories = subcategory.list
+            .filter((subcat) => store.mainCategory(subcat.mainCategoryId).tryGet()?.name === category)
+            .map((subcat) => subcat.name);
         setItemSubcategoryOptions(filteredSubcategories);
     };
 
-    // Update category options when transaction type changes
     useEffect(() => {
         setCategoryOptions(itemTransactionType);
     }, [itemTransactionType, mainCategories]);
 
-    // Update subcategory options when category changes
     useEffect(() => {
         setSubcategoryOptions(itemCategory);
     }, [itemCategory, subcategories]);
 
-    // Handle editing the item
     const handleEditItem = async () => {
-        const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?._id;
+        const transactionType = transactionTypes.find((type) => type.name === itemTransactionType)?.id;
         if (!transactionType) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
             return;
         }
 
-        const subcategory = subcategories.find(
-            (subcategory) => subcategory.name === itemSubcategory && subcategory.mainCategory.name === itemCategory,
-        )?._id;
-        if (!subcategory) {
+        const subcategories = subcategory.list
+            .filter(
+                (subcat) =>
+                    store.mainCategory(subcat.mainCategoryId).tryGet()?.name === itemCategory &&
+                    subcat.name === itemSubcategory,
+            )
+            .map((subcat) => subcat.name);
+
+        const currentsubcategory = subcategories.length > 0 ? subcategories[0] : null;
+        if (!currentsubcategory) {
             console.error(`No subcategory found for: ${itemSubcategory}`);
             return;
         }
@@ -80,14 +104,16 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
             itemName: itemName,
             amount: itemAmount,
             transactionType: transactionType,
-            subcategory: subcategory,
+            subcategory: currentsubcategory,
         };
 
-        if (template) {
-            body.id = template._id;
+        if (templateToEdit) {
+            body.id = templateToEdit.id;
+            template.update(body);
+            return;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + "/templates", "POST", JSON.stringify(body));
+        template.create(body);
         onFinished();
     };
 
@@ -98,7 +124,7 @@ export function EditTemplate({ template = null, onFinished }: EditItemProps) {
             return;
         }
 
-        await fetchWithAuth(import.meta.env.VITE_BACKEND_URL + `/templates/${template._id}`, "DELETE", "");
+        template.delete({ path: { id: templateToEdit.id } });
         onFinished();
     };
 

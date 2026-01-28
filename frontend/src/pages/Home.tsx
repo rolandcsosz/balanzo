@@ -5,31 +5,40 @@ import { MonthInfo } from "../types";
 import { useDevice } from "../hooks/useDevice";
 import { useModel } from "../hooks/useModel";
 import { useCallback, useMemo } from "preact/hooks";
-import { uniqueId } from "../utils/utlis";
+import { removeNullishValuesFromList, removeDuplicate, uniqueId } from "../utils/utlis";
+import { useEntityQuery } from "../hooks/useEntityQuery";
 
 const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF", "#D7E3FF", "#EFF4FF"];
 const ignoerdSubcategories = ["Rent"];
 
 export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
-    const { transactions } = useModel();
+    const { transaction, expenseType } = useModel();
+    const transactions = transaction.list;
     const isMobile = useDevice();
+    const { store } = useEntityQuery();
 
     const getFilteredExpenses = useCallback(
-        (expenseType: string, filterIgnored = true) => {
+        (expenseTypeName: string, filterIgnored = true) => {
             if (!transactions.length || !selectedMonth) return [];
 
-            const preFiltered = transactions
-                .filter((item) => {
-                    const date = new Date(item.date);
-                    return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
-                })
-                .filter((item) => item.subcategory?.mainCategory?.transactionType?.name === expenseType);
-            return filterIgnored ?
-                    preFiltered.filter((item) => {
-                        const categoryName = item.subcategory?.name;
-                        return categoryName && !ignoerdSubcategories.includes(categoryName);
-                    })
-                :   preFiltered;
+            const searchedExpenseType = expenseType.list.find((et) => et.name === expenseTypeName);
+            if (!searchedExpenseType) return [];
+
+            const transactionsByExpenseType = store
+                .expenseType(searchedExpenseType.id)
+                .mainCategoryReferences()
+                .flatMap((mcRef) => mcRef.subcategoryReferences())
+                .flatMap((scRef) => scRef.transactionReferences())
+                .map((t) => t.tryGet())
+                .pipe(removeNullishValuesFromList);
+
+            if (!filterIgnored) {
+                return transactionsByExpenseType;
+            }
+
+            return transactionsByExpenseType
+                .filter((t) => !ignoerdSubcategories.includes(store.subcategory(t.subcategoryId).tryGet()?.name || ""))
+                .pipe(removeNullishValuesFromList);
         },
         [transactions, selectedMonth],
     );
@@ -41,20 +50,16 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
         const values = [];
         const ids = [];
 
-        const mainCategories: { name: string; id: string }[] = filteredTransactions
-            .map((item) => ({ name: item.subcategory.mainCategory.name, id: item.subcategory.mainCategory._id }))
-            .filter((item, index, self) => index === self.findIndex((t) => t.id === item.id && t.name === item.name));
-        const subcategories: { name: string; id: string; parentId: string }[] = filteredTransactions
-            .map((item) => ({
-                name: item.subcategory.name,
-                id: item.subcategory._id,
-                parentId: item.subcategory.mainCategory._id,
-            }))
-            .filter(
-                (item, index, self) =>
-                    index ===
-                    self.findIndex((t) => t.id === item.id && t.name === item.name && t.parentId === item.parentId),
-            );
+        const mainCategories = filteredTransactions
+            .map((item) => store.subcategory(item.subcategoryId).mainCategory())
+            .map((mc) => mc.tryGet())
+            .pipe(removeNullishValuesFromList)
+            .pipe(removeDuplicate);
+
+        const subcategories = filteredTransactions
+            .map((item) => store.subcategory(item.subcategoryId).tryGet())
+            .pipe(removeNullishValuesFromList)
+            .pipe(removeDuplicate);
 
         const totalAmount = filteredTransactions.reduce((sum, item) => sum + (item.amount || 0), 0);
         const spendingsId = uniqueId();
@@ -72,8 +77,9 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             labels.push(category.name);
             ids.push(category.id);
             parents.push(spendingsId);
+
             const categoryAmount = filteredTransactions
-                .filter((item) => item.subcategory.mainCategory._id === category.id)
+                .filter((item) => store.subcategory(item.subcategoryId).mainCategory().tryGet()?.id === category.id)
                 .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(categoryAmount);
         });
@@ -83,10 +89,12 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
                 return;
             }
 
-            const transaction = filteredTransactions.filter((item) => item.subcategory._id === subcategory.id);
+            const transaction = filteredTransactions.filter((item) => {
+                store.transaction(item.id).subcategory().tryGet().id === subcategory.id;
+            });
             labels.push(subcategory.name);
             ids.push(subcategory.id);
-            parents.push(subcategory.parentId);
+            parents.push(subcategory.mainCategoryId);
 
             if (!transaction || transaction.length === 0) {
                 values.push(0);
@@ -127,8 +135,8 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
         const mainCategories = [
             ...new Set(
                 filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name),
+                    .map((item) => store.subcategory(item.subcategoryId).mainCategory().tryGet()?.name || undefined)
+                    .pipe(removeNullishValuesFromList),
             ),
         ];
 
@@ -138,7 +146,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             x: [category],
             y: [
                 filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name === category)
+                    .filter((item) => store.subcategory(item.subcategoryId).mainCategory().tryGet()?.name === category)
                     .reduce((sum, item) => sum + (item.amount || 0), 0),
             ],
             marker: {
@@ -154,7 +162,9 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
 
         const subcategories = [
             ...new Set(
-                filteredTransactions.filter((item) => item.subcategory?.name).map((item) => item.subcategory.name),
+                filteredTransactions
+                    .map((item) => store.subcategory(item.subcategoryId).tryGet()?.name)
+                    .pipe(removeNullishValuesFromList),
             ),
         ];
 
@@ -163,7 +173,7 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
             x: [subcategory],
             y: [
                 filteredTransactions
-                    .filter((item) => item.subcategory?.name === subcategory)
+                    .filter((item) => store.subcategory(item.subcategoryId).tryGet()?.name === subcategory)
                     .reduce((sum, item) => sum + (item.amount || 0), 0),
             ],
             marker: {
@@ -180,24 +190,24 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
         const mainCategories = [
             ...new Set(
                 filteredTransactions
-                    .filter((item) => item.subcategory?.mainCategory?.name)
-                    .map((item) => item.subcategory.mainCategory.name),
+                    .map((item) => store.subcategory(item.subcategoryId).mainCategory().tryGet()?.name)
+                    .pipe(removeNullishValuesFromList),
             ),
         ].map((name) => {
             const subcategoriesRaw = filteredTransactions
-                .filter((item) => item.subcategory?.mainCategory?.name === name && item.subcategory?.name)
-                .map((item) => item.subcategory!.name!);
+                .map((item) => store.subcategory(item.subcategoryId).mainCategory().tryGet()?.name)
+                .pipe(removeNullishValuesFromList);
 
             const uniqueSubcategories = [...new Set(subcategoriesRaw)];
 
             const subcategories = uniqueSubcategories
                 .map((subName) => {
                     const sum = filteredTransactions
-                        .filter((item) => item.subcategory?.name === subName)
-                        .reduce((acc, item) => acc + (item.amount || 0), 0);
+                        .filter((item) => store.subcategory(item.subcategoryId).tryGet()?.name === subName)
+                        .reduce((sum, item) => sum + (item.amount || 0), 0);
                     return { name: subName, sum };
                 })
-                .sort((a, b) => b.sum - a.sum); // Descending order
+                .sort((a, b) => b.sum - a.sum);
 
             return { name, subcategories };
         });
@@ -210,9 +220,9 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
                     if (cat.name !== mainCategory.name) return 0;
 
                     const matching = filteredTransactions.filter(
-                        (item) =>
-                            item.subcategory?.mainCategory?.name === cat.name &&
-                            item.subcategory?.name === subcategory.name,
+                        (t) =>
+                            store.subcategory(t.subcategoryId).mainCategory().tryGet()?.name === cat.name &&
+                            store.subcategory(t.subcategoryId).tryGet()?.name === subcategory.name,
                     );
 
                     return matching.reduce((acc, item) => acc + (item.amount || 0), 0);
@@ -236,12 +246,13 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
     const expenseTypePieChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense", false);
 
-        const expenseTypes = [...new Set(filteredTransactions.map((item) => item.subcategory.expenseType.name))].sort();
+        const expenseTypes = [...new Set([])];
+        //filteredTransactions.map((item) => item.subcategory.expenseType.name))].sort(); TODO
 
         const labels = expenseTypes;
         const values = expenseTypes.map((type) =>
             filteredTransactions
-                .filter((item) => item.subcategory?.expenseType?.name === type)
+                //.filter((item) => item.subcategory?.expenseType?.name === type) TODO
                 .reduce((sum, item) => sum + (item.amount || 0), 0),
         );
 

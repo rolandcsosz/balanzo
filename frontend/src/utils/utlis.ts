@@ -1,3 +1,5 @@
+import { ErrorResponse } from "../../../libs/sdk/types.gen";
+
 export function formatDate(date: string) {
     return new Intl.DateTimeFormat("en-CA", {
         year: "numeric",
@@ -32,3 +34,41 @@ export function formatCurrency(value: number) {
 export function uniqueId(prefix = "id") {
     return prefix + "_" + Math.random().toString(36).substr(2, 9);
 }
+
+export const isErrorResponse = <T>(obj: ErrorResponse | T): obj is ErrorResponse => {
+    return (
+        typeof obj === "object" &&
+        obj !== null &&
+        Object.keys(obj).length === 1 &&
+        "message" in obj &&
+        typeof obj["message"] === "string"
+    );
+};
+
+export const mapById = <T extends { id: string }>(list: T[]): Record<string, T> => {
+    return list.reduce(
+        (acc, item) => {
+            acc[item.id] = item;
+            return acc;
+        },
+        {} as Record<string, T>,
+    );
+};
+
+export const removeDuplicate = <T extends { id: string }>(list: T[]): T[] => {
+    return [...new Map(list.map((item) => [item.id, item])).values()];
+};
+
+export const removeNullishValuesFromList = <T>(list: (T | null | undefined)[]): T[] => {
+    return list.filter((item): item is T => item !== null && item !== undefined);
+};
+
+declare global {
+    interface Array<T> {
+        pipe<U>(fn: (arr: T[]) => U[]): U[];
+    }
+}
+
+Array.prototype.pipe = function <T, U>(fn: (arr: T[]) => U[]): U[] {
+    return fn(this);
+};

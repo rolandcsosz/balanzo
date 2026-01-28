@@ -12,18 +12,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 function App() {
-    const { authState } = useAuth();
+    const { user } = useAuth();
 
     return (
         <div class="app-container">
-            {authState.isAuthenticated ?
+            {user ?
                 <Menu />
             :   <Login />}
         </div>
     );
 }
 
-// Render the application with all necessary providers
 render(
     <QueryClientProvider client={queryClient}>
         <AuthProvider>

@@ -1,66 +1,46 @@
 import { createContext } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { User } from "../types";
+import { client } from "../../../libs/sdk/client.gen";
 
-// Define the shape of the authentication state
-interface AuthState {
-    user: User | null;
-    isAuthenticated: boolean;
-}
-
-// Define the shape of the authentication context
 interface AuthContextType {
-    authState: AuthState;
+    user: User | null;
     login: (user: User) => void;
     logout: () => void;
 }
 
-// Create a context for authentication
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// AuthProvider component that will wrap the app to provide auth context
 export const AuthProvider = ({ children }: { children: any }) => {
-    // Initialize the authentication state
-    const [authState, setAuthState] = useState<AuthState>({
-        user: null,
-        isAuthenticated: false,
-    });
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        // Check if there is a user in local storage
         const userFromLocalStorage = JSON.parse(localStorage.getItem("user") || "null");
-        if (userFromLocalStorage) {
-            // If a user is found, update the authentication state
-            setAuthState({
-                user: userFromLocalStorage,
-                isAuthenticated: true,
-            });
-        } else {
-            // If no user is found, set isAuthenticated to false
-            setAuthState({
-                ...authState,
-                isAuthenticated: false,
-            });
-        }
+        setUser(userFromLocalStorage ? userFromLocalStorage : null);
+
+        client.setConfig({
+            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            auth: () => (userFromLocalStorage ? userFromLocalStorage.token : ""),
+        });
     }, []);
 
-    // Function to log in a user
     const login = (user: User) => {
-        setAuthState({
-            user,
-            isAuthenticated: true,
-        });
+        setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
-    };
-
-    // Function to log out a user
-    const logout = () => {
-        setAuthState({
-            user: null,
-            isAuthenticated: false,
+        client.setConfig({
+            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            auth: () => user.token,
         });
-        localStorage.removeItem("user");
     };
 
-    return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem("user");
+        client.setConfig({
+            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            auth: () => undefined,
+        });
+    };
+
+    return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 };
