@@ -1,4 +1,4 @@
-.transaction-card {
+.transactionCard {
     display: inline-flex;
     flex-direction: column;
     font-family: Inter, sans-serif;
@@ -12,7 +12,7 @@
     border: 1px solid #eff0f6;
 }
 
-.transaction-card-header {
+.transactionCardHeader {
     display: flex;
     min-height: 35px;
     align-items: center;
@@ -20,21 +20,21 @@
     justify-content: start;
 }
 
-.transaction-card-item-name {
+.transactionCardItemName {
     color: #2a2a33;
     font:
         700 18px Inter,
         sans-serif;
 }
 
-.transaction-card-amount {
+.transactionCardAmount {
     color: #2a2a33;
     font:
         700 16px "Roboto Mono",
         monospace;
 }
 
-.transaction-card-icon-wrapper {
+.transactionCardIconWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,13 +46,13 @@
     cursor: pointer;
 }
 
-.transaction-card-icon {
+.transactionCardIcon {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
 
-.transaction-card-tags {
+.transactionCardTags {
     display: flex;
     margin-top: 10px;
     align-items: center;
@@ -63,16 +63,23 @@
         monospace;
 }
 
-.transaction-card-category-tag {
+.transactionCardCategoryTag {
     border-radius: 4px;
     background: #ccefff;
     color: #046;
     padding: 4px 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.transaction-card-store-tag {
+.transactionCardStoreTag {
     border-radius: 4px;
     background: #ffffcc;
     color: #666600;
     padding: 4px 8px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

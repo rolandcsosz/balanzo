@@ -4,7 +4,6 @@ import { TransactionCard } from "../components/TransactionCard";
 import { formatDate } from "../utils/utlis";
 import { DateDivider } from "../components/DateDivider";
 import { useModel } from "../hooks/useModel";
-import { useEffect } from "preact/hooks";
 import styles from "./Transactions.module.scss";
 
 export function Transactions() {

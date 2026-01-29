@@ -1,4 +1,4 @@
-import "./Sidebar.scss";
+import styles from "./Sidebar.module.scss";
 import { useState, useEffect } from "preact/hooks";
 import { SidebarButton } from "./SidebarButton";
 import { HomeIcon } from "./icons/HomeIcon";
@@ -39,8 +39,8 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
     }, [menu]);
 
     return (
-        <nav className="sidebar">
-            <div className="navigation-items">
+        <nav className={styles.sidebar}>
+            <div className={styles.navigationItems}>
                 {navigationItems.slice(0, -1).map((item, index) => (
                     <SidebarButton
                         key={index}
@@ -54,7 +54,7 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
                     />
                 ))}
             </div>
-            <div className="last-item">
+            <div className={styles.lastItem}>
                 <SidebarButton
                     Icon={navigationItems[navigationItems.length - 1].icon}
                     label={navigationItems[navigationItems.length - 1].label}

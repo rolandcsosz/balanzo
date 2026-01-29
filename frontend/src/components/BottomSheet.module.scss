@@ -1,4 +1,4 @@
-.bottom-sheet {
+.bottomSheet {
     z-index: 3;
     position: fixed;
     bottom: 0;
@@ -9,7 +9,7 @@
     border-top-right-radius: 20px;
     box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 
-    .handle-area {
+    .handleArea {
         height: 20px;
         width: 100%;
         display: flex;
@@ -18,14 +18,14 @@
         cursor: grab;
     }
 
-    .handle-bar {
+    .handleBar {
         width: 40px;
         height: 6px;
         background-color: gray;
         border-radius: 3px;
     }
 
-    .close-button {
+    .closeButton {
         position: absolute;
         top: 15px;
         right: 15px;
@@ -37,14 +37,14 @@
         cursor: pointer;
     }
 
-    .close-button img {
+    .closeButton img {
         display: block;
         width: 30px;
         height: 30px;
         border-radius: 50%;
     }
 
-    .bottom-sheet-content {
+    .bottomSheetContent {
         height: calc(100% - 20px);
     }
 }

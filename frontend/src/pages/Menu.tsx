@@ -1,4 +1,4 @@
-import "./Menu.scss";
+import styles from "./Menu.module.scss";
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { Sidebar } from "../components/Sidebar";
 import { Navbar } from "../components/Navbar";
@@ -30,7 +30,7 @@ export function Menu() {
     }, [transactions]);
 
     useEffect(() => {
-        if (monthList.length === 0) return; // Return early
+        if (monthList.length === 0) return;
         setSelectedMonth(monthList[0].name);
     }, [monthList]);
 
@@ -39,7 +39,7 @@ export function Menu() {
         startDate.setHours(0, 0, 0, 0);
 
         const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        endDate.setHours(23, 59, 59, 999); // Set to end of day
+        endDate.setHours(23, 59, 59, 999);
         return {
             name: `${date.getFullYear()} ${date.toLocaleString("default", { month: "long" })}`,
             startDate: startDate,
@@ -48,7 +48,6 @@ export function Menu() {
     };
 
     const getMonthList = useMemo(() => {
-        // Sort transactions by date in descending order
         const sortedTransactions = [...transactions].sort(
             (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
         );
@@ -101,13 +100,13 @@ export function Menu() {
     }, [isOpen]);
 
     return (
-        <main class={`layout${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
-            <SidebarComponent menu={menu} setMenu={setMenu} /> {/* Sidebar or Navbar component */}
-            <section class={`content${isOpen ? " disabled-scrolling" : ""} ${isMobile ? "mobile" : ""}`}>
-                <div class={`menu-header-container ${isMobile ? "mobile" : ""}`}>
-                    <h1 class="content-title">{menu === "Home" ? "Summary" : menu}</h1> {/* Dynamic title */}
+        <div className={`${styles.layout} ${isMobile ? "mobile" : ""}`}>
+            <SidebarComponent menu={menu} setMenu={setMenu} />
+            <section className={`${styles.content} ${isMobile ? "mobile" : ""}`}>
+                <div className={`${styles.menuHeaderContainer} ${isMobile ? "mobile" : ""}`}>
+                    <h1 className={styles.contentTitle}>{menu === "Home" ? "Summary" : menu}</h1>
                     {menu === "Home" && (
-                        <div class="year-selector-container">
+                        <div className={styles.yearSelectorContainer}>
                             <Dropdown
                                 options={monthList.map((item) => item.name)}
                                 selected={selectedMonth}
@@ -118,12 +117,11 @@ export function Menu() {
                     )}
                 </div>
                 {menu === "Home" && <Home selectedMonth={monthList.find((item) => item.name == selectedMonth)} />}{" "}
-                {/* Render Home component */}
-                {menu === "Transactions" && <Transactions />} {/* Render Transactions component */}
-                {menu === "Categories" && <Categories />} {/* Render Categories component */}
-                {menu === "Templates" && <Templates />} {/* Render Templates component */}
+                {menu === "Transactions" && <Transactions />}
+                {menu === "Categories" && <Categories />}
+                {menu === "Templates" && <Templates />}
                 <button
-                    class="action-button"
+                    className={styles.actionButton}
                     aria-label="Add new item"
                     onClick={() => {
                         openSheet(
@@ -134,14 +132,14 @@ export function Menu() {
                                     closeSheet();
                                 }}
                             />,
-                        ); // Open bottom sheet with EditItemForm component
+                        );
                     }}
                 >
-                    <img src={largeAddUrl} alt="" /> {/* Add button with icon */}
+                    <img src={largeAddUrl} alt="" />
                 </button>
             </section>
-            {isOpen && <div class="dark-overlay" />} {/* Dark overlay when bottom sheet is open */}
-            <BottomSheet /> {/* Bottom sheet component */}
-        </main>
+            {isOpen && <div className={styles.darkOverlay} />}
+            <BottomSheet />
+        </div>
     );
 }

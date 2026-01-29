@@ -1,4 +1,4 @@
-import "./BottomSheet.scss";
+import styles from "./BottomSheet.module.scss";
 import sheetCloseButtonUrl from "../assets/sheet-close-button.svg";
 import { useRef, useState, useEffect } from "preact/hooks";
 import { useBottomSheetContext } from "../context/BottomSheetContext";
@@ -15,93 +15,86 @@ export function BottomSheet() {
     const [sheetHeight, setSheetHeight] = useState(SheetSize.CLOSED);
     const [isDragging, setIsDragging] = useState(false);
     const snapThreshold = SheetSize.HALF;
-    const animatonStep = 100;
-    const animationFrameCount = 32;
 
     useEffect(() => {
         if (isOpen) {
-            openSheet(SheetSize.FULL); // Open sheet to half size when isOpen is true
+            openSheet(SheetSize.FULL);
         }
     }, [isOpen]);
 
     const handleDragStart = () => {
-        setIsDragging(true); // Set dragging state to true
+        setIsDragging(true);
     };
 
     const handleDrag = (event) => {
         if (!isDragging) return;
 
-        const clientY = event.touches ? event.touches[0].clientY : event.clientY; // Get Y coordinate from event
-        setSheetHeight(clientY); // Set sheet height based on drag position
+        const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+        setSheetHeight(clientY);
     };
 
     const handleDragEnd = () => {
         if (!isDragging) return;
 
-        setIsDragging(false); // Set dragging state to false
-        setSheetHeight((prev) => (prev < snapThreshold ? 0 : snapThreshold)); // Snap to closest threshold
+        setIsDragging(false);
+        setSheetHeight((prev) => (prev < snapThreshold ? 0 : snapThreshold));
     };
 
     const closeSheetAnimated = () => {
-        // Use CSS transition for smoother closing
         setSheetHeight(SheetSize.CLOSED);
-        setTimeout(() => closeSheet(), 300); // Wait for the animation to complete before closing
+        setTimeout(() => closeSheet(), 300);
     };
 
     const openSheet = (targetSize: SheetSize) => {
-        // Use CSS transition to smoothly open the sheet
         setSheetHeight(targetSize);
     };
 
     useEffect(() => {
         if (isDragging) {
-            document.addEventListener("mousemove", handleDrag); // Add mousemove event listener
-            document.addEventListener("mouseup", handleDragEnd); // Add mouseup event listener
-            document.addEventListener("touchmove", handleDrag); // Add touchmove event listener
-            document.addEventListener("touchend", handleDragEnd); // Add touchend event listener
+            document.addEventListener("mousemove", handleDrag);
+            document.addEventListener("mouseup", handleDragEnd);
+            document.addEventListener("touchmove", handleDrag);
+            document.addEventListener("touchend", handleDragEnd);
         } else {
-            document.removeEventListener("mousemove", handleDrag); // Remove mousemove event listener
-            document.removeEventListener("mouseup", handleDragEnd); // Remove mouseup event listener
-            document.removeEventListener("touchmove", handleDrag); // Remove touchmove event listener
-            document.removeEventListener("touchend", handleDragEnd); // Remove touchend event listener
+            document.removeEventListener("mousemove", handleDrag);
+            document.removeEventListener("mouseup", handleDragEnd);
+            document.removeEventListener("touchmove", handleDrag);
+            document.removeEventListener("touchend", handleDragEnd);
         }
 
         return () => {
-            document.removeEventListener("mousemove", handleDrag); // Cleanup mousemove event listener
-            document.removeEventListener("mouseup", handleDragEnd); // Cleanup mouseup event listener
-            document.removeEventListener("touchmove", handleDrag); // Cleanup touchmove event listener
-            document.removeEventListener("touchend", handleDragEnd); // Cleanup touchend event listener
+            document.removeEventListener("mousemove", handleDrag);
+            document.removeEventListener("mouseup", handleDragEnd);
+            document.removeEventListener("touchmove", handleDrag);
+            document.removeEventListener("touchend", handleDragEnd);
         };
     }, [isDragging]);
 
     return (
         isOpen && (
             <div
-                class="bottom-sheet"
+                className={styles.bottomSheet}
                 ref={sheetRef}
                 style={{
-                    transform: `translateY(${sheetHeight}px)`, // Translate sheet based on height
+                    transform: `translateY(${sheetHeight}px)`,
                     height: `100vh`,
-                    transition: isDragging ? "none" : "transform 0.3s ease-in-out", // Use transform instead of height for smoother animations
+                    transition: isDragging ? "none" : "transform 0.3s ease-in-out",
                 }}
             >
                 <div
-                    class="handle-area"
-                    onMouseDown={handleDragStart} // Start drag on mousedown
-                    onTouchStart={handleDragStart} // Start drag on touchstart
+                    className={styles.handleArea}
+                    onMouseDown={handleDragStart}
+                    onTouchStart={handleDragStart}
                     onClick={() => {
                         openSheet(sheetHeight === SheetSize.FULL ? SheetSize.HALF : SheetSize.FULL);
-                    }} // Toggle sheet size on click
+                    }}
                 >
-                    <div class="handle-bar" />
+                    <div className={styles.handleBar} />
                 </div>
-                <button
-                    class="close-button"
-                    onClick={closeSheetAnimated} // Close sheet with animation
-                >
+                <button className={styles.closeButton} onClick={closeSheetAnimated}>
                     <img src={sheetCloseButtonUrl} alt="Close" />
                 </button>
-                <div class="bottom-sheet-content">{content}</div> {/* Render sheet content */}
+                <div className={styles.bottomSheetContent}>{content}</div>
             </div>
         )
     );

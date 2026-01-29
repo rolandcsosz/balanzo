@@ -1,4 +1,4 @@
-import "./EditItemForm.scss";
+import styles from "./EditTemplate.module.scss";
 import InputField from "../components/InputField";
 import { Dropdown } from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
@@ -30,8 +30,7 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
 
     const [itemTransactionType, setItemTransactionType] = useState(
         store
-            .template(templateToEdit?.id || "")
-            .subcategory()
+            .subcategory(templateToEdit?.subcategoryId || "")
             .mainCategory()
             .transactionType()
             .tryGet()?.name ||
@@ -40,17 +39,13 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
     );
     const [itemCategory, setItemCategory] = useState(
         store
-            .template(templateToEdit?.id || "")
-            .subcategory()
+            .subcategory(templateToEdit?.subcategoryId || "")
             .mainCategory()
             .tryGet()?.name || "",
     );
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
     const [itemSubcategory, setItemSubcategory] = useState(
-        store
-            .template(templateToEdit?.id || "")
-            .subcategory()
-            .tryGet() || "",
+        store.subcategory(templateToEdit?.subcategoryId || "").tryGet() || "",
     );
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
 
@@ -117,9 +112,8 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
         onFinished();
     };
 
-    // Handle deleting the item
     const handleDelete = async () => {
-        if (!template) {
+        if (!templateToEdit) {
             console.error("No transaction found to delete");
             return;
         }
@@ -129,23 +123,23 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
     };
 
     return (
-        <div class="new-item-container">
-            <div class="new-item-content">
-                <h1 class="new-item-title">{template ? "Edit template" : "New template"}</h1>
-                <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
-                    <div class="new-item-form-row">
+        <div className={styles.newItemContainer}>
+            <div className={styles.newItemContent}>
+                <div className={styles.newItemTitle}>{template ? "Edit template" : "New template"}</div>
+                <form onSubmit={(e) => e.preventDefault()} className={styles.newItemForm}>
+                    <div className={styles.newItemFormRow}>
                         <img src={templateUrl} alt="" />
                         <InputField type="text" placeholder="Item" value={templateName} onChange={setTemplateName} />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={itemUrl} alt="" />
                         <InputField type="text" placeholder="Item" value={itemName} onChange={setItemName} />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={amountUrl} alt="" />
                         <InputField type="number" placeholder="Amount" value={itemAmount} onChange={setItemAmount} />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={expenseTypeUrl} alt="" />
                         <Dropdown
                             options={transactionTypes.map((type) => type.name)}
@@ -154,7 +148,7 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
                             mini={false}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={categoryUrl} alt="" />
                         <Dropdown
                             options={itemCategoryOptions}
@@ -163,7 +157,7 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
                             mini={false}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={subcategoryUrl} alt="" />
                         <Dropdown
                             options={itemSubcategoryOptions}
@@ -173,14 +167,14 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
                         />
                     </div>
                 </form>
-                <div class="new-item-button-row">
-                    {template && (
-                        <button class="new-item-delete-button" onClick={handleDelete}>
+                <div className={styles.newItemButtonRow}>
+                    {templateToEdit && (
+                        <button className={styles.newItemDeleteButton} onClick={handleDelete}>
                             Delete
                         </button>
                     )}
-                    <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
-                        {template ? "Save" : "Add"}
+                    <button type="submit" className={styles.newItemSubmitButton} onClick={handleEditItem}>
+                        {templateToEdit ? "Save" : "Add"}
                     </button>
                 </div>
             </div>

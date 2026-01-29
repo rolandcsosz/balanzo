@@ -1,4 +1,4 @@
-import "./Navbar.scss";
+import styles from "./Navbar.module.scss";
 import { useState, useEffect } from "preact/hooks";
 import { HomeIcon } from "./icons/HomeIcon";
 import { TransactionsIcon } from "./icons/TransactionsIcon";
@@ -46,8 +46,8 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
     }, [menu]);
 
     return (
-        <nav class="navbar">
-            <div class="navigation-items">
+        <nav className={styles.navbar}>
+            <div className={styles.navigationItems}>
                 {navigationItems.map((item) => (
                     <SidebarButton
                         Icon={item.icon}

@@ -1,29 +1,32 @@
+import { Transaction } from "../../../libs/sdk/types.gen";
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
+import { useEntityQuery } from "../hooks/useEntityQuery";
 import { EditItemForm } from "../pages/EditItemForm";
 import { formatCurrency } from "../utils/utlis";
-import "./TransactionCard.scss";
+import styles from "./TransactionCard.module.scss";
 
-// TransactionCard component to display transaction details
-export const TransactionCard = ({ transaction, onChange }) => {
-    const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
+interface TransactionCardProps {
+    transaction: Transaction;
+    onChange: () => void;
+}
+
+export const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
+    const { openSheet, closeSheet } = useBottomSheet();
+    const { store } = useEntityQuery();
 
     return (
-        // Main container for the transaction card
-        <article class="transaction-card">
-            <header class="transaction-card-header">
-                {/* Display the transaction item name */}
-                <h3 class="transaction-card-item-name">{transaction.item}</h3>
+        <article className={styles.transactionCard}>
+            <header className={styles.transactionCardHeader}>
+                <h3 className={styles.transactionCardItemName}>{transaction.item}</h3>
                 <span>-</span>
-                {/* Display the formatted transaction amount */}
-                <span class="transaction-card-amount">{formatCurrency(transaction?.amount || 0)}</span>
-                {/* Button to open the bottom sheet for editing the transaction */}
+                <span className={styles.transactionCardAmount}>{formatCurrency(transaction?.amount || 0)}</span>
                 <button
-                    class="transaction-card-icon-wrapper"
+                    className={styles.transactionCardIconWrapper}
                     onClick={() => {
                         openSheet(
                             <EditItemForm
-                                transaction={transaction}
+                                transactionToEdit={transaction}
                                 onFinished={() => {
                                     onChange();
                                     closeSheet();
@@ -32,14 +35,16 @@ export const TransactionCard = ({ transaction, onChange }) => {
                         );
                     }}
                 >
-                    <img loading="lazy" src={openButtonUrl} alt="" class="transaction-card-icon" />
+                    <img loading="lazy" src={openButtonUrl} alt="" className={styles.transactionCardIcon} />
                 </button>
             </header>
-            <div class="transaction-card-tags">
-                {/* Display the main category of the transaction */}
-                <span class="transaction-card-category-tag">{transaction.subcategory.mainCategory.name}</span>
-                {/* Display the subcategory of the transaction */}
-                <span class="transaction-card-store-tag">{transaction.subcategory.name}</span>
+            <div className={styles.transactionCardTags}>
+                <span className={styles.transactionCardCategoryTag}>
+                    {store.subcategory(transaction.subcategoryId).mainCategory().tryGet()?.name || ""}
+                </span>
+                <span className={styles.transactionCardStoreTag}>
+                    {store.subcategory(transaction.subcategoryId).tryGet()?.name}
+                </span>
             </div>
         </article>
     );

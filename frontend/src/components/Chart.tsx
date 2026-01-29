@@ -4,7 +4,6 @@ import Plotly from "plotly.js-basic-dist";
 
 const Plot = createPlotlyComponent(Plotly);
 
-
 interface ChartProps {
     title: string;
     data: { [key: string]: any } | any[];

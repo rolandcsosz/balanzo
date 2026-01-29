@@ -1,5 +1,5 @@
 import { useDevice } from "../hooks/useDevice";
-import "../components/TransactionCard.scss";
+import styles from "./Templates.module.scss";
 import { useModel } from "../hooks/useModel";
 import { TemplateCard } from "../components/TemplateCard";
 import { useBottomSheet } from "../hooks/useBottomSheet";
@@ -31,7 +31,7 @@ export function Templates() {
     }, [templates, transactions]);
 
     return (
-        <div class="template-grid-container">
+        <div className={styles.templateGridContainer}>
             {getOrerderedTemplates.map((template, index) => (
                 <TemplateCard
                     key={index}

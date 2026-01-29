@@ -1,4 +1,4 @@
-.transaction-row {
+.transactionRow {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -16,40 +16,40 @@
     }
 }
 
-.transaction-row-cell {
+.transactionRowCell {
     flex: 1;
     padding: 16px 20px;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis; // Ensure truncated text is indicated with ellipsis
+    text-overflow: ellipsis;
 }
 
-.transaction-row-item-cell,
-.transaction-row-amount-cell,
-.transaction-row-category-pill,
-.transaction-row-subcategory-pill,
-.transaction-row-date-cell {
+.transactionRowitemCell,
+.transactionRowamountCell,
+.transactionRowcategoryPill,
+.transactionRowsubcategoryPill,
+.transactionRowdateCell {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; // Shared styles for truncation
+    white-space: nowrap;
 }
 
-.transaction-row-item-cell {
+.transactionRowItemCell {
     color: #323232;
     font:
         700 16px "Inter",
         sans-serif;
 }
 
-.transaction-row-amount-cell {
+.transactionRowAmountCell {
     color: #5c5c5c;
     font:
         700 16px "Roboto Mono",
         monospace;
 }
 
-.transaction-row-category-pill,
-.transaction-row-subcategory-pill {
+.transactionRowCategoryPill,
+.transactionRowSubcategoryPill {
     border-radius: 4px;
     padding: 4px 8px;
     font:
@@ -57,32 +57,32 @@
         monospace;
 }
 
-.transaction-row-category-pill {
+.transactionRowCategoryPill {
     background: #ccefff;
     color: #004466;
 }
 
-.transaction-row-subcategory-pill {
+.transactionRowSubcategoryPill {
     background: #ffffcc;
     color: #666600;
 }
 
-.transaction-row-date-cell,
-.transaction-row-action-cell {
+.transactionRowDateCell,
+.transactionRowActionCell {
     color: #000;
     font:
         400 16px "Inter",
         sans-serif;
 }
 
-.transaction-row-action-cell {
+.transactionRowActionCell {
     width: 50px;
     flex-shrink: 0;
     display: flex;
     justify-content: start;
 }
 
-.transaction-row-action-button {
+.transactionRowActionButton {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +93,7 @@
     background-color: transparent;
 }
 
-.transaction-row-action-icon {
+.transactionRowActionIcon {
     width: 24px;
     height: 24px;
     object-fit: contain;

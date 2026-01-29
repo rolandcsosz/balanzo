@@ -1,4 +1,4 @@
-import "./EditItemForm.scss";
+import styles from "./EditItemForm.module.scss";
 import InputField from "../components/InputField";
 import { Dropdown } from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
@@ -151,15 +151,17 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
     };
 
     return (
-        <div class="new-item-container">
-            <div class="new-item-content">
-                <h1 class="new-item-title">{transactionToEdit || templateToEdit ? "Edit item" : "New item"}</h1>
-                <form onSubmit={(e) => e.preventDefault()} class="new-item-form">
-                    <div class="new-item-form-row">
+        <div className={styles.newItemContainer}>
+            <div className={styles.newItemContent}>
+                <div className={styles.newItemTitle}>
+                    {transactionToEdit || templateToEdit ? "Edit item" : "New item"}
+                </div>
+                <form onSubmit={(e) => e.preventDefault()} className={styles.newItemForm}>
+                    <div className={styles.newItemFormRow}>
                         <img src={itemUrl} alt="" />
                         <InputField type="text" placeholder="Item" value={itemName} onChange={setItemName} />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={amountUrl} alt="" />
                         <InputField
                             type="number"
@@ -171,7 +173,7 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                             }}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={expenseTypeUrl} alt="" />
                         <Dropdown
                             options={transactionType.list.map((type) => type.name)}
@@ -180,7 +182,7 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                             mini={false}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={categoryUrl} alt="" />
                         <Dropdown
                             options={itemCategoryOptions}
@@ -189,7 +191,7 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                             mini={false}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={subcategoryUrl} alt="" />
                         <Dropdown
                             options={itemSubcategoryOptions}
@@ -198,7 +200,7 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                             mini={false}
                         />
                     </div>
-                    <div class="new-item-form-row">
+                    <div className={styles.newItemFormRow}>
                         <img src={dateUrl} alt="" />
                         <InputField
                             type="datetime-local"
@@ -210,13 +212,13 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                         />
                     </div>
                 </form>
-                <div class="new-item-button-row">
+                <div className={styles.newItemButtonRow}>
                     {transactionToEdit && (
-                        <button class="new-item-delete-button" onClick={handleDelete}>
+                        <button className={styles.newItemDeleteButton} onClick={handleDelete}>
                             Delete
                         </button>
                     )}
-                    <button type="submit" class="new-item-submit-button" onClick={handleEditItem}>
+                    <button type="submit" className={styles.newItemSubmitButton} onClick={handleEditItem}>
                         {transactionToEdit || templateToEdit ? "Save" : "Add"}
                     </button>
                 </div>

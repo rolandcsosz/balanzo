@@ -1,9 +1,10 @@
-import "./TransactionTableRow.scss";
+import styles from "./TransactionTableRow.module.scss";
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { formatDate, formatCurrency } from "../utils/utlis";
 import { EditItemForm } from "../pages/EditItemForm";
-import { Transaction } from "../types";
+import { Transaction } from "../../../libs/sdk/types.gen";
+import { useEntityQuery } from "../hooks/useEntityQuery";
 
 interface TransactionRowProps {
     transaction: Transaction;
@@ -12,36 +13,35 @@ interface TransactionRowProps {
 
 export const TransactionRow = ({ transaction, onChange }: TransactionRowProps) => {
     const { isOpen, content, openSheet, closeSheet } = useBottomSheet();
+    const { store } = useEntityQuery();
 
     return (
-        <div class="transaction-row">
-            {/* Display transaction item */}
-            <div class="transaction-row-cell transaction-row-item-cell">{transaction.item}</div>
-
-            {/* Display transaction amount */}
-            <div class="transaction-row-cell transaction-row-amount-cell">{formatCurrency(transaction.amount)}</div>
-
-            {/* Display main category */}
-            <div class="transaction-row-cell">
-                <span class="transaction-row-category-pill">{transaction.subcategory.mainCategory.name}</span>
+        <div className={styles.transactionRow}>
+            <div className={`${styles.transactionRowCell} ${styles.transactionRowItemCell}`}>{transaction.item}</div>
+            <div className={`${styles.transactionRowCell} ${styles.transactionRowAmountCell}`}>
+                {formatCurrency(transaction.amount)}
+            </div>
+            <div className={styles.transactionRowCell}>
+                <span className={styles.transactionRowCategoryPill}>
+                    {store.subcategory(transaction.subcategoryId).mainCategory().tryGet()?.name || ""}
+                </span>
+            </div>
+            <div className={styles.transactionRowCell}>
+                <span className={styles.transactionRowSubcategoryPill}>
+                    {store.subcategory(transaction.subcategoryId).tryGet()?.name || ""}
+                </span>
+            </div>
+            <div className={`${styles.transactionRowCell} ${styles.transactionRowDateCell}`}>
+                {formatDate(transaction.date)}
             </div>
 
-            {/* Display subcategory */}
-            <div class="transaction-row-cell">
-                <span class="transaction-row-subcategory-pill">{transaction.subcategory.name}</span>
-            </div>
-
-            {/* Display transaction date */}
-            <div class="transaction-row-cell transaction-row-date-cell">{formatDate(transaction.date)}</div>
-
-            {/* Action button to open bottom sheet for editing */}
-            <div class="transaction-row-action-cell">
+            <div className={styles.transactionRowActionCell}>
                 <button
-                    class="transaction-row-action-button"
+                    className={styles.transactionRowActionButton}
                     onClick={() => {
                         openSheet(
                             <EditItemForm
-                                transaction={transaction}
+                                transactionToEdit={transaction}
                                 onFinished={() => {
                                     onChange();
                                     closeSheet();
@@ -50,7 +50,7 @@ export const TransactionRow = ({ transaction, onChange }: TransactionRowProps) =
                         );
                     }}
                 >
-                    <img src={openButtonUrl} alt="Action" class="transaction-row-action-icon" loading="lazy" />
+                    <img src={openButtonUrl} alt="Action" className={styles.transactionRowActionIcon} loading="lazy" />
                 </button>
             </div>
         </div>

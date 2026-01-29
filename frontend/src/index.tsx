@@ -1,6 +1,5 @@
-import "./index.scss";
+import styles from "./index.module.scss";
 import { render } from "preact";
-import { useState } from "preact/hooks";
 import { Menu } from "./pages/Menu";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
@@ -15,7 +14,7 @@ function App() {
     const { user } = useAuth();
 
     return (
-        <div class="app-container">
+        <div className={styles.app}>
             {user ?
                 <Menu />
             :   <Login />}
