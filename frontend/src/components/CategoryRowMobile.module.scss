@@ -1,4 +1,4 @@
-.category-row-mobile-container {
+.categoryRowMobileContainer {
     background-color: #f9f9f9;
     display: flex;
     max-width: 375px;
@@ -9,7 +9,7 @@
     padding: 40px 20px 175px;
 }
 
-.category-row-mobile-title {
+.categoryRowMobileTitle {
     font-size: 24px;
     color: var(--Base-Shade-100, #000);
     font-weight: 700;
@@ -18,12 +18,12 @@
     overflow: hidden;
 }
 
-.category-row-mobile-spacing {
+.categoryRowMobileSpacing {
     min-height: 15px;
     width: 69px;
 }
 
-.category-row-mobile-row.main {
+.categoryRowMobileRow.main {
     background-color: transparent;
     border-top: 1px solid rgba(223, 223, 223, 1);
     border-bottom: 1px solid rgba(223, 223, 223, 1);
@@ -32,19 +32,19 @@
     justify-content: center;
 }
 
-.category-row-action-icon {
+.categoryRowActionIcon {
     cursor: pointer;
 }
 
-.category-row-mobile-row.sub {
+.categoryRowMobileRow.sub {
     background-color: transparent;
     display: flex;
     width: 100%;
     justify-content: center;
     margin-left: 30px;
 
-    .category-row-mobile-nameSection,
-    .category-row-mobile-typeSection {
+    .categoryRowMobileNameSection,
+    .categoryRowMobileTypeSection {
         display: flex;
         width: calc(100% - 30px);
         align-items: center;
@@ -52,23 +52,23 @@
     }
 }
 
-.category-row-mobile-row.sub .category-row-mobile-spacer {
+.categoryRowMobileRow.sub .categoryRowMobileSpacer {
     width: calc(20px - 30px);
 }
 
-.category-row-mobile-highlight.main {
+.categoryRowMobileHighlight.main {
     background: var(--highlight, #3772ff);
     width: 5px;
     height: 118px;
 }
 
-.category-row-mobile-highlight.sub {
+.categoryRowMobileHighlight.sub {
     background: #ebf1ff;
     width: 5px;
     height: 118px;
 }
 
-.category-row-mobile-content {
+.categoryRowMobileContent {
     display: flex;
     min-width: 240px;
     width: 100%;
@@ -79,19 +79,19 @@
     overflow: visible;
 }
 
-.category-row-mobile-nameSection,
-.category-row-mobile-typeSection {
+.categoryRowMobileNameSection,
+.categoryRowMobileTypeSection {
     display: flex;
     width: 100%;
     align-items: center;
     gap: 10px;
 }
 
-.category-row-mobile-nameSection {
+.categoryRowMobileNameSection {
     padding-top: 10px;
 }
 
-.category-row-mobile-typeSection {
+.categoryRowMobileTypeSection {
     display: flex;
     width: 100%;
     align-items: center;
@@ -103,7 +103,7 @@
     overflow: visible;
 }
 
-.category-row-mobile-label {
+.categoryRowMobileLabel {
     color: #000;
     font-size: 18px;
     font-weight: 700;
@@ -114,14 +114,14 @@
         sans-serif;
 }
 
-.category-row-mobile-spacer {
+.categoryRowMobileSpacer {
     width: 20px;
     height: 29px;
     margin: auto 0;
     flex-shrink: 0;
 }
 
-.category-row-mobile-input {
+.categoryRowMobileInput {
     border-radius: 8px;
     background-color: #fff;
     display: flex;
@@ -137,13 +137,13 @@
     border: 1px solid #d9d9d9;
 }
 
-.category-row-mobile-text {
+.categoryRowMobileText {
     flex: 1;
     overflow: hidden;
     margin: auto 0;
 }
 
-.category-row-mobile-icon {
+.categoryRowMobileIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
@@ -155,7 +155,7 @@
     cursor: pointer;
 }
 
-.category-row-mobile-typeIcon {
+.categoryRowMobileTypeIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
@@ -164,7 +164,7 @@
     margin: auto 0;
 }
 
-.category-row-mobile-bottomSpacing {
+.categoryRowMobileBottomSpacing {
     min-height: 20px;
     width: 100%;
 }

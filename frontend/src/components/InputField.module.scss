@@ -1,4 +1,4 @@
-.input-field {
+.inputField {
     align-self: center;
     width: 100%;
     max-width: 100%;
@@ -21,18 +21,18 @@
     appearance: none;
 }
 
-.input-field.large-text {
+.inputField.largeText {
     font:
         700 18px Inter,
         sans-serif;
 }
 
-.input-field.mini {
+.inputField.mini {
     line-height: 35px;
     height: 35px;
 }
 
-.input-field.label-like {
+.inputField.labelLike {
     border-color: transparent;
     background-color: transparent;
 

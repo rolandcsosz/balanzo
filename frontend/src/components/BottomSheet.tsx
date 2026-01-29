@@ -9,7 +9,7 @@ enum SheetSize {
     CLOSED = window.innerHeight,
 }
 
-export function BottomSheet() {
+const BottomSheet = () => {
     const { isOpen, content, closeSheet } = useBottomSheetContext();
     const sheetRef = useRef(null);
     const [sheetHeight, setSheetHeight] = useState(SheetSize.CLOSED);
@@ -98,4 +98,6 @@ export function BottomSheet() {
             </div>
         )
     );
-}
+};
+
+export default BottomSheet;

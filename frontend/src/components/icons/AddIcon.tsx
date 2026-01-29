@@ -1,11 +1,13 @@
-import "./Icon.scss";
+import styles from "./Icon.module.scss";
 import { IconProps } from "./IconProps";
 import addButtonUrl from "../../assets/add-button.svg";
 
-export const AddIcon = ({ isActive, isFilled }: IconProps) => {
+const AddIcon = ({ isActive, isFilled }: IconProps) => {
     return (
-        <button className="add-button" aria-label="Add new category">
+        <button className={styles.addButton} aria-label="Add new category">
             <img src={addButtonUrl} alt="" className="add-icon" />
         </button>
     );
 };
+
+export default AddIcon;

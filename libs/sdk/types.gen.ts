@@ -53,11 +53,13 @@ export type Subcategory = {
     id: string;
     name: string;
     mainCategoryId: string;
+    expenseTypeId: string;
 };
 
 export type SubcategoryRequest = {
     name: string;
     mainCategoryId: string;
+    expenseTypeId: string;
 };
 
 export type MainCategory = {

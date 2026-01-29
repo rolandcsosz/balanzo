@@ -1,6 +1,6 @@
 import styles from "./EditItemForm.module.scss";
 import InputField from "../components/InputField";
-import { Dropdown } from "../components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
 import itemUrl from "../assets/item.svg";
 import amountUrl from "../assets/amount.svg";
@@ -13,12 +13,12 @@ import { useModel } from "../hooks/useModel";
 import { Template, Transaction } from "../../../libs/sdk/types.gen";
 
 interface EditItemFormProps {
-    transactionToEdit?: Transaction | null;
-    templateToEdit?: Template | null;
+    transactionToEdit?: Transaction;
+    templateToEdit?: Template;
     onFinished: () => void;
 }
 
-export function EditItemForm({ transactionToEdit = null, templateToEdit = null, onFinished }: EditItemFormProps) {
+const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditItemFormProps) => {
     const { mainCategory, subcategory, transactionType, transaction } = useModel();
     const [itemName, setItemName] = useState("");
     const [itemAmount, setItemAmount] = useState<number | string>("");
@@ -119,7 +119,6 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
                 body: {
                     item: itemName,
                     amount: itemAmount,
-                    //transactionTypeId: transactionTypeId, TODO
                     subcategoryId,
                     date: itemDate.toISOString(),
                 },
@@ -132,7 +131,6 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
             body: {
                 item: itemName,
                 amount: itemAmount,
-                //transactionTypeId: transactionTypeId, TODO
                 subcategoryId,
                 date: itemDate.toISOString(),
             },
@@ -225,4 +223,6 @@ export function EditItemForm({ transactionToEdit = null, templateToEdit = null, 
             </div>
         </div>
     );
-}
+};
+
+export default EditItemForm;

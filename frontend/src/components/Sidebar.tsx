@@ -1,11 +1,11 @@
 import styles from "./Sidebar.module.scss";
 import { useState, useEffect } from "preact/hooks";
-import { SidebarButton } from "./SidebarButton";
-import { HomeIcon } from "./icons/HomeIcon";
-import { TransactionsIcon } from "./icons/TransactionsIcon";
-import { CategoriesIcon } from "./icons/CategoriesIcon";
-import { TemplatesIcon } from "./icons/TemplatesIcon";
-import { LogoutIcon } from "./icons/LogoutIcon";
+import SidebarButton from "./SidebarButton";
+import HomeIcon from "./icons/HomeIcon";
+import TransactionsIcon from "./icons/TransactionsIcon";
+import CategoriesIcon from "./icons/CategoriesIcon";
+import TemplatesIcon from "./icons/TemplatesIcon";
+import LogoutIcon from "./icons/LogoutIcon";
 import { useAuth } from "../hooks/useAuth";
 
 const initialNavigationItems = [

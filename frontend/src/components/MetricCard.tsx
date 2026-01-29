@@ -1,19 +1,20 @@
 import { formatCurrency } from "../utils/utlis";
-import "./MetricCard.scss";
+import styles from "./MetricCard.module.scss";
 
-// Define the properties for the MetricCard component
-export interface MetricCardProps {
-    title: string; // The title of the metric
-    value: number; // The value of the metric
+interface MetricCardProps {
+    title: string;
+    value: number;
 }
 
-// MetricCard component to display a metric with a title and formatted value
-export function MetricCard({ title, value }: MetricCardProps) {
+const MetricCard = ({ title, value }: MetricCardProps) => {
     return (
-        <section class="card">
-            <h2 class="title">{title}</h2>
-            {/* Apply a class based on whether the value is positive or negative */}
-            <p class={`value ${value < 0 ? "negative" : "positive"}`}>{formatCurrency(value)}</p>
+        <section className={styles.card}>
+            <h2 className={styles.title}>{title}</h2>
+            <p className={`${styles.value} ${value < 0 ? styles.negative : styles.positive}`}>
+                {formatCurrency(value)}
+            </p>
         </section>
     );
-}
+};
+
+export default MetricCard;

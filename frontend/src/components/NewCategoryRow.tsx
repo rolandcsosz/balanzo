@@ -1,37 +1,25 @@
 import "./NewCategoryRow.scss";
 import addNewButtonUrl from "../assets/add-new-button.svg";
+import { useDevice } from "../hooks/useDevice";
 
 interface CategoryRowProps {
-    onAdd: (categoryId: string) => void; // Callback function when the button is clicked
-    text: string; // Text to display inside the button
-    categoryId?: string; // Optional category ID
-    subRow?: boolean; // Flag to indicate if this is a sub-row
-    latsRow?: boolean; // Flag to indicate if this is the last row
-    isMobileView: boolean; // Flag to indicate if the view is mobile
+    onAdd: () => void;
+    text: string;
+    subRow?: boolean;
+    latsRow?: boolean;
 }
 
-export function NewCategoryRow({
-    onAdd,
-    text,
-    categoryId,
-    subRow = false,
-    latsRow = false,
-    isMobileView,
-}: CategoryRowProps) {
+const NewCategoryRow = ({ onAdd, text, subRow = false, latsRow = false }: CategoryRowProps) => {
+    const isMobileView = useDevice();
     return (
-        // Button element with dynamic classes based on props
         <button
-            className={
-                `new-category-row ${subRow ? "sub" : ""} ${isMobileView ? "mobile" : ""} ${latsRow ? "last" : ""}` /* Dynamic classes based on props */
-            }
-            onClick={() => {
-                categoryId ? onAdd(categoryId) : onAdd("");
-            }}
+            className={`new-category-row ${subRow ? "sub" : ""} ${isMobileView ? "mobile" : ""} ${latsRow ? "last" : ""}`}
+            onClick={onAdd}
         >
-            <img src={addNewButtonUrl} alt="Add new" /> {/* Image for the add new button */}
-            <div className="new-category-row-text">
-                {text} {/* Display the provided text */}
-            </div>
+            <img src={addNewButtonUrl} alt="Add new" />
+            <div className="new-category-row-text">{text}</div>
         </button>
     );
-}
+};
+
+export default NewCategoryRow;

@@ -6,7 +6,7 @@ import { useApi } from "../hooks/useApi";
 import { login as loginRequest } from "../../../libs/sdk/sdk.gen";
 import { isErrorResponse } from "../utils/utlis";
 
-export function Login() {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
@@ -45,4 +45,6 @@ export function Login() {
             </section>
         </main>
     );
-}
+};
+
+export default Login;

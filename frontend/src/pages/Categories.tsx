@@ -1,11 +1,11 @@
-import "./Categories.scss";
+import styles from "./Categories.module.scss";
 import { useModel } from "../hooks/useModel";
-import { CategoryRow } from "../components/CategoryRow";
-import { CategoryRowMobile } from "../components/CategoryRowMobile";
+import CategoryRow from "../components/CategoryRow";
+import CategoryRowMobile from "../components/CategoryRowMobile";
 import { useDevice } from "../hooks/useDevice";
-import { NewCategoryRow } from "../components/NewCategoryRow";
+import NewCategoryRow from "../components/NewCategoryRow";
 
-export function Categories() {
+const Categories = () => {
     const { mainCategory, subcategory, expenseType, transactionType } = useModel();
     const expenseTypes = expenseType.list;
     const transactionTypes = transactionType.list;
@@ -41,7 +41,7 @@ export function Categories() {
             body: {
                 name,
                 mainCategoryId,
-                //expenseType: typeId, TODO: restore expenseType for subcategories
+                expenseTypeId: typeId,
             },
         });
     };
@@ -69,23 +69,23 @@ export function Categories() {
             body: {
                 name: "New category",
                 mainCategoryId: id,
-                //expenseTypeId: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?.id, TODO
+                expenseTypeId: expenseTypes.find((expenseType) => expenseType.name === "Fixed")?.id,
             },
         });
     };
 
+    const expenseTypeNames = expenseTypes.map((item) => item.name);
+
     return (
-        <div className="categories-container">
-            <div className="categories-spacer" />
-            <div className="categories-table-container">
+        <div className={styles.categoriesContainer}>
+            <div className={styles.categoriesSpacer} />
+            <div className={styles.categoriesTableContainer}>
                 {mainCategories.map((category) => (
                     <>
                         <CategoryComponent
                             key={category.id}
                             item={category}
-                            options={expenseTypes?.map((item) => item.name)}
-                            isSubcategory={false}
-                            firstSub={false}
+                            expenseTypeNames={expenseTypeNames}
                             onEdit={handleCategoryEdit}
                             onDelete={handleDeleteCategory}
                         />
@@ -95,34 +95,25 @@ export function Categories() {
                                 <CategoryComponent
                                     key={subcategory.id}
                                     item={subcategory}
-                                    options={expenseTypes?.map((item) => item.name)}
-                                    isSubcategory={true}
-                                    firstSub={index === 0}
+                                    expenseTypeNames={expenseTypeNames}
+                                    firstSubcategory={index === 0}
                                     onEdit={handleSubategoryEdit}
                                     onDelete={handleDeleteSubcategory}
                                 />
                             ))}
                         <NewCategoryRow
-                            onAdd={(id) => {
-                                createSubcategory(id);
+                            onAdd={() => {
+                                createSubcategory(category.id);
                             }}
                             text="Add new subcategory"
                             subRow={true}
-                            categoryId={category.id}
-                            isMobileView={isMobile}
                         />
                     </>
                 ))}
-                <NewCategoryRow
-                    onAdd={(id) => {
-                        createMainCategory();
-                    }}
-                    text="Add Category"
-                    subRow={false}
-                    latsRow={true}
-                    isMobileView={isMobile}
-                />
+                <NewCategoryRow onAdd={createMainCategory} text="Add Category" subRow={false} latsRow={true} />
             </div>
         </div>
     );
-}
+};
+
+export default Categories;

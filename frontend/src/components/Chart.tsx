@@ -1,4 +1,4 @@
-import "./Chart.scss";
+import styles from "./Chart.module.scss";
 import createPlotlyComponent from "react-plotly.js/factory";
 import Plotly from "plotly.js-basic-dist";
 
@@ -10,10 +10,10 @@ interface ChartProps {
     showLegend?: boolean;
 }
 
-export function Chart({ title, data, showLegend = false }: ChartProps) {
+const Chart = ({ title, data, showLegend = false }: ChartProps) => {
     return (
-        <div className="plot" style={{ width: "100%", height: "100%" }}>
-            <h2 className="title">{title}</h2>
+        <div className={styles.plot} style={{ width: "100%", height: "100%" }}>
+            <h2 className={styles.title}>{title}</h2>
             <Plot
                 data={Array.isArray(data) ? data : [data]}
                 layout={{
@@ -36,4 +36,6 @@ export function Chart({ title, data, showLegend = false }: ChartProps) {
             />
         </div>
     );
-}
+};
+
+export default Chart;

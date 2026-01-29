@@ -1,44 +1,41 @@
-import "./CategoryRowMobile.scss";
+import styles from "./CategoryRowMobile.module.scss";
 import { useEffect, useState } from "preact/hooks";
-import { Dropdown } from "./Dropdown";
+import Dropdown from "./Dropdown";
 import InputField from "./InputField";
 import deleteButtonUrl from "../assets/delete.svg";
-import { MainCategory, Subcategory } from "../types";
+import { MainCategory, Subcategory } from "../../../libs/sdk/types.gen";
+import { useEntityQuery } from "../hooks/useEntityQuery";
 
-interface CategoryRowMobileProps {
+type CategoryRowMobileProps = {
     item: MainCategory | Subcategory;
-    options: string[]; // Replace with the actual type of options
-    isSubcategory: boolean;
-    firstSub: boolean;
+    expenseTypeNames: string[];
+    firstSubcategory?: boolean;
     onEdit: (id: string, name: string, type: string) => void;
     onDelete: (id: string) => void;
-}
+};
 
-export function CategoryRowMobile({
-    item,
-    options,
-    isSubcategory,
-    firstSub,
-    onEdit,
-    onDelete,
-}: CategoryRowMobileProps) {
-    // State for selected type and name
-    const [selectedType, setSelectedType] = useState(item?.expenseType?.name || options[0] || "");
+const CategoryRowMobile = ({ item, expenseTypeNames, firstSubcategory, onEdit, onDelete }: CategoryRowMobileProps) => {
+    const { store } = useEntityQuery();
+    const isSubcategory = (item as Subcategory).mainCategoryId !== undefined;
+    const [selectedType, setSelectedType] = useState(
+        store.expenseType(item?.expenseTypeId).tryGet()?.name || expenseTypeNames[0] || "",
+    );
     const [name, setName] = useState(item?.name || "");
 
-    // Update state when item or options change
     useEffect(() => {
-        setSelectedType(item?.expenseType?.name || options[0] || "");
+        setSelectedType(store.expenseType(item?.expenseTypeId).tryGet()?.name || expenseTypeNames[0] || "");
         setName(item?.name || "");
-    }, [item, options]);
+    }, [item, expenseTypeNames]);
 
     return (
-        <div className={`category-row-mobile-row ${isSubcategory ? "sub" : "main"} ${firstSub ? "" : "nonfirstsub"}`}>
-            <div className={`category-row-mobile-highlight ${isSubcategory ? "sub" : "main"}`} />
-            <div className="category-row-mobile-content">
-                <div className="category-row-mobile-nameSection">
-                    <div className="category-row-mobile-label">Name</div>
-                    {!isSubcategory && <div className="category-row-mobile-spacer" />}
+        <div
+            className={`${styles.categoryRowMobileRow} ${isSubcategory ? styles.sub : styles.main} ${firstSubcategory ? "" : styles.nonfirstsub}`}
+        >
+            <div className={`${styles.categoryRowMobileHighlight} ${isSubcategory ? styles.sub : styles.main}`} />
+            <div className={styles.categoryRowMobileContent}>
+                <div className={styles.categoryRowMobileNameSection}>
+                    <div className={styles.categoryRowMobileLabel}>Name</div>
+                    {!isSubcategory && <div className={styles.categoryRowMobileSpacer} />}
                     <InputField
                         type="text"
                         value={name}
@@ -50,20 +47,20 @@ export function CategoryRowMobile({
                         mini={true}
                     />
                     <button
-                        className="category-row-mobile-icon"
+                        className="categoryRowMobileicon"
                         onClick={() => {
                             onDelete(item.id);
                         }}
                     >
-                        <img loading="lazy" src={deleteButtonUrl} alt="" className="category-row-action-icon" />
+                        <img loading="lazy" src={deleteButtonUrl} alt="" className={styles.categoryRowActionIcon} />
                     </button>
                 </div>
 
-                <div className="category-row-mobile-typeSection">
-                    <div className="category-row-mobile-label">Type</div>
-                    {!isSubcategory && <div className="category-row-mobile-spacer" />}
+                <div className={styles.ategoryRowMobileTypeSection}>
+                    <div className={styles.categoryRowMobileLabel}>Type</div>
+                    {!isSubcategory && <div className="categoryRowMobilespacer" />}
                     <Dropdown
-                        options={options}
+                        options={expenseTypeNames}
                         selected={selectedType}
                         onSelectedChange={(value) => {
                             setSelectedType(value);
@@ -75,4 +72,6 @@ export function CategoryRowMobile({
             </div>
         </div>
     );
-}
+};
+
+export default CategoryRowMobile;

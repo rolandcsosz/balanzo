@@ -17,13 +17,13 @@
     border-color: #b1b1bb;
     background-color: #fff;
     outline: none;
-    -webkit-appearance: none; /* Removes default styling in Safari */
+    -webkit-appearance: none;
     appearance: none;
-    text-align: left !important; /* Forces text alignment */
+    text-align: left !important;
     background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23999" d="M7 10l5 5 5-5z"/></svg>'); /* Adds a 24x24 arrow */
     background-repeat: no-repeat;
-    background-position: right 10px center; /* Positions the arrow */
-    background-size: 10px 10px; /* Adjusts the size of the arrow */
+    background-position: right 10px center;
+    background-size: 10px 10px;
 }
 
 .mini {

@@ -2,7 +2,7 @@ import { Transaction } from "../../../libs/sdk/types.gen";
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { useEntityQuery } from "../hooks/useEntityQuery";
-import { EditItemForm } from "../pages/EditItemForm";
+import EditItemForm from "../pages/EditItemForm";
 import { formatCurrency } from "../utils/utlis";
 import styles from "./TransactionCard.module.scss";
 
@@ -11,7 +11,7 @@ interface TransactionCardProps {
     onChange: () => void;
 }
 
-export const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
+const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
     const { openSheet, closeSheet } = useBottomSheet();
     const { store } = useEntityQuery();
 
@@ -49,3 +49,5 @@ export const TransactionCard = ({ transaction, onChange }: TransactionCardProps)
         </article>
     );
 };
+
+export default TransactionCard;

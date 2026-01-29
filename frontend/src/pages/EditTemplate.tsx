@@ -1,6 +1,6 @@
 import styles from "./EditTemplate.module.scss";
 import InputField from "../components/InputField";
-import { Dropdown } from "../components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import { useEffect, useState } from "preact/hooks";
 import templateUrl from "../assets/template.svg";
 import itemUrl from "../assets/item.svg";
@@ -18,7 +18,7 @@ interface EditItemProps {
     onFinished: () => void;
 }
 
-export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProps) {
+const EditTemplate = ({ templateToEdit = null, onFinished }: EditItemProps) => {
     const { mainCategory, subcategory, transactionType, template } = useModel();
     const transactionTypes = transactionType.list;
     const mainCategories = mainCategory.list;
@@ -45,7 +45,7 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
     );
     const [itemCategoryOptions, setItemCategoryOptions] = useState<string[]>([]);
     const [itemSubcategory, setItemSubcategory] = useState(
-        store.subcategory(templateToEdit?.subcategoryId || "").tryGet() || "",
+        store.subcategory(templateToEdit?.subcategoryId || "").tryGet()?.name || "",
     );
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState<string[]>([]);
 
@@ -180,4 +180,6 @@ export function EditTemplate({ templateToEdit = null, onFinished }: EditItemProp
             </div>
         </div>
     );
-}
+};
+
+export default EditTemplate;

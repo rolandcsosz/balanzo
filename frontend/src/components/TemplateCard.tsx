@@ -1,32 +1,31 @@
 import openButtonUrl from "../assets/open-button.svg";
 import arrowUrl from "../assets/arrow.svg";
-import "./TemplateCard.scss";
-import { Template } from "../types";
+import styles from "./TemplateCard.module.scss";
+import { Template } from "../../../libs/sdk/types.gen";
 
 interface TemplateCardProps {
-    template: Template | null;
+    template?: Template;
     onUseTemplate: () => void;
     onEditTemplate?: () => void;
 }
 
-export const TemplateCard = ({ template, onUseTemplate, onEditTemplate = () => {} }) => {
+const TemplateCard = ({ template, onUseTemplate, onEditTemplate = () => {} }: TemplateCardProps) => {
     return (
-        <article className={`template-card ${template ? "" : "new"}`}>
-            {/* Header section with template name or "New" */}
-            <div class="template-card-header">
-                <div class="template-card-title">{template ? template.name : "New"}</div>
+        <div className={`${styles.templateCard} ${template ? "" : styles.new}`}>
+            <div className={styles.templateCardHeader}>
+                <div className={styles.templateCardTitle}>{template ? template.name : "New"}</div>
             </div>
             {template && (
-                // Icon wrapper for editing template
-                <div class="template-icon-wrapper" onClick={onEditTemplate}>
-                    <img loading="lazy" src={openButtonUrl} class="template-icon" alt="" />
+                <div className={styles.templateIconWrapper} onClick={onEditTemplate}>
+                    <img loading="lazy" src={openButtonUrl} className="templateIcon" alt="" />
                 </div>
             )}
-            {/* Action button for using or adding template */}
-            <div class="template-action-button" onClick={onUseTemplate}>
-                <div class="template-action-text">{template ? "Use template" : "Add new"}</div>
-                <img loading="lazy" src={arrowUrl} class="template-action-icon" alt="" />
+            <div className={styles.templateActionButton} onClick={onUseTemplate}>
+                <div className={styles.templateActionText}>{template ? "Use template" : "Add new"}</div>
+                <img loading="lazy" src={arrowUrl} className="templateActionIcon" alt="" />
             </div>
-        </article>
+        </div>
     );
 };
+
+export default TemplateCard;

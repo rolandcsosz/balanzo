@@ -1,12 +1,12 @@
 import { useDevice } from "../hooks/useDevice";
-import { TransactionRow } from "../components/TransactionTableRow";
-import { TransactionCard } from "../components/TransactionCard";
+import TransactionRow from "../components/TransactionTableRow";
+import TransactionCard from "../components/TransactionCard";
 import { formatDate } from "../utils/utlis";
-import { DateDivider } from "../components/DateDivider";
+import DateDivider from "../components/DateDivider";
 import { useModel } from "../hooks/useModel";
 import styles from "./Transactions.module.scss";
 
-export function Transactions() {
+const Transactions = () => {
     const { transaction, refetchData } = useModel();
     const transactions = transaction.list;
     const isMobile = useDevice();
@@ -19,13 +19,13 @@ export function Transactions() {
                     return (
                         <div key={transaction.id}>
                             {index === 0 && (
-                                <div class={styles.transactionDateDivider}>
+                                <div className={styles.transactionDateDivider}>
                                     <DateDivider date={currentDate} />
                                 </div>
                             )}
                             <TransactionCard transaction={transaction} onChange={refetchData} />{" "}
                             {nextDate && currentDate !== nextDate && (
-                                <div class={styles.transactionDateDivider}>
+                                <div className={styles.transactionDateDivider}>
                                     <DateDivider date={nextDate} />
                                 </div>
                             )}
@@ -46,4 +46,6 @@ export function Transactions() {
                     <TransactionRow key={transaction.id} transaction={transaction} onChange={refetchData} />
                 ))}
             </div>;
-}
+};
+
+export default Transactions;

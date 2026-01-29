@@ -1,21 +1,21 @@
 import styles from "./Menu.module.scss";
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { Sidebar } from "../components/Sidebar";
-import { Navbar } from "../components/Navbar";
+import Navbar from "../components/Navbar";
 import largeAddUrl from "../assets/add-large.svg";
 import { useDevice } from "../hooks/useDevice";
-import { BottomSheet } from "../components/BottomSheet";
+import BottomSheet from "../components/BottomSheet";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { Home } from "./Home";
-import { Transactions } from "./Transactions";
-import { EditItemForm } from "./EditItemForm";
-import { Categories } from "./Categories";
-import { Templates } from "./Templates";
+import Home from "./Home";
+import Transactions from "./Transactions";
+import EditItemForm from "./EditItemForm";
+import Categories from "./Categories";
+import Templates from "./Templates";
 import { useModel } from "../hooks/useModel";
-import { Dropdown } from "../components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import { MonthInfo } from "../types";
 
-export function Menu() {
+const Menu = () => {
     const [menu, setMenu] = useState("Home");
     const isMobile = useDevice();
     const SidebarComponent = isMobile ? Navbar : Sidebar;
@@ -100,10 +100,10 @@ export function Menu() {
     }, [isOpen]);
 
     return (
-        <div className={`${styles.layout} ${isMobile ? "mobile" : ""}`}>
+        <div className={styles.layout}>
             <SidebarComponent menu={menu} setMenu={setMenu} />
-            <section className={`${styles.content} ${isMobile ? "mobile" : ""}`}>
-                <div className={`${styles.menuHeaderContainer} ${isMobile ? "mobile" : ""}`}>
+            <section className={styles.content}>
+                <div className={styles.menuHeaderContainer}>
                     <h1 className={styles.contentTitle}>{menu === "Home" ? "Summary" : menu}</h1>
                     {menu === "Home" && (
                         <div className={styles.yearSelectorContainer}>
@@ -126,7 +126,6 @@ export function Menu() {
                     onClick={() => {
                         openSheet(
                             <EditItemForm
-                                transactionToEdit={null}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -142,4 +141,6 @@ export function Menu() {
             <BottomSheet />
         </div>
     );
-}
+};
+
+export default Menu;

@@ -1,6 +1,6 @@
 import styles from "./Home.module.scss";
-import { MetricCard } from "../components/MetricCard";
-import { Chart } from "../components/Chart";
+import MetricCard from "../components/MetricCard";
+import Chart from "../components/Chart";
 import { MonthInfo } from "../types";
 import { useDevice } from "../hooks/useDevice";
 import { useModel } from "../hooks/useModel";
@@ -11,7 +11,11 @@ import { useEntityQuery } from "../hooks/useEntityQuery";
 const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF", "#D7E3FF", "#EFF4FF"];
 const ignoerdSubcategories = ["Rent"];
 
-export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
+interface HomeProps {
+    selectedMonth: MonthInfo;
+}
+
+const Home = ({ selectedMonth }: HomeProps) => {
     const { transaction, transactionType } = useModel();
     const transactions = transaction.list;
     const isMobile = useDevice();
@@ -300,33 +304,35 @@ export function Home({ selectedMonth }: { selectedMonth: MonthInfo }) {
                 <MetricCard title="Balance" value={balance} />
             </div>
 
-            <div class={styles.gridContainer}>
-                <div class={styles.gridItem}>
-                    <div class={styles.content}>
+            <div className={styles.gridContainer}>
+                <div className={styles.gridItem}>
+                    <div className={styles.content}>
                         <Chart data={transactionTypePieChartData} title="Budget Allocation" />
                     </div>
                 </div>
-                <div class={styles.gridItem}>
-                    <div class={styles.content}>
+                <div className={styles.gridItem}>
+                    <div className={styles.content}>
                         <Chart data={stackedBarChartData} title="Grouped Categories" />
                     </div>
                 </div>
-                <div class={styles.gridItem}>
-                    <div class={styles.content}>
+                <div className={styles.gridItem}>
+                    <div className={styles.content}>
                         <Chart data={mainBarChartData} title="Main Categories" />
                     </div>
                 </div>
-                <div class={styles.gridItem}>
-                    <div class={styles.content}>
+                <div className={styles.gridItem}>
+                    <div className={styles.content}>
                         <Chart data={subBarChartData} title="Subcategories" />
                     </div>
                 </div>
-                <div class={styles.gridItem}>
-                    <div class={styles.content}>
+                <div className={styles.gridItem}>
+                    <div className={styles.content}>
                         <Chart data={sunburstData} title="Spending Breakdown" />
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
+
+export default Home;

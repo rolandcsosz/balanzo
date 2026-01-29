@@ -1,16 +1,15 @@
 import styles from "./Navbar.module.scss";
 import { useState, useEffect } from "preact/hooks";
-import { HomeIcon } from "./icons/HomeIcon";
-import { TransactionsIcon } from "./icons/TransactionsIcon";
-import { CategoriesIcon } from "./icons/CategoriesIcon";
-import { TemplatesIcon } from "./icons/TemplatesIcon";
-import { SidebarButton } from "./SidebarButton";
-import { AddIcon } from "./icons/AddIcon";
+import HomeIcon from "./icons/HomeIcon";
+import TransactionsIcon from "./icons/TransactionsIcon";
+import CategoriesIcon from "./icons/CategoriesIcon";
+import TemplatesIcon from "./icons/TemplatesIcon";
+import SidebarButton from "./SidebarButton";
+import AddIcon from "./icons/AddIcon";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { EditItemForm } from "../pages/EditItemForm";
+import EditItemForm from "../pages/EditItemForm";
 import { useModel } from "../hooks/useModel";
 
-// Initial navigation items with icons, labels, and active state
 const initialNavigationItems = [
     { icon: HomeIcon, label: "Home", isActive: false },
     { icon: TransactionsIcon, label: "Transactions", isActive: false },
@@ -22,15 +21,13 @@ const initialNavigationItems = [
 interface CategoriesIconProps {
     menu: string;
     setMenu: (menu: string) => void;
-    setBottomSheetVisibility?: (isOpen: boolean) => void;
 }
 
-export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIconProps) {
+const Navbar = ({ menu, setMenu }: CategoriesIconProps) => {
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
     const { openSheet, closeSheet } = useBottomSheet();
     const { refetchData } = useModel();
 
-    // Update navigation items' active state based on the clicked button
     const handleButtonClick = (newState) => {
         setNavigationItems(
             navigationItems.map((item) => ({
@@ -40,10 +37,20 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
         );
     };
 
-    // Update active state when menu changes
     useEffect(() => {
         handleButtonClick(menu);
     }, [menu]);
+
+    const openAddItemForm = () => {
+        openSheet(
+            <EditItemForm
+                onFinished={() => {
+                    refetchData();
+                    closeSheet();
+                }}
+            />,
+        );
+    };
 
     return (
         <nav className={styles.navbar}>
@@ -53,19 +60,9 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
                         Icon={item.icon}
                         isFilled={item.isActive}
                         label={item.label}
-                        isLabelVisible={false}
-                        isButtonBackgroundVisible={false}
                         onClick={() => {
                             if (item.label === "Add") {
-                                openSheet(
-                                    <EditItemForm
-                                        transactionToEdit={null}
-                                        onFinished={() => {
-                                            refetchData();
-                                            closeSheet();
-                                        }}
-                                    />,
-                                );
+                                openAddItemForm();
                                 return;
                             }
                             setMenu(item.label);
@@ -75,4 +72,6 @@ export function Navbar({ menu, setMenu, setBottomSheetVisibility }: CategoriesIc
             </div>
         </nav>
     );
-}
+};
+
+export default Navbar;

@@ -1,4 +1,4 @@
-.categories-container {
+.categoriesContainer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -6,12 +6,12 @@
     margin: 20px;
 }
 
-.categories-spacer {
+.categoriesSpacer {
     min-height: 20px;
     width: 100%;
 }
 
-.categories-table-container {
+.categoriesTableContainer {
     display: flex;
     flex-direction: column;
 }
