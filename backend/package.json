@@ -27,7 +27,8 @@
         "generate:swagger": "tsoa spec -c tsoa.dev.json",
         "generate:migration": "dotenv -e .env -- prisma migrate dev --name init",
         "generate:sdk": "openapi-ts --input swagger.json --output ../libs/sdk",
-        "db:deploy": "dotenv -e .env.prod -- prisma migrate deploy"
+        "db:deploy": "dotenv -e .env -- prisma migrate deploy",
+        "db:reset": "dotenv -e .env -- prisma migrate reset"
     },
     "dependencies": {
         "@prisma/client": "^6.19.2",

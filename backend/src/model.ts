@@ -9,11 +9,13 @@ export interface Subcategory {
     id: string;
     name: string;
     mainCategoryId: string;
+    expenseTypeId: string;
 }
 
 export interface SubcategoryRequest {
     name: string;
     mainCategoryId: string;
+    expenseTypeId: string;
 }
 
 export interface MainCategory {

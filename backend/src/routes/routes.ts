@@ -126,6 +126,7 @@ const models: TsoaRoute.Models = {
             id: { dataType: "string", required: true },
             name: { dataType: "string", required: true },
             mainCategoryId: { dataType: "string", required: true },
+            expenseTypeId: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },
@@ -135,6 +136,7 @@ const models: TsoaRoute.Models = {
         properties: {
             name: { dataType: "string", required: true },
             mainCategoryId: { dataType: "string", required: true },
+            expenseTypeId: { dataType: "string", required: true },
         },
         additionalProperties: false,
     },

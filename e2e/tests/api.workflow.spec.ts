@@ -35,6 +35,7 @@ test.describe("API - Complex Workflow Tests", () => {
             body: {
                 name: `Workflow Subcategory ${Date.now()}`,
                 mainCategoryId,
+                expenseTypeId: valiodIds.expenseTypeId,
             },
         });
         const subcatData = checkResponseBody(subcatResponse);
@@ -82,6 +83,7 @@ test.describe("API - Complex Workflow Tests", () => {
             body: {
                 name: `Update Workflow Subcategory ${Date.now()}`,
                 mainCategoryId,
+                expenseTypeId: valiodIds.expenseTypeId,
             },
         });
         const subcatData = checkResponseBody(subcatResponse);
@@ -126,6 +128,7 @@ test.describe("API - Complex Workflow Tests", () => {
             body: {
                 name: `Updated Workflow Subcategory ${Date.now()}`,
                 mainCategoryId,
+                expenseTypeId: valiodIds.expenseTypeId,
             },
         });
         const updatedSubcatData = checkResponseBody(updatedSubcatResponse);

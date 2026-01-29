@@ -79,6 +79,20 @@ test.describe("API - Invalid date and foreign key test on create or update", () 
             param: {
                 name: `Test Invalid Main Category ${Date.now()}`,
                 mainCategoryId: "invalid-uuid-12345",
+                expenseTypeId: validIds.expenseTypeId,
+            } satisfies SubcategoryRequest,
+        });
+    });
+
+     test("Should reject subcategory with invalid expenseTypeId", async () => {
+        await testInvalidCreationOrUpdate({
+            createFunction: createSubcategory,
+            updateFunction: updateSubcategory,
+            idToUpdate: validIds.subcategoryId,
+            param: {
+                name: `Test Invalid Main Category ${Date.now()}`,
+                mainCategoryId: validIds.mainCategoryId,
+                expenseTypeId: "invalid-uuid-12345",
             } satisfies SubcategoryRequest,
         });
     });

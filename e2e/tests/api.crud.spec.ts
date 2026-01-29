@@ -136,6 +136,7 @@ const configFactories: ConfigFactory<any>[] = [
         sampleData: {
             name: "Sample Subcategory",
             mainCategoryId: validIds.mainCategoryId,
+            expenseTypeId: validIds.expenseTypeId,
         } satisfies SubcategoryRequest,
 
         actions: [

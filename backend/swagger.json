@@ -146,9 +146,12 @@
                     },
                     "mainCategoryId": {
                         "type": "string"
+                    },
+                    "expenseTypeId": {
+                        "type": "string"
                     }
                 },
-                "required": ["id", "name", "mainCategoryId"],
+                "required": ["id", "name", "mainCategoryId", "expenseTypeId"],
                 "type": "object",
                 "additionalProperties": false
             },
@@ -159,9 +162,12 @@
                     },
                     "mainCategoryId": {
                         "type": "string"
+                    },
+                    "expenseTypeId": {
+                        "type": "string"
                     }
                 },
-                "required": ["name", "mainCategoryId"],
+                "required": ["name", "mainCategoryId", "expenseTypeId"],
                 "type": "object",
                 "additionalProperties": false
             },

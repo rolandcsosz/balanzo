@@ -44,6 +44,7 @@ CREATE TABLE "Subcategory" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "mainCategoryId" TEXT NOT NULL,
+    "expenseTypeId" TEXT NOT NULL,
 
     CONSTRAINT "Subcategory_pkey" PRIMARY KEY ("id")
 );
@@ -86,6 +87,9 @@ ALTER TABLE "Template" ADD CONSTRAINT "Template_subcategoryId_fkey" FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE "Subcategory" ADD CONSTRAINT "Subcategory_mainCategoryId_fkey" FOREIGN KEY ("mainCategoryId") REFERENCES "MainCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Subcategory" ADD CONSTRAINT "Subcategory_expenseTypeId_fkey" FOREIGN KEY ("expenseTypeId") REFERENCES "ExpenseType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MainCategory" ADD CONSTRAINT "MainCategory_expenseTypeId_fkey" FOREIGN KEY ("expenseTypeId") REFERENCES "ExpenseType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

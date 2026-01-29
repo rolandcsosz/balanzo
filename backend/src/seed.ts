@@ -99,6 +99,7 @@ export const seed = async () => {
                 data: {
                     name: sc.name,
                     mainCategoryId: mainCategoryMap[sc.mainCategoryName],
+                    expenseTypeId: mainCategories.find((mc) => mc.name === sc.mainCategoryName)!.expenseTypeId,
                 },
             }),
         ),
