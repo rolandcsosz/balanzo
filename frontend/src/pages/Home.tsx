@@ -109,8 +109,6 @@ const Home = ({ selectedMonth }: HomeProps) => {
             values.push(subcategoryAmount);
         });
 
-        console.log(values);
-
         return {
             type: "sunburst",
             labels,
@@ -121,7 +119,6 @@ const Home = ({ selectedMonth }: HomeProps) => {
             marker: {
                 colors: values,
                 colorscale: [
-                    // Custom scale for better visualization
                     [0.0, "#EFF4FF"],
                     [0.05, "#D7E3FF"],
                     [0.1, "#AFC7FF"],
@@ -135,8 +132,6 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const mainBarChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
-
-        console.log("Filtered Transactions:", filteredTransactions);
 
         const mainCategories = [
             ...new Set(
@@ -253,13 +248,18 @@ const Home = ({ selectedMonth }: HomeProps) => {
     const transactionTypePieChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense", false);
 
-        const transactionTypes = [...new Set([])];
-        //filteredTransactions.map((item) => item.subcategory.transactionType.name))].sort(); TODO
+        const transactionTypes = [
+            ...new Set(
+                filteredTransactions
+                    .map((item) => store.subcategory(item.subcategoryId).expenseType().tryGet()?.name)
+                    .pipe(removeNullishValuesFromList),
+            ),
+        ];
 
         const labels = transactionTypes;
         const values = transactionTypes.map((type) =>
             filteredTransactions
-                //.filter((item) => item.subcategory?.transactionType?.name === type) TODO
+                .filter((item) => store.subcategory(item.subcategoryId).expenseType().tryGet()?.name === type)
                 .reduce((sum, item) => sum + (item.amount || 0), 0),
         );
 

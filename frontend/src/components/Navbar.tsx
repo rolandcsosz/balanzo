@@ -60,6 +60,7 @@ const Navbar = ({ menu, setMenu }: CategoriesIconProps) => {
                         Icon={item.icon}
                         isFilled={item.isActive}
                         label={item.label}
+                        isLabelVisible={false}
                         onClick={() => {
                             if (item.label === "Add") {
                                 openAddItemForm();
