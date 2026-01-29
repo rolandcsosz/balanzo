@@ -8,7 +8,8 @@
         "preview": "vite preview",
         "check:format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,scss,sass}\"",
         "format": "prettier --write \"**/*.{ts,tsx,cjs,js,jsx,json,css,scss,sass}\"",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "tauri": "tauri"
     },
     "repository": {
         "type": "git",
@@ -37,6 +38,7 @@
     },
     "devDependencies": {
         "@preact/preset-vite": "^2.9.1",
+        "@tauri-apps/cli": "^2.9.6",
         "@types/node": "^22.9.0",
         "dotenv": "^16.4.5",
         "sass": "^1.80.6",
