@@ -1,0 +1,22 @@
+@use "../styles" as *;
+
+.button {
+    align-self: stretch;
+    width: 100%;
+    border-radius: $default-radius;
+    margin-top: $margin-defult;
+    padding: $padding-medium;
+    font: $font-bold;
+    border: none;
+    cursor: pointer;
+}
+
+.primary {
+    background: $highlight-color;
+    color: $background-color;
+}
+
+.secondary {
+    background: $highlight-background-color;
+    color: $highlight-color;
+}

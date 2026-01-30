@@ -17,19 +17,21 @@ const Transactions = () => {
                     const currentDate = formatDate(transaction.date);
                     const nextDate = index < transactions.length - 1 ? formatDate(transactions[index + 1].date) : null;
                     return (
-                        <div key={transaction.id}>
-                            {index === 0 && (
-                                <div className={styles.transactionDateDivider}>
-                                    <DateDivider date={currentDate} />
-                                </div>
-                            )}
-                            <TransactionCard transaction={transaction} onChange={refetchData} />{" "}
+                        <>
+                            <div key={transaction.id}>
+                                {index === 0 && (
+                                    <div className={styles.transactionDateDivider}>
+                                        <DateDivider date={currentDate} />
+                                    </div>
+                                )}
+                                <TransactionCard transaction={transaction} onChange={refetchData} />{" "}
+                            </div>
                             {nextDate && currentDate !== nextDate && (
                                 <div className={styles.transactionDateDivider}>
                                     <DateDivider date={nextDate} />
                                 </div>
                             )}
-                        </div>
+                        </>
                     );
                 })}
             </div>

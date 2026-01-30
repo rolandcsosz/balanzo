@@ -1,22 +1,21 @@
-svg {
-    .inactive {
-        fill: #000000;
-    }
+@use "../../styles" as *;
 
-    .active {
-        fill: #3772ff;
-    }
+.inactive {
+    fill: $font-color;
+}
+
+.active {
+    fill: $highlight-color;
 }
 
 .addButton {
     background-color: transparent;
-    height: 40px;
-    width: 52px;
+    width: calc(2 * $margin-defult);
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
-    padding: 10px;
-    border-radius: 10px;
+    padding: $padding-small;
+    border-radius: $default-radius;
     cursor: pointer;
 }

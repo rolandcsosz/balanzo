@@ -1,28 +1,37 @@
+@use "../styles" as *;
+
+.container {
+    width: 100%;
+}
+
 .cardList {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    padding: 0px 20px 20px 20px;
+    gap: $padding-defult;
+    padding: $padding-defult;
+    padding-top: 0;
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile-breakpoint) {
         margin-top: 0;
         flex-direction: column;
-        gap: 15px;
-        padding: 0px 20px 0px 20px;
+        gap: $padding-medium;
+        padding: 0 $padding-defult;
     }
 }
 
 .gridContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    padding: 0px 20px 20px 20px;
+    gap: $padding-defult;
+    padding: $padding-defult;
+    padding-top: 0;
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile-breakpoint) {
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        margin-top: 15px;
+        gap: $padding-medium;
+        margin-top: $margin-medium;
+        margin-bottom: calc(6 * $margin-medium);
     }
 }
 
@@ -30,7 +39,7 @@
     position: relative;
     width: 100%;
     border: none;
-    height: 400px;
+    height: $chart-height;
 
     &:nth-child(1) {
         grid-column: 1 / 2;
@@ -63,7 +72,7 @@
         align-items: end;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile-breakpoint) {
         display: flex;
         flex-direction: column;
     }

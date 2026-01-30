@@ -1,13 +1,15 @@
+@use "../styles" as *;
+
 .categoriesContainer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
     justify-content: start;
-    margin: 20px;
+    margin: $margin-defult;
 }
 
 .categoriesSpacer {
-    min-height: 20px;
+    min-height: $margin-defult;
     width: 100%;
 }
 

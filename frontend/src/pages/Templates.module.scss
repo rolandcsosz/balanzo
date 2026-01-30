@@ -1,6 +1,8 @@
+@use "../styles" as *;
+
 .templateGridContainer {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    margin: 20px;
+    gap: $padding-medium;
+    margin: $margin-defult;
 }

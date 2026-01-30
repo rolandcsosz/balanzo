@@ -1,56 +1,49 @@
+@use "../styles" as *;
+
 .layout {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
+    padding: $padding-defult;
 
     .content {
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        min-width: 240px;
+        border-radius: $default-radius;
+        background-color: $panel-background-color;
         width: 100%;
-        overflow: auto;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 100%;
+        overflow-y: auto;
+        box-shadow: $panel-shadow;
 
         .menuHeaderContainer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0px;
             border: none;
-            margin: 0 20px 20px 20px;
+            padding: $margin-defult;
+            padding-bottom: 0;
 
             .contentTitle {
-                font-size: 32px;
-                font-weight: 700;
-                font-family: "Inter", sans-serif;
+                font: $font-title;
             }
-
-            .contentTitle.mobile {
-                font-size: 24px;
-            }
-        }
-
-        .menuHeaderContainer.mobile {
-            margin: 0 0 20px 0;
         }
 
         .actionButton {
             border: none;
             justify-content: center;
             align-items: center;
-            border-radius: 25px;
-            background-color: #3772ff;
+            border-radius: calc($action-button-size / 2);
+            background-color: $highlight-color;
             display: flex;
-            width: 50px;
-            height: 50px;
+            width: $action-button-size;
+            height: $action-button-size;
             cursor: pointer;
             position: absolute;
-            bottom: 50px;
-            right: 55px;
+            bottom: $action-button-size;
+            right: $action-button-size;
 
-            @media (max-width: 600px) {
+            @media (max-width: $mobile-breakpoint) {
                 display: none;
             }
         }
@@ -62,40 +55,38 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.2);
+        background: $overlay-background;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile-breakpoint) {
         flex-direction: column;
         justify-content: space-between;
-        height: 100vh;
+        height: 100%;
         box-sizing: border-box;
         padding: 0;
 
         .content {
-            border-radius: 0;
             flex-grow: 1;
             overflow: auto;
-            max-height: calc(100vh - 85px);
 
             .menuHeaderContainer {
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: flex-start;
-                margin: 0 20px 0 20px;
+                padding: 0 $margin-defult;
                 padding: 0;
                 width: 100%;
 
                 .yearSelectorContainer {
-                    padding-left: 20px;
-                    width: calc(100% - 40px);
-                    margin-top: 0px;
-                    margin-bottom: 40px;
+                    padding-left: 0;
+                    width: calc(100% - 2 * $padding-defult);
+                    margin-left: $padding-defult;
+                    margin-bottom: calc(2 * $padding-defult);
                 }
 
                 .contentTitle {
-                    color: #000;
-                    margin: 60px 20px 20px 20px;
+                    padding: $padding-defult;
+                    padding-top: calc(3 * $padding-defult);
                 }
             }
         }

@@ -2,7 +2,7 @@ import { Transaction } from "../../../libs/sdk/types.gen";
 import openButtonUrl from "../assets/open-button.svg";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import { useEntityQuery } from "../hooks/useEntityQuery";
-import EditItemForm from "../pages/EditItemForm";
+import EditOrNewForm from "../pages/EditOrNewForm";
 import { formatCurrency } from "../utils/utlis";
 import styles from "./TransactionCard.module.scss";
 
@@ -25,8 +25,8 @@ const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
                     className={styles.transactionCardIconWrapper}
                     onClick={() => {
                         openSheet(
-                            <EditItemForm
-                                transactionToEdit={transaction}
+                            <EditOrNewForm
+                                item={transaction}
                                 onFinished={() => {
                                     onChange();
                                     closeSheet();

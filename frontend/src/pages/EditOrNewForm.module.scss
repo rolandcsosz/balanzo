@@ -1,0 +1,68 @@
+@use "../styles" as *;
+
+.newItemContainer {
+    background: $background-color;
+    display: flex;
+    overflow: hidden;
+    font: $font-bold;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.newItemContent {
+    display: flex;
+    width: $mobile-breakpoint;
+    flex-direction: column;
+    overflow: hidden;
+    padding: $padding-defult;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.newItemFormRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.newItemFormRow img {
+    height: $form-con-size;
+    width: $form-con-size;
+    margin-right: $margin-medium;
+}
+
+.newItemTitle {
+    font: $font-title;
+    margin-top: calc($margin-defult * 2);
+    color: $font-color;
+}
+
+.newItemForm {
+    background: $background-color;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    font: $font-normal;
+    gap: calc($margin-defult + $margin-small);
+    margin-bottom: auto;
+    margin-top: auto;
+
+    @media screen and (max-height: 780px) {
+        gap: $margin-defult;
+    }
+}
+
+.newItemButtonRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: calc(4 * $margin-defult);
+    gap: $margin-defult;
+}

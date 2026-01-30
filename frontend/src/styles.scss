@@ -1,0 +1,44 @@
+@use "sass:math";
+@use "sass:meta";
+
+$highlight-color: #3772ff;
+$highlight-background-color: #ebf1ff;
+$background-color: #ffffff;
+$panel-background-color: #f9f9f9;
+$font-color: #1d1d1d;
+$subtitle-font-color: #545454;
+$margin-defult: 20px;
+$margin-medium: 15px;
+$margin-small: 10px;
+$padding-defult: 20px;
+$padding-medium: 15px;
+$padding-small: 10px;
+$mobile-breakpoint: 600px;
+$default-radius: 8px;
+$default-font-size: 16px;
+$font-normal:
+    normal 16px "Inter",
+    sans-serif;
+$font-bold:
+    bold 16px "Inter",
+    sans-serif;
+$font-title:
+    bold 28px "Inter",
+    sans-serif;
+
+// Specific sizes
+$chart-height: 400px;
+$action-button-size: 50px;
+$login-panel-width: 380px;
+$panel-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$overlay-background: rgba(0, 0, 0, 0.2);
+$form-con-size: 30px;
+$default-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+@function strip-unit($number) {
+    @if meta.type-of($number) == "number" and not math.is-unitless($number) {
+        @return math.div($number, $number * 0 + 1);
+    }
+
+    @return $number;
+}

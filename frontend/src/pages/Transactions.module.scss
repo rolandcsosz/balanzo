@@ -1,29 +1,28 @@
+@use "../styles" as *;
+
 .transactionTable {
-    border-radius: 8px;
-    background: #fff;
+    border-radius: $default-radius;
+    background: $background-color;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     justify-content: start;
-    margin: 20px;
+    margin: $margin-defult;
 
     .transactionHeader {
-        background: rgba(55, 114, 255, 0.1);
+        background: $highlight-background-color;
         display: flex;
-        height: 46px;
         width: 100%;
         align-items: center;
-        color: var(--highlight, #3772ff);
+        color: $highlight-color;
         justify-content: start;
         flex-wrap: wrap;
-        font:
-            700 16px Inter,
-            sans-serif;
+        font: $font-bold;
     }
 
     .transactionHeaderCell {
         flex: 1;
-        padding: 16px 20px;
+        padding: $padding-medium $padding-defult;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
@@ -32,14 +31,14 @@
 .transactionCards {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin: 20px;
+    gap: $padding-medium;
+    margin: $margin-defult;
     & > :first-child .transactionDateDivider {
-        margin-bottom: 30px;
+        margin-bottom: $margin-defult;
     }
 }
 
 .transactionDateDivider {
-    margin-top: 30px;
-    margin-bottom: 10px;
+    margin-top: $margin-small;
+    margin-bottom: $margin-small;
 }

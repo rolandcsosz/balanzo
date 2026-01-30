@@ -8,7 +8,7 @@ import BottomSheet from "../components/BottomSheet";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 import Home from "./Home";
 import Transactions from "./Transactions";
-import EditItemForm from "./EditItemForm";
+import EditOrNewForm from "./EditOrNewForm";
 import Categories from "./Categories";
 import Templates from "./Templates";
 import { useModel } from "../hooks/useModel";
@@ -125,7 +125,8 @@ const Menu = () => {
                     aria-label="Add new item"
                     onClick={() => {
                         openSheet(
-                            <EditItemForm
+                            <EditOrNewForm
+                                typeToAdd="transaction"
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();

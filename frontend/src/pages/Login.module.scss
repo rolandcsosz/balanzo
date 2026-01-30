@@ -1,13 +1,13 @@
+@use "../styles" as *;
+
+// Generated pattern background
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font:
-        400 16px Inter,
-        sans-serif;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     padding: 0;
     overflow: hidden;
     background-color: #a4e7ff;
@@ -28,74 +28,66 @@
         0 0,
         29px 51px;
 
-    @media (max-width: 600px) {
-        height: 100vh;
+    @media (max-width: $mobile-breakpoint) {
+        height: 100%;
         justify-content: center;
         align-items: center;
     }
 }
 
 .panel {
-    border-radius: 10px;
-    background-color: #f9f9f9;
+    border-radius: $default-radius;
+    background-color: $panel-background-color;
     display: flex;
-    width: 380px;
+    width: $login-panel-width;
     max-width: 100%;
     flex-direction: column;
     justify-content: start;
-    padding: 40px;
+    padding: calc(2 * $padding-defult);
     box-sizing: border-box;
 
     .title {
-        color: #292929;
-        font-size: 32px;
-        font-weight: 700;
-        margin: 0 0 10px 0;
+        color: $font-color;
+        font: $font-title;
+        margin-bottom: $margin-small;
     }
 
     .subtitle {
-        color: #545454;
+        font: $font-normal;
+        color: $subtitle-font-color;
     }
 
     .loginForm {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: $padding-defult;
     }
 
     .button {
         align-self: stretch;
         width: 100%;
-        border-radius: 8px;
-        background: #3772ff;
-        margin-top: 20px;
-        min-height: 50px;
-        font-size: 20px;
-        color: #ffffff;
-        font-weight: 700;
+        border-radius: $default-radius;
+        background: $highlight-color;
+        margin-top: $margin-defult;
+        padding: $padding-medium;
+        font: $font-bold;
+        color: $background-color;
         border: none;
         cursor: pointer;
     }
 
     .spacer {
         display: flex;
-        min-height: 0px;
-        margin-top: 20px;
-        width: 76px;
+        margin-top: $margin-defult;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: $mobile-breakpoint) {
         width: 100%;
-        padding: 200px 40px 0 40px;
+        padding: 25vh calc(2 * $padding-defult) 0 calc(2 * $padding-defult);
         height: 100vh;
-        border-radius: 0;
         flex-direction: column;
         overflow: hidden;
         overflow-y: auto;
         justify-content: start;
-    }
-
-    @media (max-height: 600px) {
-        padding-top: 100px;
     }
 }

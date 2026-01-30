@@ -1,7 +1,8 @@
-import styles from "./EditItemForm.module.scss";
+import styles from "./EditOrNewForm.module.scss";
 import InputField from "../components/InputField";
 import Dropdown from "../components/Dropdown";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useMemo, useState } from "preact/hooks";
+import templateUrl from "../assets/template.svg";
 import itemUrl from "../assets/item.svg";
 import amountUrl from "../assets/amount.svg";
 import expenseTypeUrl from "../assets/export-type.svg";
@@ -11,15 +12,24 @@ import dateUrl from "../assets/date.svg";
 import { formatDateToSet, formattedStringToDate } from "../utils/utlis";
 import { useModel } from "../hooks/useModel";
 import { Template, Transaction } from "../../../libs/sdk/types.gen";
+import Button from "../components/Button";
 
 interface EditItemFormProps {
-    transactionToEdit?: Transaction;
-    templateToEdit?: Template;
+    item?: Transaction | Template;
+    typeToAdd?: "transaction" | "template";
     onFinished: () => void;
 }
 
-const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditItemFormProps) => {
-    const { mainCategory, subcategory, transactionType, transaction } = useModel();
+const isTransaction = (item: Transaction | Template): item is Transaction => {
+    if (!item) {
+        return false;
+    }
+    return (item as Transaction).item !== undefined;
+};
+
+const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
+    const isTransactionItem = isTransaction(item);
+    const { mainCategory, subcategory, transactionType, transaction, template } = useModel();
     const [itemName, setItemName] = useState("");
     const [itemAmount, setItemAmount] = useState<number | string>("");
     const [itemTransactionType, setItemTransactionType] = useState("");
@@ -28,6 +38,7 @@ const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditIte
     const [itemSubcategory, setItemSubcategory] = useState("");
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
     const [itemDate, setItemDate] = useState(new Date());
+    const [templateName, setTemplateName] = useState(isTransactionItem ? "" : item?.name || "");
 
     const setCategoryOptions = (transactionTypeName: string) => {
         const transactionTypeId = transactionType.list.find((type) => type.name === transactionTypeName)?.id;
@@ -54,17 +65,17 @@ const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditIte
     };
 
     useEffect(() => {
-        if (transactionToEdit || templateToEdit) {
-            const name = templateToEdit?.itemName || transactionToEdit?.item || "";
-            const amount = templateToEdit?.amount || transactionToEdit?.amount || 0;
-            const subcategoryId = templateToEdit?.subcategoryId || transactionToEdit?.subcategoryId || "";
+        if (item) {
+            const name = (isTransactionItem ? item?.item : item?.itemName) || "";
+            const amount = item?.amount || 0;
+            const subcategoryId = item?.subcategoryId || "";
             const subcategoryName = subcategory.list.find((sub) => sub.id === subcategoryId)?.name || "";
             const mainCategoryId = subcategory.list.find((sub) => sub.id === subcategoryId).mainCategoryId || "";
             const mainCategoryName = mainCategory.list.find((cat) => cat.id === mainCategoryId)?.name || "";
             const transactionTypeId =
                 mainCategory.list.find((type) => type.id === mainCategoryId)?.transactionTypeId || "";
             const transactionTypeName = transactionType.list.find((type) => type.id === transactionTypeId)?.name || "";
-            const date = templateToEdit?.date || transactionToEdit?.date || new Date();
+            const date = item?.date || new Date();
 
             setItemName(name);
             if (amount > 0) {
@@ -75,7 +86,7 @@ const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditIte
             setItemSubcategory(subcategoryName);
             setItemDate(new Date(date));
         }
-    }, [transactionToEdit, templateToEdit, mainCategory.list, subcategory.list, transactionType.list]);
+    }, [item, item, mainCategory.list, subcategory.list, transactionType.list]);
 
     useEffect(() => {
         if (itemTransactionType) {
@@ -113,48 +124,66 @@ const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditIte
             return;
         }
 
-        if (transactionToEdit && transactionToEdit.id) {
-            transaction.update({
-                path: { id: transactionToEdit.id },
-                body: {
-                    item: itemName,
-                    amount: itemAmount,
-                    subcategoryId,
-                    date: itemDate.toISOString(),
-                },
-            });
+        const baseBody = {
+            amount: itemAmount,
+            subcategoryId,
+            date: itemDate.toISOString(),
+        };
+
+        if (item && item.id) {
+            if (isTransactionItem) {
+                transaction.update({ path: { id: item.id }, body: { ...baseBody, item: itemName } });
+            } else {
+                template.update({ path: { id: item.id }, body: { ...baseBody, itemName: itemName, name: itemName } });
+            }
             onFinished();
             return;
         }
 
-        transaction.create({
-            body: {
-                item: itemName,
-                amount: itemAmount,
-                subcategoryId,
-                date: itemDate.toISOString(),
-            },
-        });
+        if (isTransactionItem) {
+            transaction.create({ body: { ...baseBody, item: itemName } });
+        } else {
+            template.create({ body: { ...baseBody, itemName: itemName, name: itemName } });
+        }
         onFinished();
     };
 
     const handleDelete = async () => {
-        if (!transactionToEdit) {
+        if (!item) {
             console.error("No transaction found to delete");
             return;
         }
 
-        transaction.delete({ path: { id: transactionToEdit.id } });
+        transaction.delete({ path: { id: item.id } });
         onFinished();
     };
+
+    const title = useMemo(() => {
+        let title = item ? "Edit " : "New ";
+        if (!item && typeToAdd) {
+            title += typeToAdd;
+            return title;
+        }
+        title += isTransactionItem ? "transaction" : "template";
+        return title;
+    }, [item, isTransactionItem]);
 
     return (
         <div className={styles.newItemContainer}>
             <div className={styles.newItemContent}>
-                <div className={styles.newItemTitle}>
-                    {transactionToEdit || templateToEdit ? "Edit item" : "New item"}
-                </div>
+                <div className={styles.newItemTitle}>{title}</div>
                 <form onSubmit={(e) => e.preventDefault()} className={styles.newItemForm}>
+                    {typeToAdd !== "transaction" && !isTransactionItem && (
+                        <div className={styles.newItemFormRow}>
+                            <img src={templateUrl} alt="" />
+                            <InputField
+                                type="text"
+                                placeholder="Item"
+                                value={templateName}
+                                onChange={setTemplateName}
+                            />
+                        </div>
+                    )}
                     <div className={styles.newItemFormRow}>
                         <img src={itemUrl} alt="" />
                         <InputField type="text" placeholder="Item" value={itemName} onChange={setItemName} />
@@ -211,18 +240,12 @@ const EditItemForm = ({ transactionToEdit, templateToEdit, onFinished }: EditIte
                     </div>
                 </form>
                 <div className={styles.newItemButtonRow}>
-                    {transactionToEdit && (
-                        <button className={styles.newItemDeleteButton} onClick={handleDelete}>
-                            Delete
-                        </button>
-                    )}
-                    <button type="submit" className={styles.newItemSubmitButton} onClick={handleEditItem}>
-                        {transactionToEdit || templateToEdit ? "Save" : "Add"}
-                    </button>
+                    {item && <Button text="Delete" onClick={handleDelete} style="secondary" />}
+                    <Button text={item ? "Save" : "Add"} onClick={handleEditItem} />
                 </div>
             </div>
         </div>
     );
 };
 
-export default EditItemForm;
+export default EditOrNewForm;

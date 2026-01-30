@@ -297,7 +297,7 @@ const Home = ({ selectedMonth }: HomeProps) => {
     }, [income, spending]);
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.cardList}>
                 <MetricCard title="Income" value={income} />
                 <MetricCard title="Spendings" value={spending} />

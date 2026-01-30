@@ -2,8 +2,7 @@ import styles from "./Templates.module.scss";
 import { useModel } from "../hooks/useModel";
 import TemplateCard from "../components/TemplateCard";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import EditItemForm from "./EditItemForm";
-import EditTemplate from "./EditTemplate";
+import EditOrNewForm from "./EditOrNewForm";
 import { useMemo } from "preact/hooks";
 import { useEntityQuery } from "../hooks/useEntityQuery";
 
@@ -36,8 +35,8 @@ const Templates = () => {
                     template={template}
                     onUseTemplate={() => {
                         openSheet(
-                            <EditItemForm
-                                templateToEdit={template}
+                            <EditOrNewForm
+                                item={template}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -47,8 +46,8 @@ const Templates = () => {
                     }}
                     onEditTemplate={() => {
                         openSheet(
-                            <EditTemplate
-                                templateToEdit={template}
+                            <EditOrNewForm
+                                item={template}
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -62,7 +61,8 @@ const Templates = () => {
                 key={"add"}
                 onUseTemplate={() => {
                     openSheet(
-                        <EditTemplate
+                        <EditOrNewForm
+                            typeToAdd="template"
                             onFinished={() => {
                                 refetchData();
                                 closeSheet();

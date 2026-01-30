@@ -7,7 +7,7 @@ import TemplatesIcon from "./icons/TemplatesIcon";
 import SidebarButton from "./SidebarButton";
 import AddIcon from "./icons/AddIcon";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import EditItemForm from "../pages/EditItemForm";
+import EditOrNewForm from "../pages/EditOrNewForm";
 import { useModel } from "../hooks/useModel";
 
 const initialNavigationItems = [
@@ -43,7 +43,8 @@ const Navbar = ({ menu, setMenu }: CategoriesIconProps) => {
 
     const openAddItemForm = () => {
         openSheet(
-            <EditItemForm
+            <EditOrNewForm
+                typeToAdd="transaction"
                 onFinished={() => {
                     refetchData();
                     closeSheet();
