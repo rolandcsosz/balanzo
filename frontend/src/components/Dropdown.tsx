@@ -6,9 +6,10 @@ interface DropdownProps {
     selected: string;
     onSelectedChange: (value: string) => void;
     mini?: boolean;
+    lightBorder?: boolean;
 }
 
-const Dropdown = ({ options, selected, onSelectedChange, mini }: DropdownProps) => {
+const Dropdown = ({ options, selected, onSelectedChange, mini, lightBorder = false }: DropdownProps) => {
     useEffect(() => {
         if (options.length > 0 && !selected) {
             onSelectedChange(options[0]);
@@ -20,7 +21,11 @@ const Dropdown = ({ options, selected, onSelectedChange, mini }: DropdownProps) 
     };
 
     return (
-        <select className={`${styles.dropdown} ${mini ? styles.mini : ""}`} value={selected} onChange={handleChange}>
+        <select
+            className={`${styles.dropdown} ${mini ? styles.mini : ""} ${lightBorder ? styles.lightBorder : ""}`}
+            value={selected}
+            onChange={handleChange}
+        >
             {options.map((option: string, index: number) => (
                 <option key={index} value={option}>
                     {option}

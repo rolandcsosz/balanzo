@@ -1,35 +1,35 @@
+@use "../styles" as *;
+
 .inputField {
     align-self: center;
     width: 100%;
     max-width: 100%;
-    line-height: 45px;
-    height: 45px;
-    padding: 0 10px;
-    gap: 10px;
+    line-height: $input-height;
+    height: $input-height;
+    padding: 0 $padding-small;
+    gap: $padding-small;
     overflow: hidden;
-    border: 1px solid transparent;
-    border-radius: 8px;
+    border: $border-width-thin solid transparent;
+    border-radius: $default-radius;
     box-sizing: border-box;
     background-color: transparent;
     color: #292929;
     font-family: "Roboto Mono", sans-serif;
     align-items: center;
     border-color: #b1b1bb;
-    background-color: #fff;
+    background-color: $background-color;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
 }
 
 .inputField.largeText {
-    font:
-        700 18px Inter,
-        sans-serif;
+    font: bold $font-size-medium-large $font-family-normal;
 }
 
 .inputField.mini {
-    line-height: 35px;
-    height: 35px;
+    line-height: $input-height-small;
+    height: $input-height-small;
 }
 
 .inputField.labelLike {
@@ -39,6 +39,6 @@
     &:focus {
         outline: none;
         border-color: #b1b1bb;
-        background-color: #fff;
+        background-color: $background-color;
     }
 }

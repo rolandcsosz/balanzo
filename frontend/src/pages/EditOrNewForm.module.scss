@@ -4,7 +4,9 @@
     background: $background-color;
     display: flex;
     overflow: hidden;
-    font: $font-bold;
+    font-family: $font-family-normal;
+    font-size: $font-size-normal;
+    font-weight: bold;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -30,13 +32,15 @@
 }
 
 .newItemFormRow img {
-    height: $form-con-size;
-    width: $form-con-size;
+    height: $form-icon-size;
+    width: $form-icon-size;
     margin-right: $margin-medium;
 }
 
 .newItemTitle {
-    font: $font-title;
+    font-family: $font-family-normal;
+    font-size: $font-size-large;
+    font-weight: bold;
     margin-top: calc($margin-defult * 2);
     color: $font-color;
 }
@@ -47,12 +51,14 @@
     width: 100%;
     flex-direction: column;
     overflow: hidden;
-    font: $font-normal;
+    font-family: $font-family-normal;
+    font-size: $font-size-normal;
     gap: calc($margin-defult + $margin-small);
     margin-bottom: auto;
     margin-top: auto;
 
     @media screen and (max-height: 780px) {
+        // 780px literal, keep or variable?
         gap: $margin-defult;
     }
 }
@@ -63,6 +69,6 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: calc(4 * $margin-defult);
+    margin-bottom: calc(4 * $margin-defult); // 4 multiplier
     gap: $margin-defult;
 }

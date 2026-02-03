@@ -8,9 +8,10 @@ interface ChartProps {
     title: string;
     data: { [key: string]: any } | any[];
     showLegend?: boolean;
+    margins?: { t?: number; b?: number; l?: number; r?: number };
 }
 
-const Chart = ({ title, data, showLegend = false }: ChartProps) => {
+const Chart = ({ title, data, showLegend = false, margins }: ChartProps) => {
     return (
         <div className={styles.plot} style={{ width: "100%", height: "100%" }}>
             <h2 className={styles.title}>{title}</h2>
@@ -20,10 +21,10 @@ const Chart = ({ title, data, showLegend = false }: ChartProps) => {
                     autosize: true,
                     showlegend: showLegend,
                     margin: {
-                        t: 30,
-                        b: 80,
-                        l: 40,
-                        r: 40,
+                        t: margins?.t || 35,
+                        b: margins?.b || 80,
+                        l: margins?.l || 40,
+                        r: margins?.r || 40,
                     },
                     barmode: "stack",
                 }}

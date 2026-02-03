@@ -1,27 +1,27 @@
 import { ErrorResponse } from "../../../libs/sdk/types.gen";
 
-export function formatDate(date: string) {
+export const formatDate = (date: string) => {
     return new Intl.DateTimeFormat("en-CA", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
     }).format(new Date(date));
-}
+};
 
-export function formattedStringToDate(date: string): Date {
+export const formattedStringToDate = (date: string): Date => {
     return new Date(date);
-}
+};
 
-export function formatDateToSet(date: Date) {
+export const formatDateToSet = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
+};
 
-export function formatCurrency(value: number) {
+export const formatCurrency = (value: number) => {
     return value.toLocaleString("hu-HU", {
         style: "currency",
         currency: "HUF",
@@ -29,11 +29,11 @@ export function formatCurrency(value: number) {
         maximumFractionDigits: 0,
         useGrouping: true,
     });
-}
+};
 
-export function uniqueId(prefix = "id") {
+export const uniqueId = (prefix = "id") => {
     return prefix + "_" + Math.random().toString(36).substr(2, 9);
-}
+};
 
 export const isErrorResponse = <T>(obj: ErrorResponse | T): obj is ErrorResponse => {
     return (

@@ -307,7 +307,11 @@ const Home = ({ selectedMonth }: HomeProps) => {
             <div className={styles.gridContainer}>
                 <div className={styles.gridItem}>
                     <div className={styles.content}>
-                        <Chart data={transactionTypePieChartData} title="Budget Allocation" />
+                        <Chart
+                            data={transactionTypePieChartData}
+                            title="Budget Allocation"
+                            margins={{ b: 40, t: 40 }}
+                        />
                     </div>
                 </div>
                 <div className={styles.gridItem}>

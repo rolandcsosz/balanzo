@@ -1,6 +1,6 @@
 import styles from "./Menu.module.scss";
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { Sidebar } from "../components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import largeAddUrl from "../assets/add-large.svg";
 import { useDevice } from "../hooks/useDevice";
@@ -112,6 +112,7 @@ const Menu = () => {
                                 selected={selectedMonth}
                                 onSelectedChange={setSelectedMonth}
                                 mini={false}
+                                lightBorder={true}
                             />
                         </div>
                     )}

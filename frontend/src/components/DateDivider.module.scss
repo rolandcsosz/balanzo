@@ -1,12 +1,12 @@
+@use "../styles" as *;
+
 .container {
     display: flex;
     align-items: center;
-    gap: 17px;
-    padding: 0 7px;
+    gap: $margin-medium;
+    padding: 0 $padding-extra-small;
     color: #2a2a33;
-    font:
-        500 16px Inter,
-        sans-serif;
+    font: 500 $default-font-size $font-family-normal;
 }
 
 .date {
@@ -15,6 +15,6 @@
 
 .divider {
     flex: 1;
-    border-bottom: 2px dashed #9f9fac;
+    border-bottom: $border-width-medium dashed $dark-border-color;
     height: 0;
 }

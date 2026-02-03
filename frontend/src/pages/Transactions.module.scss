@@ -17,7 +17,9 @@
         color: $highlight-color;
         justify-content: start;
         flex-wrap: wrap;
-        font: $font-bold;
+        font-family: $font-family-normal;
+        font-size: $font-size-normal;
+        font-weight: bold;
     }
 
     .transactionHeaderCell {
@@ -36,9 +38,18 @@
     & > :first-child .transactionDateDivider {
         margin-bottom: $margin-defult;
     }
+
+    margin-bottom: calc(7 * $margin-medium);
 }
 
 .transactionDateDivider {
     margin-top: $margin-small;
     margin-bottom: $margin-small;
+}
+
+.transactionRowActionCell {
+    width: $action-cell-width;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: start;
 }

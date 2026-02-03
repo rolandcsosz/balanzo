@@ -1,7 +1,9 @@
+@use "../styles" as *;
+
 .navButton {
     border: none;
     background: none;
-    border-radius: 8px;
+    border-radius: $default-radius;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -11,29 +13,27 @@
     }
 
     &.active {
-        background-color: rgba(55, 114, 255, 0.1);
-        color: #3772ff;
+        background-color: rgba($highlight-color, 0.1);
+        color: $highlight-color;
     }
 
     @media screen and (min-width: 601px) {
-        min-height: 45px;
+        min-height: $input-height;
         width: 100%;
-        gap: 10px;
-        padding: 0 10px;
-        margin-top: 10px;
-        width: calc(100% - 20px);
+        gap: $padding-small;
+        padding: 0 $padding-small;
+        margin-top: $padding-small;
+        width: calc(100% - $margin-defult);
     }
 }
 
 .navLabel {
     flex: 1;
     text-align: left;
-    font:
-        700 13px Inter,
-        sans-serif;
+    font: bold $font-size-small $font-family-normal;
 }
 
 svg {
-    color: #3772ff;
-    fill: #3772ff;
+    color: $highlight-color;
+    fill: $highlight-color;
 }

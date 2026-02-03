@@ -1,7 +1,7 @@
 import styles from "./BottomSheet.module.scss";
 import sheetCloseButtonUrl from "../assets/sheet-close-button.svg";
 import { useRef, useState, useEffect } from "preact/hooks";
-import { useBottomSheetContext } from "../context/BottomSheetContext";
+import { useBottomSheet } from "../hooks/useBottomSheet";
 
 enum SheetSize {
     FULL = 0.05 * window.innerHeight,
@@ -10,7 +10,7 @@ enum SheetSize {
 }
 
 const BottomSheet = () => {
-    const { isOpen, content, closeSheet } = useBottomSheetContext();
+    const { isOpen, content, closeSheet } = useBottomSheet();
     const sheetRef = useRef(null);
     const [sheetHeight, setSheetHeight] = useState(SheetSize.CLOSED);
     const [isDragging, setIsDragging] = useState(false);

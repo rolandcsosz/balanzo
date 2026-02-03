@@ -4,27 +4,48 @@
 $highlight-color: #3772ff;
 $highlight-background-color: #ebf1ff;
 $background-color: #ffffff;
-$panel-background-color: #f9f9f9;
+$panel-background-color: #fbfbfb;
 $font-color: #1d1d1d;
 $subtitle-font-color: #545454;
+$border-color: #dee0e7;
+$dark-border-color: #c4c4c4;
+
+$default-border: 1px solid $border-color;
+
 $margin-defult: 20px;
 $margin-medium: 15px;
 $margin-small: 10px;
+$margin-extra-small: 5px;
 $padding-defult: 20px;
 $padding-medium: 15px;
 $padding-small: 10px;
+$padding-extra-small: 5px;
 $mobile-breakpoint: 600px;
 $default-radius: 8px;
+$default-radius-small: 4px;
 $default-font-size: 16px;
-$font-normal:
-    normal 16px "Inter",
-    sans-serif;
-$font-bold:
-    bold 16px "Inter",
-    sans-serif;
-$font-title:
-    bold 28px "Inter",
-    sans-serif;
+
+$font-family-normal: "Inter", sans-serif;
+$font-family-monospace: "Azeret Mono", monospace;
+$font-size-small: 14px;
+$font-size-normal: 16px;
+$font-size-large: 28px;
+$font-size-heading-mobile: 24px;
+$font-size-medium-large: 18px;
+$font-size-icon: 24px;
+$font-size-icon-large: 30px;
+
+$border-width-thin: 1px;
+$border-width-medium: 2px;
+$border-width-thick: 6px;
+
+$border-radius-circle: 50%;
+$border-radius-modal: 20px;
+$border-radius-card: 20px;
+$border-radius-button: 10px;
+$highlight-bar-width: 5px;
+$highlight-bar-height-mobile: 118px;
+$action-cell-width-category: 57px;
 
 // Specific sizes
 $chart-height: 400px;
@@ -32,8 +53,36 @@ $action-button-size: 50px;
 $login-panel-width: 380px;
 $panel-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 $overlay-background: rgba(0, 0, 0, 0.2);
-$form-con-size: 30px;
+$form-icon-size: 30px;
+$form-icon-size-small: 24px;
 $default-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+$bottom-sheet-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+$dark-table-row-color: #ededed;
+$action-cell-width: 40px;
+$yellow-pill-background-color: #ffffcc;
+$yellow-pill-text-color: #666600;
+$blue-pill-background-color: #ccefff;
+$blue-pill-text-color: #004466;
+$metric-card-height: 120px;
+$income-color: #59ce8f;
+$expense-color: #ff5a5a;
+$font-size-heading: 24px;
+$border-radius-large: 20px;
+$navbar-height: 64px;
+$sidebar-width: 182px;
+$row-height: 70px;
+$input-height: 45px;
+$input-height-small: 35px;
+$mobile-row-width: 375px;
+$category-col-width: 160px;
+$sub-indent: 100px;
+$mobile-padding-bottom: 175px;
+$mobile-title-width: 236px;
+$mobile-spacing-width: 69px;
+$mobile-content-min-width: 240px;
+$mobile-label-width: 56px;
+$mobile-spacer-height: 29px;
+$navbar-nav-height: 40px;
 
 @function strip-unit($number) {
     @if meta.type-of($number) == "number" and not math.is-unitless($number) {

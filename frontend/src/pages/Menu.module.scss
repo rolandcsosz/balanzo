@@ -25,7 +25,9 @@
             padding-bottom: 0;
 
             .contentTitle {
-                font: $font-title;
+                font-family: $font-family-normal;
+                font-size: $font-size-large;
+                font-weight: bold;
             }
         }
 

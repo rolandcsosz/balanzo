@@ -1,34 +1,37 @@
+@use "../styles" as *;
+
 .card {
-    border-radius: 20px;
-    background: #fff;
+    border-radius: $padding-defult;
+    background: $background-color;
     display: inline-flex;
     flex-direction: column;
     font-family: Inter, sans-serif;
     justify-content: start;
-    padding: 10px 20px 0px 20px;
-    border: 1px solid rgba(239, 240, 246, 1);
+    padding: $padding-small $padding-defult 0 $padding-defult;
+    border: $default-border;
     box-sizing: border-box;
     width: 100%;
-    height: 120px;
+    height: $metric-card-height;
 
     .title {
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: -0.15px;
-        color: #000;
+        font-family: $font-family-normal;
+        font-size: $font-size-small;
+        font-weight: bold;
+        color: $font-color;
     }
 
     .value {
-        font-size: 28px;
-        font-weight: 700;
-        margin-top: 10px;
+        font-size: $font-size-large;
+        font-weight: bold;
+        color: $font-color;
+        margin-top: $margin-small;
 
         &.positive {
-            color: #59ce8f;
+            color: $income-color;
         }
 
         &.negative {
-            color: #ff5a5a;
+            color: $expense-color;
         }
     }
 }

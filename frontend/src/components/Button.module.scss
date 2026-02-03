@@ -6,7 +6,9 @@
     border-radius: $default-radius;
     margin-top: $margin-defult;
     padding: $padding-medium;
-    font: $font-bold;
+    font-family: $font-family-normal;
+    font-size: $font-size-normal;
+    font-weight: bold;
     border: none;
     cursor: pointer;
 }

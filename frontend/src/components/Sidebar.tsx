@@ -21,7 +21,7 @@ interface CategoriesIconProps {
     setMenu: (menu: string) => void;
 }
 
-export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
+const Sidebar = ({ menu, setMenu }: CategoriesIconProps) => {
     const [navigationItems, setNavigationItems] = useState(initialNavigationItems);
     const { logout } = useAuth();
 
@@ -64,4 +64,6 @@ export function Sidebar({ menu, setMenu }: CategoriesIconProps) {
             </div>
         </nav>
     );
-}
+};
+
+export default Sidebar;

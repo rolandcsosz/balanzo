@@ -47,7 +47,7 @@ const CategoryRowMobile = ({ item, expenseTypeNames, firstSubcategory, onEdit, o
                         mini={true}
                     />
                     <button
-                        className="categoryRowMobileicon"
+                        className={styles.categoryRowMobileIcon}
                         onClick={() => {
                             onDelete(item.id);
                         }}

@@ -1,22 +1,23 @@
+@use "../styles" as *;
+
 .plot {
     height: 100%;
     margin: 0 auto;
-    padding: 10px 20px 0px 20px;
-    border-radius: 20px;
-    background-color: #ffffff;
-    border: 1px solid rgba(239, 240, 246, 1);
+    padding: $padding-small $padding-defult 0 $padding-defult;
+    border-radius: $padding-defult;
+    background-color: $background-color;
+    border: $default-border;
     box-sizing: border-box;
     width: 100%;
 
     .title {
-        font-family: Inter, sans-serif;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: -0.15px;
-        color: #000;
+        font-family: $font-family-normal;
+        font-size: $font-size-small;
+        font-weight: bold;
+        color: $font-color;
     }
 
-    @media (max-width: 600px) {
-        margin-top: 10px;
+    @media (max-width: $mobile-breakpoint) {
+        margin-top: $margin-medium;
     }
 }

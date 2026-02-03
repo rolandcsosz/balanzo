@@ -4,7 +4,7 @@ import { FetchResponse } from "../types";
 import { ErrorResponse } from "../../../libs/sdk/types.gen";
 import { isErrorResponse } from "../utils/utlis";
 
-export function useApi() {
+export const useApi = () => {
     const { logout } = useAuth();
 
     const request = useCallback(
@@ -53,4 +53,4 @@ export function useApi() {
     );
 
     return { request };
-}
+};

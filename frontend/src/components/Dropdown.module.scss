@@ -1,32 +1,38 @@
+@use "../styles" as *;
+
 .dropdown {
     align-self: center;
     width: 100%;
     max-width: 100%;
-    line-height: 45px;
-    height: 45px;
-    padding: 0 10px;
-    gap: 10px;
+    line-height: $input-height;
+    height: $input-height;
+    padding: 0 $padding-small;
+    gap: $padding-small;
     overflow: hidden;
-    border: 1px solid transparent;
-    border-radius: 8px;
+    border: $default-border;
+    border-radius: $default-radius;
     box-sizing: border-box;
     background-color: transparent;
-    color: #292929;
-    font-family: "Roboto Mono", sans-serif;
+    color: $font-color;
+    font-family: $font-family-monospace;
     align-items: center;
-    border-color: #b1b1bb;
-    background-color: #fff;
+    border-color: $dark-border-color;
+    background-color: $background-color;
     outline: none;
     -webkit-appearance: none;
     appearance: none;
     text-align: left !important;
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23999" d="M7 10l5 5 5-5z"/></svg>'); /* Adds a 24x24 arrow */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23999" d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 10px 10px;
+    background-position: right $padding-small center;
+    background-size: $padding-small $padding-small;
+}
+
+.lightBorder {
+    border-color: $border-color;
 }
 
 .mini {
-    line-height: 35px;
-    height: 35px;
+    line-height: $input-height-small;
+    height: $input-height-small;
 }

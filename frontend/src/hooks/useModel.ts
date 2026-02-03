@@ -199,7 +199,7 @@ const mutationConfigs: MutationConfig<any, any>[] = [
     },
 ];
 
-function buildEntity<
+const buildEntity = <
     TList,
     TCreate = never,
     TUpdate = never,
@@ -207,7 +207,11 @@ function buildEntity<
     TCreateReturn = any,
     TUpdateReturn = any,
     TDeleteReturn = any,
->(key: string, queryResults: QueryResults, mutationResults: MutationResults) {
+>(
+    key: string,
+    queryResults: QueryResults,
+    mutationResults: MutationResults,
+) => {
     return {
         list: (queryResults[key]?.data || []) as TList[],
         create: mutationResults[`${key}.create`] as UseMutateFunction<TCreateReturn, unknown, TCreate, unknown>,
@@ -215,7 +219,7 @@ function buildEntity<
         delete: mutationResults[`${key}.delete`] as UseMutateFunction<TDeleteReturn, unknown, TDelete, unknown>,
         refetch: queryResults[key]?.refetch as () => Promise<TList[]>,
     };
-}
+};
 
 export const useModel = () => {
     const { request } = useApi();

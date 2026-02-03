@@ -17,10 +17,14 @@ const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
 
     return (
         <article className={styles.transactionCard}>
-            <header className={styles.transactionCardHeader}>
-                <h3 className={styles.transactionCardItemName}>{transaction.item}</h3>
-                <span>-</span>
-                <span className={styles.transactionCardAmount}>{formatCurrency(transaction?.amount || 0)}</span>
+            <div className={styles.transactionCardHeader}>
+                <div className={styles.transactionCardItemInfo}>
+                    <div className={styles.transactionCardItemName}>{transaction.item}</div>
+                    <div className={styles.transactionPriceWrapper}>
+                        <div>-</div>
+                        <div className={styles.transactionCardAmount}>{formatCurrency(transaction?.amount || 0)}</div>
+                    </div>
+                </div>
                 <button
                     className={styles.transactionCardIconWrapper}
                     onClick={() => {
@@ -37,7 +41,7 @@ const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
                 >
                     <img loading="lazy" src={openButtonUrl} alt="" className={styles.transactionCardIcon} />
                 </button>
-            </header>
+            </div>
             <div className={styles.transactionCardTags}>
                 <span className={styles.transactionCardCategoryTag}>
                     {store.subcategory(transaction.subcategoryId).mainCategory().tryGet()?.name || ""}

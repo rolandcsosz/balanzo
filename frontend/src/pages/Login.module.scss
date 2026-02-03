@@ -48,12 +48,15 @@
 
     .title {
         color: $font-color;
-        font: $font-title;
+        font-family: $font-family-normal;
+        font-size: $font-size-large;
+        font-weight: bold;
         margin-bottom: $margin-small;
     }
 
     .subtitle {
-        font: $font-normal;
+        font-family: $font-family-normal;
+        font-size: $font-size-normal;
         color: $subtitle-font-color;
     }
 
@@ -70,7 +73,9 @@
         background: $highlight-color;
         margin-top: $margin-defult;
         padding: $padding-medium;
-        font: $font-bold;
+        font-family: $font-family-normal;
+        font-size: $font-size-normal;
+        font-weight: bold;
         color: $background-color;
         border: none;
         cursor: pointer;
@@ -84,7 +89,7 @@
     @media (max-width: $mobile-breakpoint) {
         width: 100%;
         padding: 25vh calc(2 * $padding-defult) 0 calc(2 * $padding-defult);
-        height: 100vh;
+        height: 100vh; // $viewport-height-full?
         flex-direction: column;
         overflow: hidden;
         overflow-y: auto;

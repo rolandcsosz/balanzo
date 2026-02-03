@@ -84,7 +84,7 @@ test.describe("API - Invalid date and foreign key test on create or update", () 
         });
     });
 
-     test("Should reject subcategory with invalid expenseTypeId", async () => {
+    test("Should reject subcategory with invalid expenseTypeId", async () => {
         await testInvalidCreationOrUpdate({
             createFunction: createSubcategory,
             updateFunction: updateSubcategory,
