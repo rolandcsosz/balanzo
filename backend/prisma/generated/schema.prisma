@@ -1,0 +1,80 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  output        = "generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+}
+
+model Transaction {
+  id     String   @id @default(uuid())
+  item   String
+  amount Float
+  date   DateTime @default(now())
+
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id])
+  subcategoryId String
+}
+
+model TransactionType {
+  id   String @id @default(uuid())
+  name String @unique
+
+  mainCategories MainCategory[]
+}
+
+model Template {
+  id       String    @id @default(uuid())
+  name     String
+  itemName String
+  amount   Float?
+  date     DateTime? @default(now())
+
+  subcategory   Subcategory @relation(fields: [subcategoryId], references: [id])
+  subcategoryId String
+}
+
+model Subcategory {
+  id   String @id @default(uuid())
+  name String
+
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id])
+  mainCategoryId String
+
+  expenseType   ExpenseType @relation(fields: [expenseTypeId], references: [id])
+  expenseTypeId String
+
+  transactions Transaction[]
+  templates    Template[]
+}
+
+model MainCategory {
+  id   String @id @default(uuid())
+  name String @unique
+
+  expenseType   ExpenseType @relation(fields: [expenseTypeId], references: [id])
+  expenseTypeId String
+
+  transactionType   TransactionType @relation(fields: [transactionTypeId], references: [id])
+  transactionTypeId String
+
+  subcategories Subcategory[]
+}
+
+model ExpenseType {
+  id   String @id @default(uuid())
+  name String @unique
+
+  mainCategories MainCategory[]
+  subcategories  Subcategory[]
+}

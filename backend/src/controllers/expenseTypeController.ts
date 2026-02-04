@@ -1,5 +1,5 @@
 import { Route, Tags, Security, Get } from "tsoa";
-import { PrismaClient, ExpenseType as DbExpenseType } from "@prisma/client";
+import { PrismaClient, ExpenseType as DbExpenseType }  from "../../prisma/generated/index.js";
 import { createCrudController } from "../crud.js";
 import { ExpenseType, ExpenseTypeRequest } from "../model.js";
 import { mapIdentity } from "../utils.js";

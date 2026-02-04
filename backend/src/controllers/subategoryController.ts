@@ -1,5 +1,5 @@
 import { Route, Tags, Path, Body, Security, Get, Post, Put, Delete } from "tsoa";
-import { PrismaClient, Subcategory as DbSubcategory } from "@prisma/client";
+import { PrismaClient, Subcategory as DbSubcategory } from "../../prisma/generated/index.js";
 import { createCrudController } from "../crud.js";
 import { Subcategory, SubcategoryRequest } from "../model.js";
 import { mapIdentity } from "../utils.js";

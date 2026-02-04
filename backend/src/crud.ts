@@ -1,7 +1,19 @@
 import { Controller } from "tsoa";
 import { ErrorResponse, SuccessResponse, successResponse } from "./model.js";
 import { checkFields, getErrorCode, getErrorMessage, getErrorMessageForDate } from "./utils.js";
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "../prisma/generated/index.js";
+
+type PrismaModelDelegate = {
+    create(args: any): Promise<any>;
+    findUnique?(args: any): Promise<any>;
+    findMany?(args: any): Promise<any>;
+    update?(args: any): Promise<any>;
+    delete?(args: any): Promise<any>;
+};
+
+const getPrismaDelegate = (prisma: PrismaClient, modelName: string): PrismaModelDelegate => {
+    return prisma[modelName as keyof PrismaClient] as unknown as PrismaModelDelegate;
+}
 
 export function createCrudController<TClient, TRequest extends object, TDb extends { id: string }>(opts: {
     prisma: PrismaClient;
@@ -30,10 +42,13 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
                 if (key.endsWith("Id")) {
                     const value = body[key as keyof TRequest] as string;
                     const relatedModel = key.slice(0, -2);
+                    const model = getPrismaDelegate(opts.prisma, relatedModel);
 
-                    if (!opts.prisma[relatedModel]) continue;
+                    if (!model || !model.findUnique) {
+                        continue;
+                    }
 
-                    const exists = await opts.prisma[relatedModel].findUnique({ where: { id: value } });
+                    const exists = await model.findUnique({ where: { id: value } });
                     if (!exists) {
                         return { message: `Referenced ${relatedModel} with id "${value}" does not exist` };
                     }
@@ -63,7 +78,14 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
                     return fkError;
                 }
 
-                const created: TDb = await opts.prisma[opts.model].create({
+                const model = getPrismaDelegate(opts.prisma, opts.model);
+
+                if(!model || !model.create) {
+                    this.setStatus(500);
+                    return { message: "Model not found in Prisma client" };
+                }
+
+                const created: TDb = await model.create({
                     data: opts.toDb(body),
                 });
                 return opts.toClient(created);
@@ -75,7 +97,12 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
 
         async getAll(): Promise<TClient[] | ErrorResponse> {
             try {
-                const items: TDb[] = await opts.prisma[opts.model].findMany();
+                const model = getPrismaDelegate(opts.prisma, opts.model);
+                if(!model || !model.findMany) {
+                    this.setStatus(500);
+                    return { message: "Model not found in Prisma client" };
+                }
+                const items: TDb[] = await model.findMany(undefined);
                 return items.map(opts.toClient);
             } catch (err) {
                 this.setStatus(500);
@@ -85,7 +112,12 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
 
         async getOne(id: string): Promise<TClient | ErrorResponse> {
             try {
-                const item: TDb = await opts.prisma[opts.model].findUnique({ where: { id } });
+                const model = getPrismaDelegate(opts.prisma, opts.model);
+                if(!model || !model.findUnique) {
+                    this.setStatus(500);
+                    return { message: "Model not found in Prisma client" };
+                }
+                const item: TDb = await model.findUnique({ where: { id } });
                 if (!item) {
                     this.setStatus(404);
                     return { message: "Not found" };
@@ -117,8 +149,12 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
                     this.setStatus(400);
                     return fkError;
                 }
-
-                const updated: TDb = await opts.prisma[opts.model].update({
+                const model = getPrismaDelegate(opts.prisma, opts.model);
+                if(!model || !model.update) {
+                    this.setStatus(500);
+                    return { message: "Model not found in Prisma client" };
+                }
+                const updated: TDb = await model.update({
                     where: { id },
                     data: opts.toDb(body),
                 });
@@ -135,7 +171,12 @@ export function createCrudController<TClient, TRequest extends object, TDb exten
 
         async delete(id: string): Promise<SuccessResponse | ErrorResponse> {
             try {
-                await opts.prisma[opts.model].delete({ where: { id } });
+                const model = getPrismaDelegate(opts.prisma, opts.model);
+                if(!model || !model.delete) {
+                    this.setStatus(500);
+                    return { message: "Model not found in Prisma client" };
+                }
+                await model.delete({ where: { id } });
                 return successResponse;
             } catch (err) {
                 if (getErrorCode(err) === "P2025") {

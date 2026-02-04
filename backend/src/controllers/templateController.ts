@@ -1,5 +1,5 @@
 import { Route, Tags, Path, Body, Security, Get, Post, Put, Delete } from "tsoa";
-import { PrismaClient, Template as DbTemplate } from "@prisma/client";
+import { PrismaClient, Template as DbTemplate } from "../../prisma/generated/index.js";
 import { createCrudController } from "../crud.js";
 import { TemplateRequest, Template } from "../model.js";
 

@@ -1,6 +1,6 @@
 import { Post, Route, Tags, Body, Controller } from "tsoa";
 import { ErrorResponse, LogedInUser } from "../model.js";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient }  from "../../prisma/generated/index.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { checkFields } from "../utils.js";

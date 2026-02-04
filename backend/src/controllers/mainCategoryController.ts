@@ -1,5 +1,5 @@
 import { Route, Tags, Path, Body, Security, Get, Post, Put, Delete } from "tsoa";
-import { PrismaClient, MainCategory as DbMainCategory } from "@prisma/client";
+import { PrismaClient, MainCategory as DbMainCategory } from "../../prisma/generated/index.js";
 import { createCrudController } from "../crud.js";
 import { MainCategoryRequest, MainCategory } from "../model.js";
 import { mapIdentity } from "../utils.js";

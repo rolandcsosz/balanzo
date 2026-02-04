@@ -1,5 +1,5 @@
 import { Get, Route, Security, Tags } from "tsoa";
-import { PrismaClient, TransactionType as DbTransactionType } from "@prisma/client";
+import { PrismaClient, TransactionType as DbTransactionType } from "../../prisma/generated/index.js";
 import { createCrudController } from "../crud.js";
 import { TransactionType, TransactionTypeRequest } from "../model.js";
 import { mapIdentity } from "../utils.js";
