@@ -2,6 +2,7 @@ import { createContext } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import { User } from "../types";
 import { client } from "../../../libs/sdk/client.gen";
+import { env } from "../env";
 
 interface AuthContextType {
     user: User | null;
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(userFromLocalStorage ? userFromLocalStorage : null);
 
         client.setConfig({
-            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            baseUrl: env.BACKEND_URL ,
             auth: () => (userFromLocalStorage ? userFromLocalStorage.token : ""),
         });
     }, []);
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         client.setConfig({
-            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            baseUrl: env.BACKEND_URL ,
             auth: () => user.token,
         });
     };
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(null);
         localStorage.removeItem("user");
         client.setConfig({
-            baseUrl: import.meta.env.VITE_BACKEND_URL,
+            baseUrl: env.BACKEND_URL ,
             auth: () => undefined,
         });
     };

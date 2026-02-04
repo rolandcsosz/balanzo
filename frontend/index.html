@@ -21,8 +21,12 @@
     <div id="app"></div>
     <script type="module" src="/src/index.tsx"></script>
     <script> window.addEventListener('load', () => {
-        iosPWASplash('/icon-512x512.png', '#FFFFFF');
-      });</script>
+            iosPWASplash('/icon-512x512.png', '#FFFFFF');
+        });
+        window.__APP_CONFIG__ = {
+            BACKEND_URL: '__BACKEND_URL__'
+        };
+    </script>
 </body>
 
 </html>
