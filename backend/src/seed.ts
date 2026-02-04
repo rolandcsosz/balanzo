@@ -2,6 +2,20 @@ import { PrismaClient } from "../prisma/generated/index.js";
 
 const prisma = new PrismaClient();
 
+export const waitForDb = async (retries = 30) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            await prisma.$connect();
+            console.log("Database is ready.");
+            return;
+        } catch {
+            console.log("Waiting for database (retry " + (i + 1) + "/" + retries + ")...");
+            await new Promise((r) => setTimeout(r, 2000));
+        }
+    }
+    throw new Error("Database not ready after retries");
+};
+
 export const seed = async () => {
     const counts = await Promise.all([
         prisma.user.count(),

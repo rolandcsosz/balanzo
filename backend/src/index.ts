@@ -7,19 +7,31 @@ import * as fs from "fs";
 import { ValidateError } from "tsoa";
 import { RegisterRoutes } from "./routes/routes.js";
 import http from "http";
-import { seed } from "./seed.js";
+import { seed, waitForDb } from "./seed.js";
 import { getErrorMessage } from "./utils.js";
 
 dotenv.config();
 
 const initData = process.env.INIT_DATA === "true";
 
-if (initData) {
-    seed().catch((e) => {
-        console.error("Seeding failed:", e);
+const bootstrap = async () => {
+    try {
+        await waitForDb();
+        console.log("Connected to database");
+
+        if (initData) {
+            await seed();
+            console.log("Database seeded");
+        }
+
+        server.listen(port, () => {
+            console.log(`Server listening on port ${port}`);
+        });
+    } catch (err) {
+        console.error("Startup failed:", err);
         process.exit(1);
-    });
-}
+    }
+};
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -68,6 +80,4 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
     return res.status(500).json({ message: "Internal server error" });
 });
 
-server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+bootstrap();
