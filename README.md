@@ -9,8 +9,8 @@ Balanzo is another personal finance manager application. The main goal was to cr
 
 ## Project Structure
 
-- **`backend`**: Node.js, Express, and PostgreSQL based API.
-- **`frontend`**: Vite, React, and Tauri based frontend.
+- **[`backend (README.md)`](./backend/README.md)**: Node.js, Express, and PostgreSQL based API.
+- **[`frontend (README.md)`](./frontend/README.md)**: Vite, React, and Tauri based frontend.
 - **`e2e`**: End-to-end tests.
 - **`libs`**: Shared libraries for e2e test and frontend. Generates types from the backend.
 
