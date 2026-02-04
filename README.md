@@ -1,6 +1,11 @@
 # Balanzo
 
-Yet another personal finance manager application. The main goal was to create a simple, easy-to-use, and cross-platform application for trcking my own finances.
+![CI](https://github.com/rolandcsosz/balanzo/actions/workflows/e2e.yml/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+![Balanzo](./frontend/public/tumbnail.png)
+
+Balanzo is another personal finance manager application. The main goal was to create a simple, easy-to-use, and cross-platform application for trcking my own needs. It is built using modern web technologies and 
 
 ## Project Structure
 
