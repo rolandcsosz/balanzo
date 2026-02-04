@@ -5,9 +5,9 @@
     flex-direction: row;
     background-color: transparent;
     border: none;
-    border-left: 1px solid rgba(223, 223, 223, 1);
-    border-top: 1px solid rgba(223, 223, 223, 1);
-    border-radius: 0px;
+    border-left: $default-border;
+    border-top: $default-border;
+    border-radius: 0;
     height: $row-height;
     align-items: center;
     gap: $margin-defult;
@@ -16,19 +16,18 @@
 }
 
 .new-category-row.sub {
-    margin-left: 100px;
+    margin-left: calc(5 * $margin-defult);
 }
 
 .new-category-row.sub.mobile {
-    margin-left: 30px;
+    margin-left: calc($margin-defult + $margin-small);
 }
 
 .new-category-row-text {
     font-family: $font-family-normal;
-    color: #5c5c5c;
-    font-weight: 500;
+    color: $subtitle-font-color;
 }
 
 .last {
-    border-bottom: 1px solid rgba(223, 223, 223, 1);
+    border-bottom: $default-border;
 }

@@ -57,8 +57,7 @@
     margin-bottom: auto;
     margin-top: auto;
 
-    @media screen and (max-height: 780px) {
-        // 780px literal, keep or variable?
+    @media screen and (max-height: $mobile-breakpoint) {
         gap: $margin-defult;
     }
 }
@@ -69,6 +68,6 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: calc(4 * $margin-defult); // 4 multiplier
+    margin-bottom: calc(4 * $margin-defult);
     gap: $margin-defult;
 }

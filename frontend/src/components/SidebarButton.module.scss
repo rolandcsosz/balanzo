@@ -13,11 +13,11 @@
     }
 
     &.active {
-        background-color: rgba($highlight-color, 0.1);
+        background-color: $highlight-background-color;
         color: $highlight-color;
     }
 
-    @media screen and (min-width: 601px) {
+    @media screen and (min-width: $mobile-breakpoint) {
         min-height: $input-height;
         width: 100%;
         gap: $padding-small;

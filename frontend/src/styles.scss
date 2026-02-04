@@ -29,7 +29,7 @@ $font-family-normal: "Inter", sans-serif;
 $font-family-monospace: "Azeret Mono", monospace;
 $font-size-small: 14px;
 $font-size-normal: 16px;
-$font-size-large: 28px;
+$font-size-large: 30px;
 $font-size-heading-mobile: 24px;
 $font-size-medium-large: 18px;
 $font-size-icon: 24px;
@@ -83,6 +83,8 @@ $mobile-content-min-width: 240px;
 $mobile-label-width: 56px;
 $mobile-spacer-height: 29px;
 $navbar-nav-height: 40px;
+$category-row-indicator-width: 5px;
+$category-row-indicator-height: 118px;
 
 @function strip-unit($number) {
     @if meta.type-of($number) == "number" and not math.is-unitless($number) {

@@ -56,9 +56,9 @@ const CategoryRowMobile = ({ item, expenseTypeNames, firstSubcategory, onEdit, o
                     </button>
                 </div>
 
-                <div className={styles.ategoryRowMobileTypeSection}>
+                <div className={styles.categoryRowMobileTypeSection}>
                     <div className={styles.categoryRowMobileLabel}>Type</div>
-                    {!isSubcategory && <div className="categoryRowMobilespacer" />}
+                    {!isSubcategory && <div className={styles.categoryRowMobileSpacer} />}
                     <Dropdown
                         options={expenseTypeNames}
                         selected={selectedType}

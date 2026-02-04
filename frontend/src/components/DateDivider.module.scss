@@ -5,8 +5,8 @@
     align-items: center;
     gap: $margin-medium;
     padding: 0 $padding-extra-small;
-    color: #2a2a33;
-    font: 500 $default-font-size $font-family-normal;
+    color: $font-color;
+    font: normal $default-font-size $font-family-normal;
 }
 
 .date {

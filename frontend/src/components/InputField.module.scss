@@ -13,10 +13,10 @@
     border-radius: $default-radius;
     box-sizing: border-box;
     background-color: transparent;
-    color: #292929;
-    font-family: "Roboto Mono", sans-serif;
+    color: $font-color;
+    font-family: $font-family-normal;
     align-items: center;
-    border-color: #b1b1bb;
+    border-color: $dark-border-color;
     background-color: $background-color;
     outline: none;
     -webkit-appearance: none;
@@ -38,7 +38,7 @@
 
     &:focus {
         outline: none;
-        border-color: #b1b1bb;
+        border-color: $dark-border-color;
         background-color: $background-color;
     }
 }

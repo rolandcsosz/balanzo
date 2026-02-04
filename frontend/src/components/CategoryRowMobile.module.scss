@@ -60,14 +60,14 @@
 
 .categoryRowMobileHighlight.main {
     background: $highlight-color;
-    width: 5px;
-    height: 118px;
+    width: $category-row-indicator-width;
+    height: $category-row-indicator-height;
 }
 
 .categoryRowMobileHighlight.sub {
     background: $highlight-background-color;
-    width: 5px;
-    height: 118px;
+    width: $category-row-indicator-width;
+    height: $category-row-indicator-height;
 }
 
 .categoryRowMobileContent {
@@ -79,6 +79,7 @@
     flex: 1;
     padding: $padding-small $padding-small $padding-small $padding-defult;
     overflow: visible;
+    border-bottom: $default-border;
 }
 
 .categoryRowMobileNameSection,
@@ -129,7 +130,7 @@
     align-items: center;
     gap: $padding-small;
     font-size: $font-size-normal;
-    color: #3b3b40;
+    color: $subtitle-font-color;
     flex: 1;
     margin: auto 0;
     padding: 0 $padding-defult;

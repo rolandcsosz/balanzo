@@ -8,7 +8,7 @@ import styles from "./Transactions.module.scss";
 
 const Transactions = () => {
     const { transaction, refetchData } = useModel();
-    const transactions = transaction.list;
+    const transactions = transaction.list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     const isMobile = useDevice();
 
     return isMobile ?

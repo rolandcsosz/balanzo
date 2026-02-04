@@ -2,9 +2,8 @@
 
 .templateContainer {
     border-radius: $default-radius;
-    background: rgba(249, 249, 249, 1);
-    box-shadow: 0 0 20px -6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background: $background-color;
+    padding: $padding-defult;
     display: flex;
     flex-direction: column;
 }
@@ -14,13 +13,12 @@
     flex-direction: column;
     font-family: Inter, sans-serif;
     justify-content: start;
-    padding: $padding-defult 40px $padding-defult $padding-defult;
+    padding: $padding-defult;
     border: $default-border;
     box-sizing: border-box;
     border-radius: $border-radius-large;
     background: $background-color;
     border: $default-border;
-    position: relative;
     width: fit-content;
 
     @media screen and (max-width: $mobile-breakpoint) {
@@ -34,7 +32,7 @@
 }
 
 .templateHeading {
-    color: var(--Base-Shade-100, #000);
+    color: $font-color;
     font: bold $font-size-heading $font-family-normal;
     margin: 0;
 }
@@ -62,7 +60,9 @@
 .templateCardHeader {
     display: flex;
     align-items: center;
+    justify-content: start;
     gap: $padding-small;
+    justify-content: space-between;
 }
 
 .templateCardTitle {
@@ -79,14 +79,9 @@
 }
 
 .templateIconWrapper {
-    position: absolute;
     top: $padding-small;
     right: $padding-small;
     cursor: pointer;
-
-    .templateCard {
-        position: relative;
-    }
 }
 
 .templateIcon {
