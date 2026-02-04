@@ -9,19 +9,19 @@ import {
 } from "../../libs/sdk/sdk.gen";
 import { ErrorResponse, LoginSuccessResponse } from "../../libs/sdk/types.gen";
 
-const API_URL = process.env.API_URL || "";
-const TEST_EMAIL = process.env.TEST_EMAIL || "";
-const TEST_PASSWORD = process.env.TEST_PASSWORD || "";
+const API_URL = process.env.API_URL || "http://localhost:3000";
+const TEST_EMAIL = process.env.TEST_EMAIL || "admin@admin.com";
+const TEST_PASSWORD = process.env.TEST_PASSWORD || "pw123";
 
 export type ResponseStructure<T> = (
     | {
-          data: ErrorResponse | T;
-          error: undefined;
-      }
+        data: ErrorResponse | T;
+        error: undefined;
+    }
     | {
-          data: undefined;
-          error: unknown;
-      }
+        data: undefined;
+        error: unknown;
+    }
 ) & {
     request: Request;
     response: Response;
