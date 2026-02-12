@@ -37,6 +37,7 @@ const Templates = () => {
                         openSheet(
                             <EditOrNewForm
                                 item={template}
+                                itemType="transaction"
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -48,6 +49,7 @@ const Templates = () => {
                         openSheet(
                             <EditOrNewForm
                                 item={template}
+                                itemType="template"
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();
@@ -62,7 +64,7 @@ const Templates = () => {
                 onUseTemplate={() => {
                     openSheet(
                         <EditOrNewForm
-                            typeToAdd="template"
+                            itemType="template"
                             onFinished={() => {
                                 refetchData();
                                 closeSheet();

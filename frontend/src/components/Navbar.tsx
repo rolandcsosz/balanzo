@@ -44,7 +44,7 @@ const Navbar = ({ menu, setMenu }: CategoriesIconProps) => {
     const openAddItemForm = () => {
         openSheet(
             <EditOrNewForm
-                typeToAdd="transaction"
+                itemType="transaction"
                 onFinished={() => {
                     refetchData();
                     closeSheet();

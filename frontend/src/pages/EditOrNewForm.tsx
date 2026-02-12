@@ -1,7 +1,7 @@
 import styles from "./EditOrNewForm.module.scss";
 import InputField from "../components/InputField";
 import Dropdown from "../components/Dropdown";
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import templateUrl from "../assets/template.svg";
 import itemUrl from "../assets/item.svg";
 import amountUrl from "../assets/amount.svg";
@@ -16,19 +16,21 @@ import Button from "../components/Button";
 
 interface EditItemFormProps {
     item?: Transaction | Template;
-    typeToAdd?: "transaction" | "template";
+    itemType: "transaction" | "template";
     onFinished: () => void;
 }
 
 const isTransaction = (item: Transaction | Template): item is Transaction => {
-    if (!item) {
-        return false;
-    }
-    return (item as Transaction).item !== undefined;
+    return !!item && "item" in item;
 };
 
-const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
-    const isTransactionItem = isTransaction(item);
+const EditOrNewForm = ({ item, itemType, onFinished }: EditItemFormProps) => {
+    const isTransactionItem = itemType === "transaction";
+    const isEditing = useMemo(() => {
+        if (!item || !item.id) return false;
+        return isTransactionItem ? isTransaction(item) : !isTransaction(item);
+    }, [item, isTransactionItem]);
+
     const { mainCategory, subcategory, transactionType, transaction, template } = useModel();
     const [itemName, setItemName] = useState("");
     const [itemAmount, setItemAmount] = useState<number | string>("");
@@ -37,8 +39,10 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
     const [itemCategoryOptions, setItemCategoryOptions] = useState([]);
     const [itemSubcategory, setItemSubcategory] = useState("");
     const [itemSubcategoryOptions, setItemSubcategoryOptions] = useState([]);
-    const [itemDate, setItemDate] = useState(new Date());
-    const [templateName, setTemplateName] = useState(isTransactionItem ? "" : item?.name || "");
+    const [itemDate, setItemDate] = useState<Date | null>(isTransactionItem ? new Date() : null);
+    const [templateName, setTemplateName] = useState(
+        !isTransactionItem && !isTransaction(item) ? (item as Template)?.name : "",
+    );
 
     const setCategoryOptions = (transactionTypeName: string) => {
         const transactionTypeId = transactionType.list.find((type) => type.name === transactionTypeName)?.id;
@@ -49,7 +53,12 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
         const filteredCategories = mainCategory.list
             ?.filter((category) => category.transactionTypeId === transactionTypeId)
             .map((category) => category?.name);
-        setItemCategoryOptions(filteredCategories || []);
+        const options = filteredCategories || [];
+        setItemCategoryOptions(options);
+
+        if (options.length > 0 && !options.includes(itemCategory)) {
+            setItemCategory(options[0]);
+        }
     };
 
     const setSubcategoryOptions = (category: string) => {
@@ -61,21 +70,29 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
         const filteredSubcategories = subcategory.list
             .filter((subcategory) => subcategory.mainCategoryId === mainCategoryId)
             .map((subcategory) => subcategory.name);
-        setItemSubcategoryOptions(filteredSubcategories);
+        const options = filteredSubcategories;
+        setItemSubcategoryOptions(options);
+
+        if (options.length > 0 && !options.includes(itemSubcategory)) {
+            setItemSubcategory(options[0]);
+        }
     };
 
     useEffect(() => {
         if (item) {
-            const name = (isTransactionItem ? item?.item : item?.itemName) || "";
+            const name = (isTransaction(item) ? item.item : item.itemName) || "";
             const amount = item?.amount || 0;
             const subcategoryId = item?.subcategoryId || "";
             const subcategoryName = subcategory.list.find((sub) => sub.id === subcategoryId)?.name || "";
-            const mainCategoryId = subcategory.list.find((sub) => sub.id === subcategoryId).mainCategoryId || "";
+            const mainCategoryId = subcategory.list.find((sub) => sub.id === subcategoryId)?.mainCategoryId || "";
             const mainCategoryName = mainCategory.list.find((cat) => cat.id === mainCategoryId)?.name || "";
             const transactionTypeId =
                 mainCategory.list.find((type) => type.id === mainCategoryId)?.transactionTypeId || "";
             const transactionTypeName = transactionType.list.find((type) => type.id === transactionTypeId)?.name || "";
-            const date = item?.date || new Date();
+            const date =
+                item?.date ? new Date(item.date)
+                : isTransactionItem ? new Date()
+                : null;
 
             setItemName(name);
             if (amount > 0) {
@@ -84,9 +101,13 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
             setItemTransactionType(transactionTypeName);
             setItemCategory(mainCategoryName);
             setItemSubcategory(subcategoryName);
-            setItemDate(new Date(date));
+            setItemDate(date);
+        } else if (transactionType.list.length > 0) {
+            // Default for new items
+            const sortedTypes = [...transactionType.list].sort((a, b) => a.name.localeCompare(b.name));
+            setItemTransactionType(sortedTypes[0].name);
         }
-    }, [item, item, mainCategory.list, subcategory.list, transactionType.list]);
+    }, [item, isTransactionItem, mainCategory.list, subcategory.list, transactionType.list]);
 
     useEffect(() => {
         if (itemTransactionType) {
@@ -100,7 +121,7 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
         }
     }, [itemCategory, subcategory.list]);
 
-    const handleEditItem = async () => {
+    const handleEditItem = useCallback(async () => {
         const transactionTypeId = transactionType.list.find((type) => type.name === itemTransactionType)?.id;
         if (!transactionTypeId) {
             console.error(`No transaction type found for: ${itemTransactionType}`);
@@ -127,14 +148,20 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
         const baseBody = {
             amount: itemAmount,
             subcategoryId,
-            date: itemDate.toISOString(),
+            date:
+                itemDate ? itemDate.toISOString()
+                : isTransactionItem ? new Date().toISOString()
+                : null,
         };
 
-        if (item && item.id) {
+        if (isEditing && item?.id) {
             if (isTransactionItem) {
                 transaction.update({ path: { id: item.id }, body: { ...baseBody, item: itemName } });
             } else {
-                template.update({ path: { id: item.id }, body: { ...baseBody, itemName: itemName, name: itemName } });
+                template.update({
+                    path: { id: item.id },
+                    body: { ...baseBody, itemName: itemName, name: templateName },
+                });
             }
             onFinished();
             return;
@@ -143,42 +170,60 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
         if (isTransactionItem) {
             transaction.create({ body: { ...baseBody, item: itemName } });
         } else {
-            template.create({ body: { ...baseBody, itemName: itemName, name: itemName } });
+            template.create({ body: { ...baseBody, itemName: itemName, name: templateName } });
         }
         onFinished();
-    };
+    }, [
+        isEditing,
+        item,
+        isTransactionItem,
+        itemTransactionType,
+        itemCategory,
+        itemSubcategory,
+        itemAmount,
+        itemName,
+        itemDate,
+        templateName,
+        transactionType.list,
+        mainCategory.list,
+        subcategory.list,
+        transaction,
+        template,
+        onFinished,
+    ]);
 
-    const handleDelete = async () => {
-        if (!item) {
-            console.error("No transaction found to delete");
+    const handleDelete = useCallback(async () => {
+        if (!isEditing) {
+            console.error("No item to delete");
             return;
         }
 
-        transaction.delete({ path: { id: item.id } });
+        if (isTransactionItem) {
+            transaction.delete({ path: { id: item?.id } });
+        } else {
+            template.delete({ path: { id: item?.id } });
+        }
+
         onFinished();
-    };
+    }, [isEditing, isTransactionItem, item?.id, transaction, template, onFinished]);
 
     const title = useMemo(() => {
-        let title = item ? "Edit " : "New ";
-        if (!item && typeToAdd) {
-            title += typeToAdd;
-            return title;
-        }
+        let title = isEditing ? "Edit " : "New ";
         title += isTransactionItem ? "transaction" : "template";
         return title;
-    }, [item, isTransactionItem]);
+    }, [isEditing, isTransactionItem]);
 
     return (
         <div className={styles.newItemContainer}>
             <div className={styles.newItemContent}>
                 <div className={styles.newItemTitle}>{title}</div>
                 <form onSubmit={(e) => e.preventDefault()} className={styles.newItemForm}>
-                    {typeToAdd !== "transaction" && !isTransactionItem && (
+                    {!isTransactionItem && (
                         <div className={styles.newItemFormRow}>
                             <img src={templateUrl} alt="" />
                             <InputField
                                 type="text"
-                                placeholder="Item"
+                                placeholder="Template Name"
                                 value={templateName}
                                 onChange={setTemplateName}
                             />
@@ -203,7 +248,7 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
                     <div className={styles.newItemFormRow}>
                         <img src={expenseTypeUrl} alt="" />
                         <Dropdown
-                            options={transactionType.list.map((type) => type.name)}
+                            options={transactionType.list.map((type) => type.name).sort()}
                             selected={itemTransactionType}
                             onSelectedChange={setItemTransactionType}
                             mini={false}
@@ -240,8 +285,8 @@ const EditOrNewForm = ({ item, typeToAdd, onFinished }: EditItemFormProps) => {
                     </div>
                 </form>
                 <div className={styles.newItemButtonRow}>
-                    {item && <Button text="Delete" onClick={handleDelete} style="secondary" />}
-                    <Button text={item ? "Save" : "Add"} onClick={handleEditItem} />
+                    {isEditing && <Button text="Delete" onClick={handleDelete} style="secondary" />}
+                    <Button text={isEditing ? "Save" : "Add"} onClick={handleEditItem} />
                 </div>
             </div>
         </div>

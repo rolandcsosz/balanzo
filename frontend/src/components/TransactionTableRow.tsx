@@ -42,6 +42,7 @@ const TransactionRow = ({ transaction, onChange }: TransactionRowProps) => {
                         openSheet(
                             <EditOrNewForm
                                 item={transaction}
+                                itemType="transaction"
                                 onFinished={() => {
                                     onChange();
                                     closeSheet();

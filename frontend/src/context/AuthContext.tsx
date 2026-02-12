@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(userFromLocalStorage ? userFromLocalStorage : null);
 
         client.setConfig({
-            baseUrl: env.BACKEND_URL ,
+            baseUrl: env.BACKEND_URL,
             auth: () => (userFromLocalStorage ? userFromLocalStorage.token : ""),
         });
     }, []);
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         client.setConfig({
-            baseUrl: env.BACKEND_URL ,
+            baseUrl: env.BACKEND_URL,
             auth: () => user.token,
         });
     };
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         setUser(null);
         localStorage.removeItem("user");
         client.setConfig({
-            baseUrl: env.BACKEND_URL ,
+            baseUrl: env.BACKEND_URL,
             auth: () => undefined,
         });
     };

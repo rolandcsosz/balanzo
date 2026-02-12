@@ -31,6 +31,7 @@ const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
                         openSheet(
                             <EditOrNewForm
                                 item={transaction}
+                                itemType="transaction"
                                 onFinished={() => {
                                     onChange();
                                     closeSheet();

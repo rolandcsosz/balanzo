@@ -127,7 +127,7 @@ const Menu = () => {
                     onClick={() => {
                         openSheet(
                             <EditOrNewForm
-                                typeToAdd="transaction"
+                                itemType="transaction"
                                 onFinished={() => {
                                     refetchData();
                                     closeSheet();

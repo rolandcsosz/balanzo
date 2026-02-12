@@ -34,7 +34,11 @@ const Home = ({ selectedMonth }: HomeProps) => {
                 .flatMap((mcRef) => mcRef.subcategoryReferences())
                 .flatMap((scRef) => scRef.transactionReferences())
                 .map((t) => t.tryGet())
-                .pipe(removeNullishValuesFromList);
+                .filter((t) => {
+                    if (!t) return false;
+                    const date = new Date(t.date);
+                    return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
+                });
 
             if (!filterIgnored) {
                 return transactionsByTransactionType;
@@ -128,7 +132,7 @@ const Home = ({ selectedMonth }: HomeProps) => {
                 ],
             },
         };
-    }, [transactions, selectedMonth]);
+    }, [transactions, selectedMonth, store, getFilteredExpenses]);
 
     const mainBarChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
