@@ -33,6 +33,7 @@
         "@tanstack/react-query": "^5.74.8",
         "entity-walker": "^1.0.2",
         "plotly.js-basic-dist": "^3.3.1",
+        "plotly.js-dist": "^3.3.1",
         "preact": "^10.24.3",
         "react-plotly.js": "^2.6.0"
     },

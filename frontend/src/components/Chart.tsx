@@ -1,6 +1,6 @@
 import styles from "./Chart.module.scss";
 import createPlotlyComponent from "react-plotly.js/factory";
-import Plotly from "plotly.js-basic-dist";
+import Plotly from "plotly.js-dist";
 
 const Plot = createPlotlyComponent(Plotly);
 
