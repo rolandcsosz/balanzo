@@ -1,4 +1,5 @@
 import { PrismaClient } from "../prisma/generated/index.js";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,9 @@ export const waitForDb = async (retries = 30) => {
 };
 
 export const seed = async () => {
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@admin.com";
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin";
+
     const counts = await Promise.all([
         prisma.user.count(),
         prisma.mainCategory.count(),
@@ -136,13 +140,26 @@ export const seed = async () => {
         },
     });
 
-    await prisma.user.create({
-        data: {
-            email: "admin@admin.com",
-            password: "$2b$10$ZMt5cevB.aKs8mKwpR6qOOh5kGU6FnUcEiUiNyzVPA84cBRtrWhFa", //"pw123" for "super_secret_key" salt
-            name: "Admin User",
-        },
+    const secret = process.env.JWT_SECRET || "super_secret_key";
+
+    const existingUser = await prisma.user.findUnique({
+        where: { email: adminEmail },
     });
+
+    if (!existingUser) {
+        const hashedPassword = await bcrypt.hash(adminPassword + secret, 10);
+
+        await prisma.user.create({
+            data: {
+                email: adminEmail,
+                password: hashedPassword,
+                name: "Admin User",
+            },
+        });
+        console.log("Admin user created.");
+    } else {
+        console.log("Admin user already exists. Skipping creation.");
+    }
 
     console.log("Seeding completed.");
 };

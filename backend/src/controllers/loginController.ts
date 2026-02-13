@@ -1,6 +1,6 @@
 import { Post, Route, Tags, Body, Controller } from "tsoa";
 import { ErrorResponse, LogedInUser } from "../model.js";
-import { PrismaClient }  from "../../prisma/generated/index.js";
+import { PrismaClient } from "../../prisma/generated/index.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { checkFields } from "../utils.js";
@@ -36,7 +36,7 @@ export class LoginController extends Controller {
         try {
             const user = await prisma.user.findUnique({ where: { email } });
             if (user) {
-                const match = await bcrypt.compare(password, user.password);
+                const match = await bcrypt.compare(password + SECRET_KEY, user.password);
                 if (!match) {
                     this.setStatus(401);
                     return { message: "Unauthorized" };
