@@ -8,32 +8,31 @@ import {
     ExpenseType,
 } from "../../../libs/sdk/types.gen";
 import { useModel } from "./useModel";
-import { createEntityGraph, GraphDef, GraphEdges } from "entity-walker";
-import { Entities, EntityGraph } from "entity-walker/dist/types";
+import { createGraph, GraphDef, GraphEdges, ValidSchema, Entities, EntityGraph } from "entity-walker";
 
-type Schema = {
+type Schema = ValidSchema<{
     transaction: Transaction;
     subcategory: Subcategory;
     mainCategory: MainCategory;
     expenseType: ExpenseType;
     transactionType: TransactionType;
     template: Template;
-};
+}>;
 
 export const edges = {
     transaction: {
-        subcategory: { bidirectional: true, optional: true, resolve: (t) => t.subcategoryId },
+        subcategory: { bidirectional: true, resolve: (t) => t.subcategoryId },
     },
     subcategory: {
-        mainCategory: { bidirectional: true, optional: true, resolve: (s) => s.mainCategoryId },
-        expenseType: { bidirectional: true, optional: true, resolve: (s) => s.expenseTypeId },
+        mainCategory: { bidirectional: true, resolve: (s) => s.mainCategoryId },
+        expenseType: { bidirectional: true, resolve: (s) => s.expenseTypeId },
     },
     mainCategory: {
-        expenseType: { bidirectional: true, optional: true, resolve: (m) => m.expenseTypeId },
-        transactionType: { bidirectional: true, optional: true, resolve: (m) => m.transactionTypeId },
+        expenseType: { bidirectional: true, resolve: (m) => m.expenseTypeId },
+        transactionType: { bidirectional: true, resolve: (m) => m.transactionTypeId },
     },
     template: {
-        subcategory: { bidirectional: true, optional: true, resolve: (t) => t.subcategoryId },
+        subcategory: { bidirectional: true, resolve: (t) => t.subcategoryId },
     },
 } as const satisfies GraphEdges<Schema>;
 
@@ -51,7 +50,7 @@ export const useEntityQuery = () => {
     };
 
     const graph = useMemo(() => {
-        return createEntityGraph<Schema>().create({
+        return createGraph({
             entities,
             edges,
         }) as EntityGraph<CustomGraph>;

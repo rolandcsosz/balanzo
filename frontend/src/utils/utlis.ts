@@ -64,13 +64,3 @@ export const removeDuplicate = <T extends { id: string }>(list: T[]): T[] => {
 export const removeNullishValuesFromList = <T>(list: (T | null | undefined)[]): T[] => {
     return list.filter((item): item is T => item !== null && item !== undefined);
 };
-
-declare global {
-    interface Array<T> {
-        pipe<U>(fn: (arr: T[]) => U[]): U[];
-    }
-}
-
-Array.prototype.pipe = function <T, U>(fn: (arr: T[]) => U[]): U[] {
-    return fn(this);
-};

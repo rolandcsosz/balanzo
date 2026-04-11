@@ -23,12 +23,12 @@ const TransactionRow = ({ transaction, onChange }: TransactionRowProps) => {
             </div>
             <div className={styles.transactionRowCell}>
                 <span className={styles.transactionRowCategoryPill}>
-                    {store.subcategory(transaction.subcategoryId).mainCategory().tryGet()?.name || ""}
+                    {store.subcategory(transaction.subcategoryId).mainCategory().value()?.name || ""}
                 </span>
             </div>
             <div className={styles.transactionRowCell}>
                 <span className={styles.transactionRowSubcategoryPill}>
-                    {store.subcategory(transaction.subcategoryId).tryGet()?.name || ""}
+                    {store.subcategory(transaction.subcategoryId).value()?.name || ""}
                 </span>
             </div>
             <div className={`${styles.transactionRowCell} ${styles.transactionRowDateCell}`}>

@@ -17,11 +17,11 @@ const Templates = () => {
         return templates.sort((a, b) => {
             const aCount = transactions.filter(
                 (t) =>
-                    store.subcategory(t.subcategoryId).tryGet()?.id === store.subcategory(a.subcategoryId).tryGet()?.id,
+                    store.subcategory(t.subcategoryId).value()?.id === store.subcategory(a.subcategoryId).value()?.id,
             ).length;
             const bCount = transactions.filter(
                 (t) =>
-                    store.subcategory(t.subcategoryId).tryGet()?.id === store.subcategory(b.subcategoryId).tryGet()?.id,
+                    store.subcategory(t.subcategoryId).value()?.id === store.subcategory(b.subcategoryId).value()?.id,
             ).length;
             return bCount - aCount;
         });

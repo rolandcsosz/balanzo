@@ -18,12 +18,12 @@ const CategoryRow = ({ item, expenseTypeNames, firstSubcategory, onEdit, onDelet
     const { store } = useEntityQuery();
     const isSubcategory = (item as Subcategory).mainCategoryId !== undefined;
     const [selectedType, setSelectedType] = useState(
-        store.expenseType(item?.expenseTypeId).tryGet()?.name || expenseTypeNames[0] || "",
+        store.expenseType(item?.expenseTypeId).value()?.name || expenseTypeNames[0] || "",
     );
     const [name, setName] = useState(item?.name || "");
 
     useEffect(() => {
-        setSelectedType(store.expenseType(item?.expenseTypeId).tryGet()?.name || expenseTypeNames[0] || "");
+        setSelectedType(store.expenseType(item?.expenseTypeId).value()?.name || expenseTypeNames[0] || "");
         setName(item?.name || "");
     }, [item, expenseTypeNames]);
 

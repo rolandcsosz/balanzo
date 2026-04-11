@@ -45,10 +45,10 @@ const TransactionCard = ({ transaction, onChange }: TransactionCardProps) => {
             </div>
             <div className={styles.transactionCardTags}>
                 <span className={styles.transactionCardCategoryTag}>
-                    {store.subcategory(transaction.subcategoryId).mainCategory().tryGet()?.name || ""}
+                    {store.subcategory(transaction.subcategoryId).mainCategory().value()?.name || ""}
                 </span>
                 <span className={styles.transactionCardStoreTag}>
-                    {store.subcategory(transaction.subcategoryId).tryGet()?.name}
+                    {store.subcategory(transaction.subcategoryId).value()?.name}
                 </span>
             </div>
         </article>
