@@ -1,12 +1,14 @@
 import styles from "./Home.module.scss";
 import MetricCard from "../components/MetricCard";
 import Chart from "../components/Chart";
-import { MonthInfo } from "../types";
+import { CustomGraph, MonthInfo } from "../types";
 import { useDevice } from "../hooks/useDevice";
 import { useModel } from "../hooks/useModel";
 import { useCallback, useMemo } from "preact/hooks";
 import { uniqueId } from "../utils/utlis";
 import { useEntityQuery } from "../hooks/useEntityQuery";
+import { emptyNodeList } from "entity-walker";
+import { Transaction } from "../../../libs/sdk/types.gen";
 
 const colors = ["#3772FF", "#5F8EFF", "#87AAFF", "#AFC7FF", "#D7E3FF", "#EFF4FF"];
 const ignoerdSubcategories = ["Rent"];
@@ -23,16 +25,17 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const getFilteredExpenses = useCallback(
         (transactionTypeName: string, filterIgnored = true) => {
-            if (!transactions.length || !selectedMonth) return null;
+            if (!transactions.length || !selectedMonth) return emptyNodeList<CustomGraph, Transaction>();
 
             const searchedTransactionType = transactionType.list.find((et) => et.name === transactionTypeName);
-            if (!searchedTransactionType) return null;
+            if (!searchedTransactionType) return emptyNodeList<CustomGraph, Transaction>();
 
             const transactionsByTransactionType = store
                 .transactionType(searchedTransactionType.id)
                 .mainCategoryNodes()
                 .subcategoryNodes()
-                .transactionNodes((t) => {
+                .transactionNodes()
+                .where((t) => {
                     if (!t) return false;
                     const date = new Date(t.date);
                     return date >= selectedMonth.startDate && date <= selectedMonth.endDate;
@@ -58,9 +61,9 @@ const Home = ({ selectedMonth }: HomeProps) => {
         const values = [];
         const ids = [];
 
-        const mainCategories = filteredTransactions?.subcategoryNodes().mainCategoryNodes().unique().entities() || [];
-        const subcategories = filteredTransactions?.subcategoryNodes().unique().entities() || [];
-        const totalAmount = filteredTransactions?.entities().reduce((sum, item) => sum + (item.amount || 0), 0);
+        const mainCategories = filteredTransactions.subcategoryNodes().mainCategoryNodes().unique().entities();
+        const subcategories = filteredTransactions.subcategoryNodes().unique().entities();
+        const totalAmount = filteredTransactions.entities().reduce((sum, item) => sum + (item.amount || 0), 0);
         const spendingsId = uniqueId();
 
         labels.push("Spendings");
@@ -77,11 +80,13 @@ const Home = ({ selectedMonth }: HomeProps) => {
             ids.push(category.id);
             parents.push(spendingsId);
 
-            const categoryAmount =
-                filteredTransactions
-                    ?.where((item) => store.subcategory(item.subcategoryId).mainCategory().value()?.id === category.id)
-                    .entities()
-                    .reduce((sum, item) => sum + (item.amount || 0), 0) || 0;
+            const categoryAmount = store
+                .subcategoryNodes()
+                .where((item) => item.mainCategoryId === category.id)
+                .transactionNodes()
+                .intersect(filteredTransactions)
+                .entities()
+                .reduce((sum, item) => sum + (item.amount || 0), 0);
             values.push(categoryAmount);
         });
 
@@ -89,11 +94,12 @@ const Home = ({ selectedMonth }: HomeProps) => {
             if (!subcategory) {
                 return;
             }
+            const transaction = store
+                .subcategory(subcategory.id)
+                .transactionNodes()
+                .intersect(filteredTransactions)
+                .entities();
 
-            const transaction =
-                filteredTransactions
-                    ?.where((item) => store.subcategory(item.subcategoryId).value()?.id === subcategory.id)
-                    .entities() || [];
             labels.push(subcategory.name);
             ids.push(subcategory.id);
             parents.push(subcategory.mainCategoryId);
@@ -130,15 +136,14 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const mainBarChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
-        const filteredTrasnactionIds = filteredTransactions?.ids() || [];
 
         const mainCategories = [
             ...new Set(
                 filteredTransactions
-                    ?.subcategoryNodes()
+                    .subcategoryNodes()
                     .mainCategoryNodes()
                     .unique()
-                    .select((mainCategoryNode) => mainCategoryNode.name) || [],
+                    .select((mainCategoryNode) => mainCategoryNode.name),
             ),
         ];
 
@@ -148,11 +153,13 @@ const Home = ({ selectedMonth }: HomeProps) => {
             x: [category],
             y: [
                 store
-                    .mainCategoryNodes((item) => item.name === category)
+                    .mainCategoryNodes()
+                    .where((item) => item.name === category)
                     .subcategoryNodes()
-                    .transactionNodes((t) => filteredTrasnactionIds.includes(t.id))
+                    .transactionNodes()
+                    .intersect(filteredTransactions)
                     .entities()
-                    .reduce((sum, item) => sum + (item.amount || 0), 0) || 0,
+                    .reduce((sum, item) => sum + (item.amount || 0), 0),
             ],
             marker: {
                 color: colors[0],
@@ -167,7 +174,10 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
         const subcategories = [
             ...new Set(
-                filteredTransactions?.subcategoryNodes().select((subcategoryNode) => subcategoryNode.name) || [],
+                filteredTransactions
+                    .subcategoryNodes()
+                    .unique()
+                    .select((subcategoryNode) => subcategoryNode.name),
             ),
         ];
 
@@ -176,10 +186,12 @@ const Home = ({ selectedMonth }: HomeProps) => {
             x: [subcategory],
             y: [
                 filteredTransactions
-                    ?.subcategoryNodes((item) => item.name === subcategory)
+                    .subcategoryNodes()
+                    .where((item) => item.name === subcategory)
                     .transactionNodes()
+                    .intersect(filteredTransactions)
                     .entities()
-                    .reduce((sum, item) => sum + (item.amount || 0), 0) || 0,
+                    .reduce((sum, item) => sum + (item.amount || 0), 0),
             ],
             marker: {
                 color: colors[0],
@@ -191,34 +203,35 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const stackedBarChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense");
-        const filteredTrasnactionIds = filteredTransactions?.ids() || [];
 
         const mainCategories = [
             ...new Set(
                 filteredTransactions
-                    ?.subcategoryNodes()
+                    .subcategoryNodes()
                     .mainCategoryNodes()
-                    .select((mainCategoryNode) => mainCategoryNode.name) || [],
+                    .unique()
+                    .select((mainCategoryNode) => mainCategoryNode.name),
             ),
         ].map((name) => {
-            const subcategoriesRaw =
-                store
-                    .mainCategoryNodes((item) => item.name === name)
-                    .subcategoryNodes()
-                    .transactionNodes((t) => filteredTrasnactionIds.includes(t.id))
-                    .subcategoryNodes()
-                    .select((subcategoryNode) => subcategoryNode.name) || [];
+            const subcategoriesRaw = store
+                .mainCategoryNodes()
+                .where((m) => m.name === name)
+                .subcategoryNodes()
+                .whereNode((sub) => sub.transactionNodes().intersect(filteredTransactions).isNotEmpty())
+                .unique()
+                .select((s) => s.name);
 
             const uniqueSubcategories = [...new Set(subcategoriesRaw)];
 
             const subcategories = uniqueSubcategories
                 .map((subName) => {
-                    const sum =
-                        store
-                            .subcategoryNodes((item) => item.name === subName)
-                            .transactionNodes((t) => filteredTrasnactionIds.includes(t.id))
-                            .entities()
-                            .reduce((sum, item) => sum + (item.amount || 0), 0) || 0;
+                    const sum = store
+                        .subcategoryNodes()
+                        .where((item) => item.name === subName)
+                        .transactionNodes()
+                        .intersect(filteredTransactions)
+                        .entities()
+                        .reduce((sum, item) => sum + (item.amount || 0), 0);
                     return { name: subName, sum };
                 })
                 .sort((a, b) => b.sum - a.sum);
@@ -234,9 +247,12 @@ const Home = ({ selectedMonth }: HomeProps) => {
                     if (cat.name !== mainCategory.name) return 0;
 
                     const matching = store
-                        .mainCategoryNodes((item) => item.name === mainCategory.name)
-                        .subcategoryNodes((item) => item.name === subcategory.name)
-                        .transactionNodes((t) => filteredTrasnactionIds.includes(t.id))
+                        .mainCategoryNodes()
+                        .where((item) => item.name === mainCategory.name)
+                        .subcategoryNodes()
+                        .where((item) => item.name === subcategory.name)
+                        .transactionNodes()
+                        .intersect(filteredTransactions)
                         .entities();
                     return matching.reduce((acc, item) => acc + (item.amount || 0), 0);
                 });
@@ -258,26 +274,27 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const transactionTypePieChartData = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense", false);
-        const filteredTrasnactionIds = filteredTransactions?.ids() || [];
 
         const transactionTypes = [
             ...new Set(
                 filteredTransactions
-                    ?.subcategoryNodes()
+                    .subcategoryNodes()
                     .expenseTypeNodes()
-                    .select((item) => item.name) || [],
+                    .unique()
+                    .select((item) => item.name),
             ),
         ];
 
         const labels = transactionTypes;
         const values = transactionTypes.map((type) =>
-            (
-                store
-                    .expenseTypeNodes((item) => item.name === type)
-                    .subcategoryNodes()
-                    .transactionNodes((item) => filteredTrasnactionIds.includes(item.id))
-                    .entities() || []
-            ).reduce((sum, item) => sum + (item.amount || 0), 0),
+            store
+                .expenseTypeNodes()
+                .where((item) => item.name === type)
+                .subcategoryNodes()
+                .transactionNodes()
+                .intersect(filteredTransactions)
+                .entities()
+                .reduce((sum, item) => sum + (item.amount || 0), 0),
         );
 
         const colorMap: Record<string, string> = {
@@ -301,12 +318,12 @@ const Home = ({ selectedMonth }: HomeProps) => {
 
     const income = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Income", false);
-        return (filteredTransactions?.entities() || []).reduce((sum, item) => sum + (item.amount || 0), 0);
+        return filteredTransactions.entities().reduce((sum, item) => sum + (item.amount || 0), 0);
     }, [transactions, selectedMonth]);
 
     const spending = useMemo(() => {
         const filteredTransactions = getFilteredExpenses("Expense", false);
-        return (filteredTransactions?.entities() || []).reduce((sum, item) => sum + (item.amount || 0), 0) * -1;
+        return filteredTransactions.entities().reduce((sum, item) => sum + (item.amount || 0), 0) * -1;
     }, [transactions, selectedMonth]);
 
     const balance = useMemo(() => {

@@ -8,35 +8,8 @@ import {
     ExpenseType,
 } from "../../../libs/sdk/types.gen";
 import { useModel } from "./useModel";
-import { createGraph, GraphDef, GraphEdges, ValidSchema, Entities, EntityGraph } from "entity-walker";
-
-type Schema = ValidSchema<{
-    transaction: Transaction;
-    subcategory: Subcategory;
-    mainCategory: MainCategory;
-    expenseType: ExpenseType;
-    transactionType: TransactionType;
-    template: Template;
-}>;
-
-export const edges = {
-    transaction: {
-        subcategory: { bidirectional: true, resolve: (t) => t.subcategoryId },
-    },
-    subcategory: {
-        mainCategory: { bidirectional: true, resolve: (s) => s.mainCategoryId },
-        expenseType: { bidirectional: true, resolve: (s) => s.expenseTypeId },
-    },
-    mainCategory: {
-        expenseType: { bidirectional: true, resolve: (m) => m.expenseTypeId },
-        transactionType: { bidirectional: true, resolve: (m) => m.transactionTypeId },
-    },
-    template: {
-        subcategory: { bidirectional: true, resolve: (t) => t.subcategoryId },
-    },
-} as const satisfies GraphEdges<Schema>;
-
-type CustomGraph = GraphDef<Schema, typeof edges>;
+import { createGraph, Entities, EntityGraph } from "entity-walker";
+import { Schema, CustomGraph, edges } from "../types";
 
 export const useEntityQuery = () => {
     const { transaction, template, subcategory, mainCategory, transactionType, expenseType } = useModel();
